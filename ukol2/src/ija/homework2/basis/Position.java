@@ -15,13 +15,6 @@ public class Position {
     protected int row;
     protected Figure figure;
     
-    public Position(char column, int row){
-        this.desk = null;
-        this.column = column;
-        this.row = row; 
-        this.figure = null;
-    }
-    
     public Position(Desk desk, char column, int row){
         this.desk = desk;
         this.column = column;
