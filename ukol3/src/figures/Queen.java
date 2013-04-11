@@ -13,7 +13,7 @@ import ukol3.src.basis.*;
 public class Queen extends Figure{
     
     public Queen(Color color){
-        super(color);
+        super(color, Role.QUEEN);
     }
 
     @Override
@@ -21,15 +21,15 @@ public class Queen extends Figure{
         int stepRow = nextPosition.getRow() - currentPosition.getRow();
         int stepColumn = nextPosition.getColumn() - currentPosition.getColumn();
         
-        if(stepColumn < 0)
-			stepColumn *= (-1);
+        if(stepRow < 0)
+			stepRow *= (-1);
         
         if(stepColumn < 0)
             stepColumn *= (-1);
         
         if(stepColumn != stepRow)
             return false;
-        
+
         return true;
     }
 }

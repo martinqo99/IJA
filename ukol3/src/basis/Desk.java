@@ -71,11 +71,11 @@ final public class Desk{
         this.at('h', 2).putFigure(new Stone(Color.WHITE));
     }
     
-    private Field at(char column, int row){
+    public Field at(char column, int row){
         return this.at(new Position(column, row));
     }
     
-    private Field at(Position position){
+    public Field at(Position position){
         return this.battleField[this.pos(position.getColumn(), position.getRow())];
     }
     
@@ -132,56 +132,57 @@ final public class Desk{
         if(!figure.canMove(from, to))
             return false;
         
-        Position tmp = from;
-        Position next;
-        boolean odd = true;
+        boolean odd = false;
+        Position tmp = new Position('a', 1);
+        Position next = new Position('a', 1);
         ArrayList<Position> list = new ArrayList<>();
         
-        System.out.println("Trip from: " + from.getColumn() + from.getRow() + " to: " + to.getColumn() + to.getRow());
+        tmp.setRow(from.getRow() + ((from.getRow() < to.getRow())? 1 : (-1)));
+        tmp.setColumn((from.getColumn() < to.getColumn())? (char)(from.getColumn() + 1) : (char)(from.getColumn() - 1));
+        
+        //System.out.println("Trip from: " + from.getColumn() + from.getRow() + " to: " + to.getColumn() + to.getRow());
         
         //Hledani cesty
-        while(!tmp.equals(to)){    
-			next = new Position('a', 1);
-            if(!tmp.equals(from)){            
-                //Skoky
-                if(this.at(tmp).getFigure() != null){
-					System.out.println(" - je tu figurka: " + ((odd)? "true" : "false"));
-                    //Nelze preskocit vlastniho            
-                    if(this.at(tmp).getFigure().getColor() == figure.getColor())
-                        return false;
-                    //Nepritel
-                    else{
-                        if(odd)
-                            return false;
-                        //Poznamename si pozici figurky
-                        else{
-                            list.add(tmp);                            
-                        }
-                    }
+        while(!tmp.equals(to)){
+			//Skoky
+            if(this.at(tmp).getFigure() != null){
+                //Nelze preskocit vlastniho            
+                if(this.at(tmp).getFigure().getColor() == figure.getColor())
+					return false;
+                 //Nepritel
+                else{
+					if(odd) return false;
+                   else{ odd = true; list.add(new Position(tmp.getColumn(), tmp.getRow()));}
                 }
-                
-            }
-            odd = !odd;
-            
-            
+			}
+			else{
+				odd = false;
+			}
+
             next.setRow(tmp.getRow() + ((from.getRow() < to.getRow())? 1 : (-1)));
             next.setColumn((from.getColumn() < to.getColumn())? (char)(tmp.getColumn() + 1) : (char)(tmp.getColumn() - 1));
-            
-            System.out.println(" - move from: " + tmp.getColumn() + tmp.getRow() + " to: " + next.getColumn() + next.getRow());
-            
+            //System.out.println(" - move from: " + tmp.getColumn() + tmp.getRow() + " to: " + next.getColumn() + next.getRow());
+           
             tmp = next;
         }
-        
+
         //Bitevni vrava
         Iterator<Position> it = list.iterator();
         while(it.hasNext()){
             Position obj = it.next();
+			
             this.at(obj).removeFigure();
         }
         
         this.at(from).removeFigure();
         this.at(to).putFigure(figure);
         
+        if(figure.getColor() == Color.WHITE && to.getRow() == this.dimension)
+			this.at(to).putFigure(new Queen(Color.WHITE));
+
+		if(figure.getColor() == Color.BLACK && to.getRow() == 0)
+			this.at(to).putFigure(new Queen(Color.BLACK));
+			
         return true;
     }
     
@@ -207,9 +208,9 @@ final public class Desk{
                 //Figurka se nasla
                 else{
                     if(this.at(column, row).getFigure().getColor() == Color.BLACK)
-                        System.out.print("B|");
+                        System.out.print((this.at(column, row).getFigure().getRole() == Role.QUEEN)? "B|" : "b|");
                     else
-                        System.out.print("W|");                
+                        System.out.print((this.at(column, row).getFigure().getRole() == Role.QUEEN)? "W|" : "w|");               
                 }
             }
             System.out.print("\n");

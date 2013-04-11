@@ -13,7 +13,7 @@ import ukol3.src.basis.*;
 public class Stone extends Figure{
 
     public Stone(Color color){
-        super(color);
+        super(color, Role.STONE);
     }
 
     @Override
