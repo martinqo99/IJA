@@ -13,8 +13,8 @@ import java.awt.*;
  */
 public class Rook extends Figure{
     
-    public Rook(Position position, Color color){
-        super(position, color);
+    public Rook(Desk desk, Position position, Color color){
+        super(desk, position, color);
     }
     
     @Override

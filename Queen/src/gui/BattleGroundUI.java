@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.ObjectInputStream;
+import java.util.Vector;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import queen.basis.*;
@@ -23,12 +24,13 @@ public class BattleGroundUI extends JPanel {
     private int dimension;
     
     private boolean battleGroundWhiteTurn;
-    private FieldButtonUI battleGroundFrom;
+    private FieldButtonUI battleGroundActiveField;
     
     private Desk battleground;
     private FieldButtonUI battlegroundUI[];
     
     private JTextArea logUI;
+    private Vector<String> logs;
 
     /**
      * Creates new form BattleGroundUI
@@ -61,6 +63,8 @@ public class BattleGroundUI extends JPanel {
         //this.logUI.setEditable(false);
         this.logUI.setBorder(new EmptyBorder(5, 5, 5, 5));
         this.logUI.setPreferredSize(new Dimension(150, 400));
+        
+        this.logs = new Vector<>();
     }
     
     private void initBattleGround(){
@@ -115,39 +119,45 @@ public class BattleGroundUI extends JPanel {
         FieldButtonUI fieldUI = (FieldButtonUI)e.getSource();        
 
         // Pole neni aktivovane, muze klikat pouze na figurky
-        if(this.battleGroundFrom == null){
+        if(this.battleGroundActiveField == null){
             if(fieldUI.getField().getFigure() != null){
                 if(this.battleGroundWhiteTurn && fieldUI.getField().getFigure().getColor() == Color.WHITE || !this.battleGroundWhiteTurn && fieldUI.getField().getFigure().getColor() == Color.BLACK){
-                    this.battleGroundFrom = fieldUI;
+                    this.battleGroundActiveField = fieldUI;
                     this.battleGroundWhiteTurn = !this.battleGroundWhiteTurn;
                     fieldUI.toogle();                
                 }
                 else{
-                    JOptionPane.showMessageDialog(this, "Wait for your turn!", "Queen - Move error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(this, "Hráč není na tahu!", "Queen - Chybný tah", JOptionPane.ERROR_MESSAGE);
                 }    
             }
             else{
-                JOptionPane.showMessageDialog(this, "Cannot move with no figure!", "Queen - Move error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Nelze provést tah s touto figurkou!", "Queen - Chybný tah", JOptionPane.ERROR_MESSAGE);
             }
         }
         // Pole jiz bylo aktivovane
         else{
             // Tahne na stejnou figuru
-            if(fieldUI == this.battleGroundFrom){
-                this.battleGroundFrom.toogle();
+            if(fieldUI == this.battleGroundActiveField){
+                this.battleGroundActiveField.toogle();
                 this.battleGroundWhiteTurn = !this.battleGroundWhiteTurn;
-                this.battleGroundFrom = null;
+                this.battleGroundActiveField = null;
             }
             // Pokud se pokusime tahnout na jinou figuru
             else if(fieldUI.getField().getFigure() != null){
-                JOptionPane.showMessageDialog(this, "Cannot move on another figure!", "Queen - Move error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Nelze provést tah na další figurku!", "Queen - Chybný tah", JOptionPane.ERROR_MESSAGE);
             }
             // Uspesny klik
             else{
-            
-                
-                this.battleGroundFrom.toogle();
-                this.battleGroundFrom = null;
+                if(this.battleGroundActiveField.getField().getFigure().canMove(fieldUI.getField().getPosition())){
+                    this.logs.add(fieldUI.getField().getPosition().toString());
+                    this.logUI.append(fieldUI.getField().getPosition().toString());
+                    
+                    this.battleGroundActiveField.toogle();
+                    this.battleGroundActiveField = null;                
+                }
+                else{
+                    JOptionPane.showMessageDialog(this, "Není táhnout na toto pole!", "Queen - Chybný tah", JOptionPane.ERROR_MESSAGE);
+                }
             }        
         }
 

@@ -13,8 +13,8 @@ import java.awt.*;
  */
 public class Stone extends Figure{
     
-    public Stone(Position position, Color color){
-        super(position, color);
+    public Stone(Desk desk, Position position, Color color){
+        super(desk, position, color);
     }
     
     @Override
