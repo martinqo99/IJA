@@ -14,33 +14,44 @@ import queen.basis.*;
  */
 public class BattleGroundUI extends JPanel {
     
+    private Container content;
+    
     private int dimension;
     private Desk battleground;
     private FieldButtonUI battlegroundUI[];
-    
+
     /**
      * Creates new form BattleGroundUI
      */
     public BattleGroundUI() {
-       super();       
+       super();  
        
-       this.dimension = 8;
-       this.battleground = new Desk(this.dimension);
-       this.battlegroundUI = new FieldButtonUI[this.dimension * this.dimension];
+       this.initWindow();
 
        this.initBattleGround();
-       this.syncBattleGround();
+       
+       this.add(this.content);
        
        this.setVisible(true);
         //Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         //this.setBounds(50, 50, screenSize.width - 100, screenSize.height - 100);  
     }
     
+    private void initWindow(){
+        this.content = new Container();
+        //this.setBackground(Color.WHITE);
+        this.setLayout(new BorderLayout());
+        
+        this.dimension = 8;
+        this.battleground = new Desk(this.dimension);
+        this.battlegroundUI = new FieldButtonUI[this.dimension * this.dimension];
+    }
+    
     private void initBattleGround(){
         LayoutManager layout = new GridLayout(0, 9);
 
-        this.setLayout(layout);
-        this.setBackground(Color.WHITE);
+        this.content.setLayout(layout);
+        this.content.setBackground(Color.WHITE);
         
         JLabel tempLabel;
         
@@ -48,7 +59,7 @@ public class BattleGroundUI extends JPanel {
             // Add row labels
             tempLabel = new JLabel(Integer.toString(row), SwingConstants.CENTER);
             tempLabel.setFont(new Font("Serif", Font.PLAIN, 18));
-            this.add(tempLabel);
+            this.content.add(tempLabel);
             
             for(char column = 'a'; column < (char)('a' + this.dimension); column++){
                 // Create fields
@@ -56,35 +67,22 @@ public class BattleGroundUI extends JPanel {
                 
                 this.battlegroundUI[pos] = new FieldButtonUI(this.battleground.at(column, row));
                 //this.fields[pos].setText(this.fields[pos].getField().getPosition().toString());
-                this.add(this.battlegroundUI[pos]);
+                this.content.add(this.battlegroundUI[pos]);
             }
+            
+            this.content.setVisible(true);
+            this.add(this.content);
         }
         
         // Blank label
-        this.add(new JLabel());
+        this.content.add(new JLabel());
         
         // Add column labels
         for(char column = 'A'; column < (char)('A' + this.dimension); column++){
             tempLabel = new JLabel(Character.toString(column), SwingConstants.CENTER); 
             tempLabel.setFont(new Font("Serif", Font.PLAIN, 18));
-            this.add(tempLabel);
+            this.content.add(tempLabel);
         }
-    }
-    
-    
-    
-    private void syncBattleGround(){
-        for(int row = this.dimension; row > 0; row--){
-            for(char column = 'a'; column < (char)('a' + this.dimension); column++){
-                
-                
-                
-            }
-        }
-        
-        //if(this.battleground){
-            //for()
-        //}
     }
     
     //public void paintComponent(Graphics graphics){
