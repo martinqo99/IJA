@@ -6,6 +6,7 @@ package gui;
 
 import java.awt.*;
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import queen.basis.*;
 
 /**
@@ -19,6 +20,8 @@ public class BattleGroundUI extends JPanel {
     private int dimension;
     private Desk battleground;
     private FieldButtonUI battlegroundUI[];
+    
+    private JTextArea logUI;
 
     /**
      * Creates new form BattleGroundUI
@@ -30,7 +33,8 @@ public class BattleGroundUI extends JPanel {
 
        this.initBattleGround();
        
-       this.add(this.content);
+       this.add(this.content, BorderLayout.EAST);
+       this.add(this.logUI, BorderLayout.WEST);
        
        this.setVisible(true);
         //Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -39,12 +43,18 @@ public class BattleGroundUI extends JPanel {
     
     private void initWindow(){
         this.content = new Container();
-        //this.setBackground(Color.WHITE);
-        this.setLayout(new BorderLayout());
+        this.setBackground(new Color(220, 220, 220));
+        this.setLayout(new BorderLayout(0, 0));
         
         this.dimension = 8;
         this.battleground = new Desk(this.dimension);
         this.battlegroundUI = new FieldButtonUI[this.dimension * this.dimension];
+        
+        this.logUI = new JTextArea();
+        this.logUI.setBackground(new Color(239, 239, 239));
+        //this.logUI.setEditable(false);
+        this.logUI.setBorder(new EmptyBorder(5, 5, 5, 5));
+        this.logUI.setPreferredSize(new Dimension(150, 400));
     }
     
     private void initBattleGround(){
@@ -58,7 +68,8 @@ public class BattleGroundUI extends JPanel {
         for(int row = this.dimension; row > 0; row--){
             // Add row labels
             tempLabel = new JLabel(Integer.toString(row), SwingConstants.CENTER);
-            tempLabel.setFont(new Font("Serif", Font.PLAIN, 18));
+            tempLabel.setFont(new Font(null, Font.BOLD, 20));
+            tempLabel.setForeground(new Color(152, 152, 152));
             this.content.add(tempLabel);
             
             for(char column = 'a'; column < (char)('a' + this.dimension); column++){
@@ -80,7 +91,8 @@ public class BattleGroundUI extends JPanel {
         // Add column labels
         for(char column = 'A'; column < (char)('A' + this.dimension); column++){
             tempLabel = new JLabel(Character.toString(column), SwingConstants.CENTER); 
-            tempLabel.setFont(new Font("Serif", Font.PLAIN, 18));
+            tempLabel.setFont(new Font(null, Font.BOLD, 20));
+            tempLabel.setForeground(new Color(152, 152, 152));
             this.content.add(tempLabel);
         }
     }

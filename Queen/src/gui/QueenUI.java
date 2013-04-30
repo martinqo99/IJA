@@ -39,11 +39,12 @@ public class QueenUI extends JFrame {
 
     private void initWindow(){
         this.setTitle("Queen - IJA project");
+        this.setIconImage(new ImageIcon(getClass().getResource("/gfx/icon.png")).getImage());
+
         this.setSize(600, 400);
         this.setResizable(false);
         this.setLocation(50, 50);
         
-        //this.setLayout(null);
         this.setLocationRelativeTo(this);
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         
@@ -72,6 +73,21 @@ public class QueenUI extends JFrame {
         this.mainMenuGameNew.setAccelerator(KeyStroke.getKeyStroke('N', KeyEvent.CTRL_DOWN_MASK));
         this.mainMenuGameLoad.setAccelerator(KeyStroke.getKeyStroke('O', KeyEvent.CTRL_DOWN_MASK));
         this.mainMenuGameSave.setAccelerator(KeyStroke.getKeyStroke('S', KeyEvent.CTRL_DOWN_MASK));
+        
+        // Bind close event to Quit
+        this.mainMenuGameQuit.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.exit(0);
+            }
+        });
+        
+        this.mainMenuHelpAbout.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
         
         this.mainMenuGame.add(this.mainMenuGameNew);
         this.mainMenuGame.add(this.mainMenuGameLoad);
