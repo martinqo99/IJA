@@ -6,6 +6,7 @@ package queen.figures;
 
 import queen.basis.*;
 import java.awt.*;
+import java.util.Vector;
 
 /**
  *
@@ -20,5 +21,11 @@ public class Rook extends Figure{
     @Override
     public boolean canMove(Position position){
         return true;
+    }
+    
+    @Override
+    public Vector canMovePossibilities(){
+        return null;
+    
     }
 }

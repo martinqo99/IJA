@@ -49,7 +49,13 @@ public class Position {
      * @param position
      * @return true pokud jsou shodne, jinak false
      */
-    public boolean equals(Position position){
+    @Override
+    public boolean equals(Object object){
+        if(object == null || object.getClass() != Position.class)
+            return false;
+        
+        Position position = (Position) object;
+        
         if(this.column == position.getColumn() && this.row == position.getRow())
             return true;
         else

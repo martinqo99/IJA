@@ -9,6 +9,7 @@
 package queen.basis;
 
 import java.awt.*;
+import java.util.Vector;
 
 /**
  * @author      Frantisek Kolacek <xkolac12 @ stud.fit.vutbr.cz>
@@ -17,9 +18,9 @@ import java.awt.*;
  */
 abstract public class Figure {
     
-    private Desk desk;
-    private Position position;
-    private Color color;
+    protected Desk desk;
+    protected Position position;
+    protected Color color;
     
     /**
      * Konstruktor pro objekt Figure
@@ -85,5 +86,11 @@ abstract public class Figure {
      * @param position  cilova pozice na herni desce
      * @return          true pokud figurka muze pohyb uskutecnit, jinak false
      */
-    abstract public boolean canMove(Position position);    
+    abstract public boolean canMove(Position position);
+    
+    /**
+     *
+     * @return
+     */
+    abstract public Vector canMovePossibilities();
 }
