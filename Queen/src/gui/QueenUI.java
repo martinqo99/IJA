@@ -38,7 +38,7 @@ public class QueenUI extends JFrame {
     }
 
     private void initWindow(){
-        this.setTitle("Queen - IJA project");
+        this.setTitle("Queen - IJA projekt");
         this.setIconImage(new ImageIcon(getClass().getResource("/gfx/icon.png")).getImage());
 
         this.setSize(600, 400);
@@ -56,19 +56,19 @@ public class QueenUI extends JFrame {
         this.mainMenuBar = new JMenuBar();
         
         //Create each menu
-        this.mainMenuGame = new JMenu("Game");
-        this.mainMenuHelp = new JMenu("Help");
+        this.mainMenuGame = new JMenu("Hra");
+        this.mainMenuHelp = new JMenu("Nápověda");
         
-        this.mainMenuGame.setMnemonic('G');
-        this.mainMenuHelp.setMnemonic('H');
+        this.mainMenuGame.setMnemonic('H');
+        this.mainMenuHelp.setMnemonic('N');
         
         //Create menu items
-        this.mainMenuGameNew = new JMenuItem("New");
-        this.mainMenuGameLoad = new JMenuItem("Load");
-        this.mainMenuGameSave = new JMenuItem("Save");
-        this.mainMenuGameReplay = new JMenuItem("Replay");
-        this.mainMenuGameQuit = new JMenuItem("Quit");
-        this.mainMenuHelpAbout = new JMenuItem("About");
+        this.mainMenuGameNew = new JMenuItem("Nová");
+        this.mainMenuGameLoad = new JMenuItem("Načíst");
+        this.mainMenuGameSave = new JMenuItem("Uložit");
+        this.mainMenuGameReplay = new JMenuItem("Přehrát");
+        this.mainMenuGameQuit = new JMenuItem("Ukončit");
+        this.mainMenuHelpAbout = new JMenuItem("O programu");
         
         this.mainMenuGameNew.setAccelerator(KeyStroke.getKeyStroke('N', KeyEvent.CTRL_DOWN_MASK));
         this.mainMenuGameLoad.setAccelerator(KeyStroke.getKeyStroke('O', KeyEvent.CTRL_DOWN_MASK));

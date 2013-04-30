@@ -12,13 +12,21 @@ import java.awt.*;
  */
 abstract public class Figure {
     
+    private Desk desk;
     private Position position;
     private Color color;
     
     public Figure(Position position, Color color){
-        this.position = position;
-        this.color = color;
+        this(null, position, color);
     }
+    
+    public Figure(Desk desk, Position position, Color color){
+        this.desk = desk;
+        this.position = position;
+        this.color = color;  
+    }
+    
+
     
     public Position getPosition(){
         return this.position;
