@@ -5,6 +5,7 @@
 package gui;
 import javax.swing.*;
 import java.awt.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  *
@@ -18,10 +19,8 @@ public class DialogLoad extends javax.swing.JDialog {
     public DialogLoad(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-    }
-
-    public String getFileType(){
-        return "text";
+        jFileChooser1.addChoosableFileFilter(new FileNameExtensionFilter("txt","txt"));
+        jFileChooser1.addChoosableFileFilter(new FileNameExtensionFilter("xml","xml"));
     }
 
     /**
@@ -34,15 +33,11 @@ public class DialogLoad extends javax.swing.JDialog {
     private void initComponents() {
 
         jFileChooser1 = new javax.swing.JFileChooser();
-        jComboBox1 = new javax.swing.JComboBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Queen - Load");
         setIconImage(new ImageIcon(getClass().getResource("/gfx/icon.png")).getImage());
         setMaximumSize(new java.awt.Dimension(500, 400));
-
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Postfix", "XML" }));
-        jComboBox1.setToolTipText("Filetype");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -50,21 +45,14 @@ public class DialogLoad extends javax.swing.JDialog {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jFileChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 476, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(194, 194, 194)
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addComponent(jFileChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 476, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jFileChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 346, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jFileChooser1, javax.swing.GroupLayout.DEFAULT_SIZE, 376, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -113,7 +101,6 @@ public class DialogLoad extends javax.swing.JDialog {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox jComboBox1;
     private javax.swing.JFileChooser jFileChooser1;
     // End of variables declaration//GEN-END:variables
 }
