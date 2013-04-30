@@ -16,80 +16,80 @@ import java.awt.*;
  * @since       2013-04-30
  */
 public class Field {
-    
+
     private Position position;
     private Color color;
     private Figure figure;
-    
+
     /**
-     *
-     * @param position
-     * @param color
+     * Konstruktor pro objekt Field
+     * @param position pozice
+     * @param color barva
      */
     public Field(Position position, Color color){
         this.position = position;
         this.color = color;
         this.figure = null;
     }
-    
+
     /**
-     *
-     * @param position
-     * @param color
-     * @param figure
+     * Konstruktor pro objekt Field
+     * @param position pozice
+     * @param color barva
+     * @param figure typ figurky
      */
     public Field(Position position, Color color, Figure figure){
         this.position = position;
         this.color = color;
-        this.figure = figure;    
+        this.figure = figure;
     }
-    
+
     /**
-     *
-     * @return
+     * Getter pro ziskani pozice herniho pole
+     * @return pozice herniho pole
      */
     public Position getPosition(){
         return this.position;
     }
-    
+
     /**
-     *
-     * @return
+     * Getter pro ziskani barvy policka
+     * @return barva policka
      */
     public Color getColor(){
         return this.color;
     }
-    
+
     /**
-     *
-     * @return
+     * Getter pro ziskani odkazu na figurku
+     * @return odkaz na figurku
      */
     public Figure getFigure(){
         return this.figure;
     }
-    
+
     /**
-     *
-     * @param figure
-     * @return
+     * Umisteni figurky na herni plan
+     * @param figure odkaz na figurku
+     * @return puvodni figurka na hernim planu
      */
     public Figure setFigure(Figure figure){
         Figure tmp = this.figure;
-        
+
         this.figure = figure;
-        
+
         return tmp;
     }
-    
+
     /**
-     *
-     * @return
+     * Odstraneni figurky z herniho planu
+     * @return odkaz na odstranenou figurku
      */
     public Figure removeFigure(){
         Figure tmp = this.figure;
-        
+
         this.figure = null;
-        
+
         return tmp;
-    }    
+    }
 }
