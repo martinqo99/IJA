@@ -1,17 +1,20 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Projekt: Queen
+ * Predmet: IJA - Seminar Java
+ * Autori:
+ *          xkolac12 < xkolac12 @ stud.fit.vutbr.cz >
+ *          xmatya03 < xmatya03 @ stud.fit.vutbr.cz >
  */
+
 package queen.basis;
 
 import queen.figures.*;
 import java.awt.*;
-import java.util.Iterator;
-import java.util.ArrayList;
 
 /**
- *
- * @author xkolac12 <xkolac12 at stud.fit.vutbr.cz>
+ * @author      Frantisek Kolacek <xkolac12 @ stud.fit.vutbr.cz>
+ * @version     0.91
+ * @since       2013-04-30
  */
 public class Desk {
     
@@ -24,7 +27,7 @@ public class Desk {
         this.prepareBattleGround();
         this.prepareSoldiers();
         
-        this.debug();
+        //this.debug();
     }
     
     private void prepareBattleGround(){
@@ -75,22 +78,68 @@ public class Desk {
         this.at('g', 1).setFigure(new Stone(this, new Position('g', 1), Color.WHITE));
         this.at('g', 3).setFigure(new Stone(this, new Position('g', 3), Color.WHITE));
         this.at('h', 2).setFigure(new Stone(this, new Position('h', 2), Color.WHITE));
+    }    
+    
+    /**
+     *
+     * @param column
+     * @param row
+     * @return
+     */
+    public boolean isDeserter(char column, int row){
+        return this.isDeserter(new Position(column, row));
     }
     
+    /**
+     *
+     * @param position
+     * @return
+     */
+    public boolean isDeserter(Position position){
+        
+        if(position.getColumn() < 'a' || position.getColumn() >= 'a' + this.dimension)
+            return true;
+        
+        if(position.getRow() < 1 || position.getRow() > this.dimension)
+            return true;
+        
+        return false;
+    }
     
-    
+    /**
+     *
+     * @param column
+     * @param row
+     * @return
+     */
     public Field at(char column, int row){
         return this.at(new Position(column, row));
     }
     
+    /**
+     *
+     * @param position
+     * @return
+     */
     public Field at(Position position){
         return this.battleField[this.pos(position)];
     }
     
+    /**
+     *
+     * @param column
+     * @param row
+     * @return
+     */
     public int pos(char column, int row){
         return this.pos(new Position(column, row));
     }
     
+    /**
+     *
+     * @param position
+     * @return
+     */
     public int pos(Position position){
         int column = Character.toLowerCase(position.getColumn());
         
@@ -98,6 +147,56 @@ public class Desk {
         
         return ((position.getRow() - 1) * this.dimension) + column;
     }
+    
+    /**
+     *
+     * @param fromColumn
+     * @param fromRow
+     * @param toColumn
+     * @param toRow
+     * @return
+     */
+    public boolean move(char fromColumn, int fromRow, char toColumn, int toRow){
+        return this.move(new Position(fromColumn, fromRow), new Position(fromColumn, fromRow));
+    }
+    
+    /**
+     *
+     * @param from
+     * @param to
+     * @return
+     */
+    public boolean move(Position from, Position to){
+        // Nelze skakat mimo sachovnici
+        if(this.isDeserter(from) || this.isDeserter(to))
+            return false;
+        
+        // Skok na stejnou pozici
+        if(from.equals(to))
+            return false;
+        
+        // Nelze skocit na jinou figurku
+        if(this.at(to).getFigure() != null)
+            return false;
+        
+        Figure figure = this.at(from).getFigure();
+
+        // Pokud neni cim skakat
+        if(figure == null)
+            return false;
+        
+        // Figurka se tam neumi dostat
+        if(!figure.canMove(to))
+            return false;
+        
+        this.at(from).removeFigure();
+        this.at(to).setFigure(figure);
+        
+        return true;
+    }
+    
+    
+    /* DEBUG */
     
     public void debug(){
         System.out.print("#|");

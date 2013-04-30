@@ -1,7 +1,11 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Projekt: Queen
+ * Predmet: IJA - Seminar Java
+ * Autori:
+ *          xkolac12 < xkolac12 @ stud.fit.vutbr.cz >
+ *          xmatya03 < xmatya03 @ stud.fit.vutbr.cz >
  */
+
 package gui;
 
 import java.awt.*;
@@ -14,15 +18,15 @@ import javax.swing.border.EmptyBorder;
 import queen.basis.*;
 
 /**
- *
- * @author xkolac12 <xkolac12 at stud.fit.vutbr.cz>
+ * @author      Frantisek Kolacek <xkolac12 @ stud.fit.vutbr.cz>
+ * @version     0.91
+ * @since       2013-04-30
  */
 public class BattleGroundUI extends JPanel {
     
     private Container content;
     
-    private int dimension;
-    
+    private int dimension;    
     private boolean battleGroundWhiteTurn;
     private FieldButtonUI battleGroundActiveField;
     
@@ -115,6 +119,7 @@ public class BattleGroundUI extends JPanel {
         }
     }
     
+    /* Vsechna ta klikaci magie */
     private void handleClickBattleGround(ActionEvent e){
         FieldButtonUI fieldUI = (FieldButtonUI)e.getSource();        
 
@@ -131,7 +136,7 @@ public class BattleGroundUI extends JPanel {
                 }    
             }
             else{
-                JOptionPane.showMessageDialog(this, "Nelze provést tah s touto figurkou!", "Queen - Chybný tah", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Tah lze provést pouze s figurkou!", "Queen - Chybný tah", JOptionPane.ERROR_MESSAGE);
             }
         }
         // Pole jiz bylo aktivovane
@@ -148,15 +153,21 @@ public class BattleGroundUI extends JPanel {
             }
             // Uspesny klik
             else{
-                if(this.battleGroundActiveField.getField().getFigure().canMove(fieldUI.getField().getPosition())){
-                    this.logs.add(fieldUI.getField().getPosition().toString());
-                    this.logUI.append(fieldUI.getField().getPosition().toString());
+                //JOptionPane.showMessageDialog(this, "Tah se provede", "Queen - Potvrzeni tahu", JOptionPane.INFORMATION_MESSAGE);
+                
+                if(this.battleground.move(this.battleGroundActiveField.getField().getPosition(), fieldUI.getField().getPosition())){
+                    //JOptionPane.showMessageDialog(this, "Tah se provedel", "Queen - Potvrzeni tahu", JOptionPane.INFORMATION_MESSAGE);
+                    
+                    //this.logs.add(fieldUI.getField().getPosition().toString());
+                    //this.logUI.append(fieldUI.getField().getPosition().toString());
+                    
+                    fieldUI.reload();
                     
                     this.battleGroundActiveField.toogle();
                     this.battleGroundActiveField = null;                
                 }
                 else{
-                    JOptionPane.showMessageDialog(this, "Není táhnout na toto pole!", "Queen - Chybný tah", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(this, "Nelze provést tah na toto pole!", "Queen - Chybný tah", JOptionPane.ERROR_MESSAGE);
                 }
             }        
         }

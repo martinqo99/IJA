@@ -1,7 +1,11 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Projekt: Queen
+ * Predmet: IJA - Seminar Java
+ * Autori:
+ *          xkolac12 < xkolac12 @ stud.fit.vutbr.cz >
+ *          xmatya03 < xmatya03 @ stud.fit.vutbr.cz >
  */
+
 package gui;
 
 import java.awt.*;
@@ -11,19 +15,29 @@ import javax.swing.*;
 import queen.basis.*;
 
 /**
- *
- * @author xkolac12 <xkolac12 at stud.fit.vutbr.cz>
+ * @author      Frantisek Kolacek <xkolac12 @ stud.fit.vutbr.cz>
+ * @version     0.91
+ * @since       2013-04-30
  */
-public class FieldButtonUI extends JButton {
+public final class FieldButtonUI extends JButton {
     
     private Field field;
     private Image image;
     private boolean activated;
     
+    /**
+     *
+     * @param field
+     */
     public FieldButtonUI(Field field){
         this(field, "");
     }
     
+    /**
+     *
+     * @param field
+     * @param title
+     */
     public FieldButtonUI(Field field, String title){
         super(title);
         
@@ -56,9 +70,18 @@ public class FieldButtonUI extends JButton {
         return imageName;
     }
     
+    /**
+     *
+     */
     public void toogle(){
-        this.activated = !this.activated;
-        
+        this.activated = !this.activated;        
+        this.reload();
+    }
+    
+    /**
+     *
+     */
+    public void reload(){
         try{
             String fieldImage = this.getImageName();
 
@@ -83,10 +106,18 @@ public class FieldButtonUI extends JButton {
         return size;
     }    
     
+    /**
+     *
+     * @param field
+     */
     public void setField(Field field){
         this.field = field;
     }
     
+    /**
+     *
+     * @return
+     */
     public Field getField(){
         return this.field;
     }
