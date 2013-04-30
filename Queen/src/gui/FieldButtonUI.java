@@ -57,15 +57,17 @@ public final class FieldButtonUI extends JButton {
             imageName += (this.field.getColor() == Color.BLACK)? "black" : "white";
         else{
             if(this.activated)
-                imageName += "marked_";
+                imageName += "marked_"; 
             
             if(this.field.getFigure().getColor() == Color.BLACK)
-                imageName += (this.field.getFigure().getClass().getSimpleName() == "Rook")? "black_rook" : "black_stone";
+                imageName += ("Rook".equals(this.field.getFigure().getClass().getSimpleName()))? "black_rook" : "black_stone";
             else
-                imageName += (this.field.getFigure().getClass().getSimpleName() == "Rook")? "white_rook" : "white_stone";            
+                imageName += ("Rook".equals(this.field.getFigure().getClass().getSimpleName()))? "white_rook" : "white_stone";            
         }    
         
         imageName += ".png";
+        
+        //System.out.println(imageName);
                 
         return imageName;
     }

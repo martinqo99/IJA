@@ -189,8 +189,16 @@ public class Desk {
         if(!figure.canMove(to))
             return false;
         
+        figure.move(to);
+        
+        if(figure.getColor() == Color.WHITE && to.getRow() == this.dimension)
+            figure = new Rook(this, to, Color.WHITE);
+        
+        if(figure.getColor() == Color.BLACK && to.getRow() == 1)
+            figure = new Rook(this, to, Color.BLACK);
+        
         this.at(from).removeFigure();
-        this.at(to).setFigure(figure);
+        this.at(to).setFigure(figure); 
         
         return true;
     }
