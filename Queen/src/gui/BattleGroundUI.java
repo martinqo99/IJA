@@ -5,6 +5,9 @@
 package gui;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.ObjectInputStream;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import queen.basis.*;
@@ -18,6 +21,10 @@ public class BattleGroundUI extends JPanel {
     private Container content;
     
     private int dimension;
+    
+    private boolean battleGroundWhiteTurn;
+    private FieldButtonUI battleGroundFrom;
+    
     private Desk battleground;
     private FieldButtonUI battlegroundUI[];
     
@@ -37,8 +44,6 @@ public class BattleGroundUI extends JPanel {
        this.add(this.logUI, BorderLayout.WEST);
        
        this.setVisible(true);
-        //Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        //this.setBounds(50, 50, screenSize.width - 100, screenSize.height - 100);  
     }
     
     private void initWindow(){
@@ -47,6 +52,7 @@ public class BattleGroundUI extends JPanel {
         this.setLayout(new BorderLayout(0, 0));
         
         this.dimension = 8;
+        this.battleGroundWhiteTurn = true;
         this.battleground = new Desk(this.dimension);
         this.battlegroundUI = new FieldButtonUI[this.dimension * this.dimension];
         
@@ -77,6 +83,14 @@ public class BattleGroundUI extends JPanel {
                 int pos = this.battleground.pos(column, row);
                 
                 this.battlegroundUI[pos] = new FieldButtonUI(this.battleground.at(column, row));
+                
+                this.battlegroundUI[pos].addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        handleClickBattleGround(e);
+                    }
+                });
+                
                 //this.fields[pos].setText(this.fields[pos].getField().getPosition().toString());
                 this.content.add(this.battlegroundUI[pos]);
             }
@@ -97,11 +111,42 @@ public class BattleGroundUI extends JPanel {
         }
     }
     
-    //public void paintComponent(Graphics graphics){
-    //    graphics.setColor(Color.red);
-    //    graphics.fillRect(0, 0, this.getWidth(), this.getHeight());
-    //}
+    private void handleClickBattleGround(ActionEvent e){
+        FieldButtonUI fieldUI = (FieldButtonUI)e.getSource();        
 
+        // Pole neni aktivovane, muze klikat pouze na figurky
+        if(this.battleGroundFrom == null){
+            if(fieldUI.getField().getFigure() != null){
+                // Pokud je to stejna figura
+                this.battleGroundFrom = fieldUI;
+                fieldUI.toogle();
+            }
+            else{
+                JOptionPane.showMessageDialog(this, "Cannot move with no figure!", "Queen - Move error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+        // Pole jiz bylo aktivovane
+        else{
+            // Tahne na stejnou figuru
+            if(fieldUI == this.battleGroundFrom){
+                this.battleGroundFrom.toogle();
+                this.battleGroundFrom = null;
+            }
+            // Pokud se pokusime tahnout na jinou figuru
+            else if(fieldUI.getField().getFigure() != null){
+                JOptionPane.showMessageDialog(this, "Cannot move on another figure!", "Queen - Move error", JOptionPane.ERROR_MESSAGE);
+            }
+            // Uspesny klik
+            else{
+            
+                
+                this.battleGroundFrom.toogle();
+                this.battleGroundFrom = null;
+            }        
+        }
+
+        
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.

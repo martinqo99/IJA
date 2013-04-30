@@ -85,7 +85,7 @@ public class QueenUI extends JFrame {
         this.mainMenuHelpAbout.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                handleDialogAbout(e);
             }
         });
         
@@ -107,6 +107,13 @@ public class QueenUI extends JFrame {
         this.content = this.getContentPane();
         
         this.content.add(new BattleGroundUI());
+    }
+    
+    private void handleDialogAbout(ActionEvent e){
+        DialogAbout dialog = new DialogAbout(this, true);
+        dialog.setLocationRelativeTo(this);
+        
+        dialog.setVisible(true);        
     }
 
     /**

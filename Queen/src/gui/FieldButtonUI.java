@@ -18,6 +18,7 @@ public class FieldButtonUI extends JButton {
     
     private Field field;
     private Image image;
+    private boolean activated;
     
     public FieldButtonUI(Field field){
         this(field, "");
@@ -30,16 +31,37 @@ public class FieldButtonUI extends JButton {
         this.setSize(50, 50);
         
         this.field = field;
+        this.activated = true;
+        
+        this.toogle();
+    }
+    
+    private String getImageName(){
+        String imageName = "/gfx/";
+        
+        if(this.field.getFigure() == null)
+            imageName += (this.field.getColor() == Color.BLACK)? "black" : "white";
+        else{
+            if(this.activated)
+                imageName += "marked_";
+            
+            if(this.field.getFigure().getColor() == Color.BLACK)
+                imageName += (this.field.getFigure().getClass().getSimpleName() == "Rook")? "black_rook" : "black_stone";
+            else
+                imageName += (this.field.getFigure().getClass().getSimpleName() == "Rook")? "white_rook" : "white_stone";            
+        }    
+        
+        imageName += ".png";
+                
+        return imageName;
+    }
+    
+    public void toogle(){
+        this.activated = !this.activated;
         
         try{
-            String fieldImage;
-            
-            if(this.field.getFigure() != null){
-                fieldImage = (this.field.getFigure().getColor() == Color.BLACK)? "/gfx/black_stone.png" : "/gfx/white_stone.png";
-            }
-            else{
-                fieldImage = (this.field.getColor() == Color.BLACK)? "/gfx/black.png" : "/gfx/white.png";
-            }
+            String fieldImage = this.getImageName();
+
             this.image = ImageIO.read(getClass().getResource(fieldImage));
 
             this.setIcon(new ImageIcon(this.image));
