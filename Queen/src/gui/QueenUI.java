@@ -74,6 +74,20 @@ public class QueenUI extends JFrame {
         this.mainMenuGameLoad.setAccelerator(KeyStroke.getKeyStroke('O', KeyEvent.CTRL_DOWN_MASK));
         this.mainMenuGameSave.setAccelerator(KeyStroke.getKeyStroke('S', KeyEvent.CTRL_DOWN_MASK));
         
+        this.mainMenuGameLoad.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                handleDialogLoad(e);
+            }
+        });
+        
+        this.mainMenuGameSave.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                handleDialogSave(e);
+            }
+        });
+        
         // Bind close event to Quit
         this.mainMenuGameQuit.addActionListener(new ActionListener() {
             @Override
@@ -107,6 +121,20 @@ public class QueenUI extends JFrame {
         this.content = this.getContentPane();
         
         this.content.add(new BattleGroundUI());
+    }
+    
+    private void handleDialogLoad(ActionEvent e){
+        DialogLoad dialog = new DialogLoad(this, true);
+        dialog.setLocationRelativeTo(this);
+        
+        dialog.setVisible(true);
+    }
+    
+    private void handleDialogSave(ActionEvent e){
+        DialogSave dialog = new DialogSave(this, true);
+        dialog.setLocationRelativeTo(this);
+        
+        dialog.setVisible(true);
     }
     
     private void handleDialogAbout(ActionEvent e){

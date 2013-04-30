@@ -43,7 +43,6 @@ public class DialogSave extends javax.swing.JDialog {
         setIconImage(new ImageIcon(getClass().getResource("/gfx/icon.png")).getImage());
         setLocationByPlatform(true);
         setMaximumSize(new java.awt.Dimension(500, 400));
-        setPreferredSize(new java.awt.Dimension(500, 400));
         setResizable(false);
 
         Type.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Postfix", "XML" }));

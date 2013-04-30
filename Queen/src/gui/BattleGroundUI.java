@@ -117,9 +117,14 @@ public class BattleGroundUI extends JPanel {
         // Pole neni aktivovane, muze klikat pouze na figurky
         if(this.battleGroundFrom == null){
             if(fieldUI.getField().getFigure() != null){
-                // Pokud je to stejna figura
-                this.battleGroundFrom = fieldUI;
-                fieldUI.toogle();
+                if(this.battleGroundWhiteTurn && fieldUI.getField().getFigure().getColor() == Color.WHITE || !this.battleGroundWhiteTurn && fieldUI.getField().getFigure().getColor() == Color.BLACK){
+                    this.battleGroundFrom = fieldUI;
+                    this.battleGroundWhiteTurn = !this.battleGroundWhiteTurn;
+                    fieldUI.toogle();                
+                }
+                else{
+                    JOptionPane.showMessageDialog(this, "Wait for your turn!", "Queen - Move error", JOptionPane.ERROR_MESSAGE);
+                }    
             }
             else{
                 JOptionPane.showMessageDialog(this, "Cannot move with no figure!", "Queen - Move error", JOptionPane.ERROR_MESSAGE);
@@ -130,6 +135,7 @@ public class BattleGroundUI extends JPanel {
             // Tahne na stejnou figuru
             if(fieldUI == this.battleGroundFrom){
                 this.battleGroundFrom.toogle();
+                this.battleGroundWhiteTurn = !this.battleGroundWhiteTurn;
                 this.battleGroundFrom = null;
             }
             // Pokud se pokusime tahnout na jinou figuru
