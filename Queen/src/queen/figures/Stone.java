@@ -58,7 +58,7 @@ public class Stone extends Figure{
             else if(this.color != this.desk.at(step1).getFigure().getColor()){
                 step2 = new Position((char)(step1.getColumn() - 1), step1.getRow() + rowStep);
 
-                if(this.desk.at(step2).getFigure() == null)
+                if(!this.desk.isDeserter(step2) && this.desk.at(step2).getFigure() == null)
                     possibilities.add(new Position(step2.getColumn(), step2.getRow()));
             }
         }
@@ -72,7 +72,7 @@ public class Stone extends Figure{
             else if(this.color != this.desk.at(step1).getFigure().getColor()){
                 step2 = new Position((char)(step1.getColumn() + 1), step1.getRow() + rowStep);
 
-                if(this.desk.at(step2).getFigure() == null)
+                if(!this.desk.isDeserter(step2) && this.desk.at(step2).getFigure() == null)
                     possibilities.add(new Position(step2.getColumn(), step2.getRow()));
             }
         }
