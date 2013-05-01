@@ -32,35 +32,51 @@ public class DialogNew extends javax.swing.JDialog {
 
         buttonGroup1 = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
-        jRadioButton1 = new javax.swing.JRadioButton();
-        jRadioButton2 = new javax.swing.JRadioButton();
-        jRadioButton3 = new javax.swing.JRadioButton();
+        radioPlayerVsPlayer = new javax.swing.JRadioButton();
+        radioPlayerVsPC = new javax.swing.JRadioButton();
+        radioPlayerVsNetwork = new javax.swing.JRadioButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox();
-        jTextField2 = new javax.swing.JTextField();
+        inputPlayerColor = new javax.swing.JComboBox();
+        inputRemoteHost = new javax.swing.JTextField();
         jPanel3 = new javax.swing.JPanel();
-        jTextField1 = new javax.swing.JTextField();
-        jCheckBox1 = new javax.swing.JCheckBox();
+        inputFileName = new javax.swing.JTextField();
+        checkFileName = new javax.swing.JCheckBox();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Queen - New game");
+        setTitle("Queen - Nová hra");
         setMaximumSize(new java.awt.Dimension(300, 300));
         setResizable(false);
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Typ hry"));
 
-        buttonGroup1.add(jRadioButton1);
-        jRadioButton1.setText("Hráč proti hráči");
+        buttonGroup1.add(radioPlayerVsPlayer);
+        radioPlayerVsPlayer.setSelected(true);
+        radioPlayerVsPlayer.setText("Hráč proti hráči");
+        radioPlayerVsPlayer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                radioPlayerVsPlayerActionPerformed(evt);
+            }
+        });
 
-        buttonGroup1.add(jRadioButton2);
-        jRadioButton2.setText("Hráč proti PC");
+        buttonGroup1.add(radioPlayerVsPC);
+        radioPlayerVsPC.setText("Hráč proti PC");
+        radioPlayerVsPC.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                radioPlayerVsPCActionPerformed(evt);
+            }
+        });
 
-        buttonGroup1.add(jRadioButton3);
-        jRadioButton3.setText("Síťová hra");
+        buttonGroup1.add(radioPlayerVsNetwork);
+        radioPlayerVsNetwork.setText("Síťová hra");
+        radioPlayerVsNetwork.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                radioPlayerVsNetworkActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -69,20 +85,20 @@ public class DialogNew extends javax.swing.JDialog {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jRadioButton1)
-                    .addComponent(jRadioButton2)
-                    .addComponent(jRadioButton3))
+                    .addComponent(radioPlayerVsPlayer)
+                    .addComponent(radioPlayerVsPC)
+                    .addComponent(radioPlayerVsNetwork))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap(10, Short.MAX_VALUE)
-                .addComponent(jRadioButton1)
+                .addContainerGap(11, Short.MAX_VALUE)
+                .addComponent(radioPlayerVsPlayer)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jRadioButton2)
+                .addComponent(radioPlayerVsPC)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jRadioButton3))
+                .addComponent(radioPlayerVsNetwork))
         );
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Parametry hry"));
@@ -91,9 +107,16 @@ public class DialogNew extends javax.swing.JDialog {
 
         jLabel2.setText("Vzdálený host");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Bílá", "Černá" }));
+        inputPlayerColor.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Bílá", "Černá" }));
 
-        jTextField2.setToolTipText("Zadejte adresu vzdáleného počítače");
+        inputRemoteHost.setText("localhost:1213");
+        inputRemoteHost.setToolTipText("Zadejte adresu vzdáleného počítače");
+        inputRemoteHost.setEnabled(false);
+        inputRemoteHost.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                inputRemoteHostActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -105,11 +128,11 @@ public class DialogNew extends javax.swing.JDialog {
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(inputRemoteHost, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(inputPlayerColor, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(12, 12, 12))
         );
         jPanel2Layout.setVerticalGroup(
@@ -118,23 +141,33 @@ public class DialogNew extends javax.swing.JDialog {
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addComponent(inputPlayerColor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(inputRemoteHost, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(17, Short.MAX_VALUE))
         );
 
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Uložená hra"));
 
-        jTextField1.setEditable(false);
-        jTextField1.setEnabled(false);
-
-        jCheckBox1.setText("Načíst hru ze souboru");
-        jCheckBox1.addActionListener(new java.awt.event.ActionListener() {
+        inputFileName.setEditable(false);
+        inputFileName.setEnabled(false);
+        inputFileName.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                inputFileNameMouseClicked(evt);
+            }
+        });
+        inputFileName.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCheckBox1ActionPerformed(evt);
+                inputFileNameActionPerformed(evt);
+            }
+        });
+
+        checkFileName.setText("Načíst hru ze souboru");
+        checkFileName.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                checkFileNameActionPerformed(evt);
             }
         });
 
@@ -145,19 +178,19 @@ public class DialogNew extends javax.swing.JDialog {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTextField1)
+                    .addComponent(inputFileName)
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(jCheckBox1)
+                        .addComponent(checkFileName)
                         .addGap(0, 176, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addComponent(jCheckBox1)
+                .addComponent(checkFileName)
                 .addGap(18, 18, 18)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(22, Short.MAX_VALUE))
+                .addComponent(inputFileName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(25, Short.MAX_VALUE))
         );
 
         jButton1.setText("Vytvořit hru");
@@ -206,13 +239,56 @@ public class DialogNew extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jCheckBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jCheckBox1ActionPerformed
+    private void checkFileNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkFileNameActionPerformed
+        if(this.checkFileName.isSelected())
+            this.inputFileName.setEnabled(true);
+        else
+            this.inputFileName.setEnabled(false);
+    }//GEN-LAST:event_checkFileNameActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void inputRemoteHostActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inputRemoteHostActionPerformed
+
+    }//GEN-LAST:event_inputRemoteHostActionPerformed
+
+    private void radioPlayerVsPlayerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioPlayerVsPlayerActionPerformed
+        this.inputRemoteHost.setEnabled(false);
+    }//GEN-LAST:event_radioPlayerVsPlayerActionPerformed
+
+    private void radioPlayerVsNetworkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioPlayerVsNetworkActionPerformed
+        this.inputRemoteHost.setEnabled(true);
+    }//GEN-LAST:event_radioPlayerVsNetworkActionPerformed
+
+    private void radioPlayerVsPCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioPlayerVsPCActionPerformed
+        this.inputRemoteHost.setEnabled(false);
+    }//GEN-LAST:event_radioPlayerVsPCActionPerformed
+
+    private void inputFileNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inputFileNameActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_inputFileNameActionPerformed
+
+    private void inputFileNameMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_inputFileNameMouseClicked
+        if(!this.inputFileName.isEnabled())
+            return;
+        
+        JFileChooser dialog = new JFileChooser();
+
+        dialog.setAcceptAllFileFilterUsed(false);
+        dialog.addChoosableFileFilter(new FileNameExtensionFilter("txt", "txt"));
+        dialog.addChoosableFileFilter(new FileNameExtensionFilter("xml", "xml"));
+
+        if(dialog.showOpenDialog(this) == JFileChooser.APPROVE_OPTION){
+            String filename = dialog.getSelectedFile().getName();
+            String directory = dialog.getCurrentDirectory().toString();
+            String extension = dialog.getFileFilter().getDescription();
+            String fullPath = directory + "/" + filename;
+            
+            this.inputFileName.setText(fullPath);
+        }
+    }//GEN-LAST:event_inputFileNameMouseClicked
 
     /**
      * @param args the command line arguments
@@ -257,19 +333,19 @@ public class DialogNew extends javax.swing.JDialog {
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.JCheckBox checkFileName;
+    private javax.swing.JTextField inputFileName;
+    private javax.swing.JComboBox inputPlayerColor;
+    private javax.swing.JTextField inputRemoteHost;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JCheckBox jCheckBox1;
-    private javax.swing.JComboBox jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JRadioButton jRadioButton1;
-    private javax.swing.JRadioButton jRadioButton2;
-    private javax.swing.JRadioButton jRadioButton3;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
+    private javax.swing.JRadioButton radioPlayerVsNetwork;
+    private javax.swing.JRadioButton radioPlayerVsPC;
+    private javax.swing.JRadioButton radioPlayerVsPlayer;
     // End of variables declaration//GEN-END:variables
 }
