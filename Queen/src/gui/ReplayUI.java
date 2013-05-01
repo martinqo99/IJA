@@ -25,6 +25,9 @@ public class ReplayUI extends javax.swing.JFrame {
     private JButton mainMenuPause;
     private JButton mainMenuNext;
     private JButton mainMenuOpen;
+    private JButton mainMenuHelp;
+    private JButton mainMenuQuit;
+    
 
     
     private Container content;
@@ -55,74 +58,56 @@ public class ReplayUI extends javax.swing.JFrame {
         this.mainMenuBar = new JToolBar();
         this.mainMenuBar.setFloatable(false);
         
+        
         this.mainMenuPrev = new JButton();
         this.mainMenuPlay = new JButton();
         this.mainMenuPause = new JButton();
         this.mainMenuNext = new JButton();
         this.mainMenuOpen = new JButton();
+        this.mainMenuHelp = new JButton();
+        this.mainMenuQuit = new JButton();
         
         this.mainMenuPrev.setIcon(new ImageIcon(getClass().getResource("/gfx/control_stop_left.png")));
         this.mainMenuPlay.setIcon(new ImageIcon(getClass().getResource("/gfx/control_right.png")));
         this.mainMenuPause.setIcon(new ImageIcon(getClass().getResource("/gfx/control_pause.png")));
         this.mainMenuNext.setIcon(new ImageIcon(getClass().getResource("/gfx/control_stop_right.png")));
         this.mainMenuOpen.setIcon(new ImageIcon(getClass().getResource("/gfx/control_eject.png")));
+        this.mainMenuHelp.setIcon(new ImageIcon(getClass().getResource("/gfx/page_about.png")));
+        this.mainMenuQuit.setIcon(new ImageIcon(getClass().getResource("/gfx/replay_quit.png")));
         
         this.mainMenuBar.add(this.mainMenuPrev);
         this.mainMenuBar.add(this.mainMenuPlay);
         this.mainMenuBar.add(this.mainMenuPause);
         this.mainMenuBar.add(this.mainMenuNext);
         this.mainMenuBar.add(this.mainMenuOpen);
+        this.mainMenuBar.add(new JSeparator());
+        this.mainMenuBar.add(this.mainMenuHelp);
+        this.mainMenuBar.add(this.mainMenuQuit);
+
+        //this.mainMenuOpen.setAccelerator(KeyStroke.getKeyStroke('O', KeyEvent.CTRL_DOWN_MASK));
+        //this.mainMenuQuit.setAccelerator(KeyStroke.getKeyStroke('Q', KeyEvent.CTRL_DOWN_MASK));
         
-        /*
-        //Create menu bar
-        this.mainMenuBar = new JMenuBar();
-        
-        //Create each menu
-        this.mainMenuFile = new JMenu("Soubor");
-        this.mainMenuHelp = new JMenu("Nápověda");
-        
-        this.mainMenuFile.setMnemonic('S');
-        this.mainMenuHelp.setMnemonic('N');
-        
-        //Create menu items
-        this.mainMenuFileLoad = new JMenuItem("Načíst");
-        this.mainMenuFileQuit = new JMenuItem("Ukončit");
-        this.mainMenuHelpAbout = new JMenuItem("O programu");
-        
-        this.mainMenuFileLoad.setAccelerator(KeyStroke.getKeyStroke('O', KeyEvent.CTRL_DOWN_MASK));
-        
-        this.mainMenuFileLoad.addActionListener(new ActionListener() {
+        this.mainMenuOpen.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //handleDialogLoad(e);
             }
         });
         
-        // Bind close event to Quit
-        this.mainMenuFileQuit.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                dispose();
-            }
-        });
-        
-        this.mainMenuHelpAbout.addActionListener(new ActionListener() {
+        this.mainMenuHelp.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 handleDialogAbout(e);
             }
         });
         
-        this.mainMenuFile.add(this.mainMenuFileLoad);
-        this.mainMenuFile.add(new JSeparator());
-        this.mainMenuFile.add(this.mainMenuFileQuit);
-        this.mainMenuHelp.add(this.mainMenuHelpAbout);
-        
-        this.mainMenuBar.add(this.mainMenuFile);
-        this.mainMenuBar.add(this.mainMenuHelp);
-        
-        this.setJMenuBar(this.mainMenuBar);  
-        */
+        // Bind close event to Quit
+        this.mainMenuQuit.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+            }
+        });
     }
     
     private void initContent(){

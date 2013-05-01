@@ -86,6 +86,7 @@ public class QueenUI extends JFrame {
         this.mainMenuGameLoad.setAccelerator(KeyStroke.getKeyStroke('O', KeyEvent.CTRL_DOWN_MASK));
         this.mainMenuGameSave.setAccelerator(KeyStroke.getKeyStroke('S', KeyEvent.CTRL_DOWN_MASK));
         this.mainMenuGameReplay.setAccelerator(KeyStroke.getKeyStroke('R', KeyEvent.CTRL_DOWN_MASK));
+        this.mainMenuGameQuit.setAccelerator(KeyStroke.getKeyStroke('Q', KeyEvent.CTRL_DOWN_MASK));
         
         this.mainMenuGameLoad.addActionListener(new ActionListener() {
             @Override
@@ -160,8 +161,10 @@ public class QueenUI extends JFrame {
     
     private void handleDialogReplay(ActionEvent e){
         Thread thread = new Thread(){
+            @Override
             public void run(){
-                new ReplayUI().setVisible(true);
+                JFrame dialog = new ReplayUI();
+                dialog.setVisible(true);
             }
         };
         
