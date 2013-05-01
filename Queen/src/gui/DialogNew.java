@@ -20,6 +20,26 @@ public class DialogNew extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
     }
+    
+    private void handleInputFile(){
+        if(!this.inputFileName.isEnabled())
+            return;
+        
+        JFileChooser dialog = new JFileChooser();
+
+        dialog.setAcceptAllFileFilterUsed(false);
+        dialog.addChoosableFileFilter(new FileNameExtensionFilter("txt", "txt"));
+        dialog.addChoosableFileFilter(new FileNameExtensionFilter("xml", "xml"));
+
+        if(dialog.showOpenDialog(this) == JFileChooser.APPROVE_OPTION){
+            String filename = dialog.getSelectedFile().getName();
+            String directory = dialog.getCurrentDirectory().toString();
+            String extension = dialog.getFileFilter().getDescription();
+            String fullPath = directory + "/" + filename;
+            
+            this.inputFileName.setText(fullPath);
+        }
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -43,6 +63,7 @@ public class DialogNew extends javax.swing.JDialog {
         jPanel3 = new javax.swing.JPanel();
         inputFileName = new javax.swing.JTextField();
         checkFileName = new javax.swing.JCheckBox();
+        buttFileName = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
 
@@ -93,7 +114,7 @@ public class DialogNew extends javax.swing.JDialog {
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap(11, Short.MAX_VALUE)
+                .addContainerGap(12, Short.MAX_VALUE)
                 .addComponent(radioPlayerVsPlayer)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(radioPlayerVsPC)
@@ -127,7 +148,7 @@ public class DialogNew extends javax.swing.JDialog {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 99, Short.MAX_VALUE)
                         .addComponent(inputRemoteHost, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel1)
@@ -146,12 +167,11 @@ public class DialogNew extends javax.swing.JDialog {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(inputRemoteHost, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(17, Short.MAX_VALUE))
+                .addContainerGap(19, Short.MAX_VALUE))
         );
 
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Uložená hra"));
 
-        inputFileName.setEditable(false);
         inputFileName.setEnabled(false);
         inputFileName.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -171,6 +191,14 @@ public class DialogNew extends javax.swing.JDialog {
             }
         });
 
+        buttFileName.setFont(new java.awt.Font("Dialog", 0, 10)); // NOI18N
+        buttFileName.setText("Zvolit soubor");
+        buttFileName.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttFileNameActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -178,10 +206,12 @@ public class DialogNew extends javax.swing.JDialog {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(inputFileName)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(checkFileName)
-                        .addGap(0, 176, Short.MAX_VALUE)))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(inputFileName))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(buttFileName)
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
@@ -189,7 +219,9 @@ public class DialogNew extends javax.swing.JDialog {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                 .addComponent(checkFileName)
                 .addGap(18, 18, 18)
-                .addComponent(inputFileName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(inputFileName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(buttFileName, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(25, Short.MAX_VALUE))
         );
 
@@ -229,7 +261,7 @@ public class DialogNew extends javax.swing.JDialog {
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
                     .addComponent(jButton2))
@@ -240,10 +272,14 @@ public class DialogNew extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void checkFileNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkFileNameActionPerformed
-        if(this.checkFileName.isSelected())
+        if(this.checkFileName.isSelected()){
             this.inputFileName.setEnabled(true);
-        else
+            this.buttFileName.setEnabled(true);
+        }
+        else{
             this.inputFileName.setEnabled(false);
+            this.buttFileName.setEnabled(false);
+        }
     }//GEN-LAST:event_checkFileNameActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -271,24 +307,12 @@ public class DialogNew extends javax.swing.JDialog {
     }//GEN-LAST:event_inputFileNameActionPerformed
 
     private void inputFileNameMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_inputFileNameMouseClicked
-        if(!this.inputFileName.isEnabled())
-            return;
-        
-        JFileChooser dialog = new JFileChooser();
-
-        dialog.setAcceptAllFileFilterUsed(false);
-        dialog.addChoosableFileFilter(new FileNameExtensionFilter("txt", "txt"));
-        dialog.addChoosableFileFilter(new FileNameExtensionFilter("xml", "xml"));
-
-        if(dialog.showOpenDialog(this) == JFileChooser.APPROVE_OPTION){
-            String filename = dialog.getSelectedFile().getName();
-            String directory = dialog.getCurrentDirectory().toString();
-            String extension = dialog.getFileFilter().getDescription();
-            String fullPath = directory + "/" + filename;
-            
-            this.inputFileName.setText(fullPath);
-        }
+        //this.handleInputFile();
     }//GEN-LAST:event_inputFileNameMouseClicked
+
+    private void buttFileNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttFileNameActionPerformed
+        this.handleInputFile();
+    }//GEN-LAST:event_buttFileNameActionPerformed
 
     /**
      * @param args the command line arguments
@@ -332,6 +356,7 @@ public class DialogNew extends javax.swing.JDialog {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton buttFileName;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JCheckBox checkFileName;
     private javax.swing.JTextField inputFileName;
