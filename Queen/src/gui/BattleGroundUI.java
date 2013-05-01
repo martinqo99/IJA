@@ -130,7 +130,14 @@ public class BattleGroundUI extends JPanel {
         if(this.disabled == DisabledFigures.DISABLE_ALL)
             return;
         
+        if(fieldUI.getField() == null && this.disabled == DisabledFigures.DISABLE_EMPTY_FIELDS)
+            return;
         
+        if(fieldUI.getField().getFigure() != null && fieldUI.getField().getFigure().getColor() == Color.BLACK && this.disabled == DisabledFigures.DISABLE_BLACK)
+            return;
+        
+        if(fieldUI.getField().getFigure() != null && fieldUI.getField().getFigure().getColor() == Color.WHITE && this.disabled == DisabledFigures.DISABLE_WHITE)
+            return;        
 
         // Pole neni aktivovane, muze klikat pouze na figurky
         if(this.battleGroundActiveField == null){

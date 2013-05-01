@@ -11,6 +11,7 @@ package gui;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  * @author      Frantisek Kolacek <xkolac12 @ stud.fit.vutbr.cz>
@@ -153,10 +154,20 @@ public class QueenUI extends JFrame {
     }
     
     private void handleDialogSave(ActionEvent e){
-        DialogSave dialog = new DialogSave(this, true);
-        dialog.setLocationRelativeTo(this);
+        JFileChooser dialog = new JFileChooser();
         
-        dialog.setVisible(true);
+        dialog.setAcceptAllFileFilterUsed(false);
+        dialog.addChoosableFileFilter(new FileNameExtensionFilter("txt", "txt"));
+        dialog.addChoosableFileFilter(new FileNameExtensionFilter("xml", "xml"));
+        
+        if(dialog.showSaveDialog(this) == JFileChooser.APPROVE_OPTION){
+            String filename = dialog.getSelectedFile().getName();
+            String directory = dialog.getCurrentDirectory().toString();
+            String extension = dialog.getFileFilter().getDescription();
+            String fullPath = directory + "/" + filename;
+            
+            JOptionPane.showMessageDialog(this, "Hra byla úspěšně uložena", "Queen - Uložení hry", JOptionPane.INFORMATION_MESSAGE);
+        }
     }
     
     private void handleDialogReplay(ActionEvent e){

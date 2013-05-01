@@ -13,6 +13,7 @@ import gui.basis.*;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  * @author      Frantisek Kolacek <xkolac12 @ stud.fit.vutbr.cz>
@@ -122,10 +123,20 @@ public class ReplayUI extends javax.swing.JFrame {
     }
     
     private void handleDialogLoad(ActionEvent e){
-        DialogLoad dialog = new DialogLoad(this, true);
-        dialog.setLocationRelativeTo(this);
+        JFileChooser dialog = new JFileChooser();
         
-        dialog.setVisible(true);
+        dialog.setAcceptAllFileFilterUsed(false);
+        dialog.addChoosableFileFilter(new FileNameExtensionFilter("txt", "txt"));
+        dialog.addChoosableFileFilter(new FileNameExtensionFilter("xml", "xml"));
+        
+        if(dialog.showOpenDialog(this) == JFileChooser.APPROVE_OPTION){
+            String filename = dialog.getSelectedFile().getName();
+            String directory = dialog.getCurrentDirectory().toString();
+            String extension = dialog.getFileFilter().getDescription();
+            String fullPath = directory + "/" + filename;
+            
+            JOptionPane.showMessageDialog(this, "Hra byla úspěšně načtena", "Queen - Načtení hry", JOptionPane.INFORMATION_MESSAGE);
+        }
     }
     
     private void handleDialogAbout(ActionEvent e){
