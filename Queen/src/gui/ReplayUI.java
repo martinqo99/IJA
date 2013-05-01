@@ -19,12 +19,13 @@ import javax.swing.*;
  */
 public class ReplayUI extends javax.swing.JFrame {
 
-    private JMenuBar mainMenuBar;
-    private JMenu mainMenuFile;
-    private JMenuItem mainMenuFileLoad;
-    private JMenuItem mainMenuFileQuit;
-    private JMenu mainMenuHelp;
-    private JMenuItem mainMenuHelpAbout;
+    private JToolBar mainMenuBar;
+    private JButton mainMenuPrev;
+    private JButton mainMenuPlay;
+    private JButton mainMenuPause;
+    private JButton mainMenuNext;
+    private JButton mainMenuOpen;
+
     
     private Container content;
 
@@ -51,6 +52,28 @@ public class ReplayUI extends javax.swing.JFrame {
     }
     
     private void initMenu(){
+        this.mainMenuBar = new JToolBar();
+        this.mainMenuBar.setFloatable(false);
+        
+        this.mainMenuPrev = new JButton();
+        this.mainMenuPlay = new JButton();
+        this.mainMenuPause = new JButton();
+        this.mainMenuNext = new JButton();
+        this.mainMenuOpen = new JButton();
+        
+        this.mainMenuPrev.setIcon(new ImageIcon(getClass().getResource("/gfx/control_stop_left.png")));
+        this.mainMenuPlay.setIcon(new ImageIcon(getClass().getResource("/gfx/control_right.png")));
+        this.mainMenuPause.setIcon(new ImageIcon(getClass().getResource("/gfx/control_pause.png")));
+        this.mainMenuNext.setIcon(new ImageIcon(getClass().getResource("/gfx/control_stop_right.png")));
+        this.mainMenuOpen.setIcon(new ImageIcon(getClass().getResource("/gfx/control_eject.png")));
+        
+        this.mainMenuBar.add(this.mainMenuPrev);
+        this.mainMenuBar.add(this.mainMenuPlay);
+        this.mainMenuBar.add(this.mainMenuPause);
+        this.mainMenuBar.add(this.mainMenuNext);
+        this.mainMenuBar.add(this.mainMenuOpen);
+        
+        /*
         //Create menu bar
         this.mainMenuBar = new JMenuBar();
         
@@ -98,13 +121,15 @@ public class ReplayUI extends javax.swing.JFrame {
         this.mainMenuBar.add(this.mainMenuFile);
         this.mainMenuBar.add(this.mainMenuHelp);
         
-        this.setJMenuBar(this.mainMenuBar);        
+        this.setJMenuBar(this.mainMenuBar);  
+        */
     }
     
     private void initContent(){
         this.content = this.getContentPane();
         
-        this.content.add(new BattleGroundUI());
+        this.content.add(this.mainMenuBar, BorderLayout.NORTH);
+        this.content.add(new BattleGroundUI(), BorderLayout.SOUTH);
     }
     
     private void handleDialogAbout(ActionEvent e){
