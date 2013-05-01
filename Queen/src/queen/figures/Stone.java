@@ -43,6 +43,7 @@ public class Stone extends Figure{
     @Override
     public Vector canMovePossibilities(){
         Vector possibilities = new Vector();
+        Vector kill = new Vector();
 
         int rowStep = (this.color == Color.BLACK)? -1 : 1;
 
@@ -59,6 +60,7 @@ public class Stone extends Figure{
                 step2 = new Position((char)(step1.getColumn() - 1), step1.getRow() + rowStep);
 
                 if(!this.desk.isDeserter(step2) && this.desk.at(step2).getFigure() == null)
+                    kill.add(new Position(step1.getColumn(), step1.getRow()));
                     possibilities.add(new Position(step2.getColumn(), step2.getRow()));
             }
         }
@@ -73,6 +75,7 @@ public class Stone extends Figure{
                 step2 = new Position((char)(step1.getColumn() + 1), step1.getRow() + rowStep);
 
                 if(!this.desk.isDeserter(step2) && this.desk.at(step2).getFigure() == null)
+                    kill.add(new Position(step1.getColumn(), step1.getRow()));
                     possibilities.add(new Position(step2.getColumn(), step2.getRow()));
             }
         }

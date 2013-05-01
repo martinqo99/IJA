@@ -40,6 +40,7 @@ public class Rook extends Figure{
     @Override
     public Vector canMovePossibilities(){
         Vector possibilities = new Vector();
+        Vector kill = new Vector();
 
         Position step;
         int row;
@@ -51,6 +52,8 @@ public class Rook extends Figure{
                 continue;
             if(this.desk.at(step).getFigure() == null)
                 possibilities.add(new Position(step.getColumn(), step.getRow()));
+            else
+                kill.add(new Position(step.getColumn(), step.getRow()));
         }
         //vpravo nahoru
         for (row = this.getPosition().getRow()-1, column = (char)(this.getPosition().getColumn()+1); row > 0 && column <= 'h'; row--, column++) {
@@ -59,6 +62,8 @@ public class Rook extends Figure{
                 continue;
             if(this.desk.at(step).getFigure() == null)
                 possibilities.add(new Position(step.getColumn(), step.getRow()));
+            else
+                kill.add(new Position(step.getColumn(), step.getRow()));
         }
         //vlevo dolu
         for (row = this.getPosition().getRow()+1, column = (char)(this.getPosition().getColumn()-1); row <= 8 && column >= 'a'; row++, column--) {
@@ -67,6 +72,8 @@ public class Rook extends Figure{
                 continue;
             if(this.desk.at(step).getFigure() == null)
                 possibilities.add(new Position(step.getColumn(), step.getRow()));
+            else
+                kill.add(new Position(step.getColumn(), step.getRow()));
         }
         //vpravo dolu
         for (row = this.getPosition().getRow()+1, column = (char)(this.getPosition().getColumn()+1); row <= 8 && column <= 'h'; row++, column++) {
@@ -75,6 +82,8 @@ public class Rook extends Figure{
                 continue;
             if(this.desk.at(step).getFigure() == null)
                 possibilities.add(new Position(step.getColumn(), step.getRow()));
+            else
+                kill.add(new Position(step.getColumn(), step.getRow()));
         }
 
         return possibilities;
