@@ -75,6 +75,13 @@ public class QueenUI extends JFrame {
         this.mainMenuGameQuit = new JMenuItem("Ukončit");
         this.mainMenuHelpAbout = new JMenuItem("O programu");
         
+        this.mainMenuGameNew.setIcon(new ImageIcon(getClass().getResource("/gfx/icon_new.png")));
+        this.mainMenuGameLoad.setIcon(new ImageIcon(getClass().getResource("/gfx/icon_load.png")));
+        this.mainMenuGameSave.setIcon(new ImageIcon(getClass().getResource("/gfx/icon_save.png")));
+        this.mainMenuGameReplay.setIcon(new ImageIcon(getClass().getResource("/gfx/icon_replay.png")));
+        this.mainMenuGameQuit.setIcon(new ImageIcon(getClass().getResource("/gfx/icon_quit.png")));
+        this.mainMenuHelpAbout.setIcon(new ImageIcon(getClass().getResource("/gfx/icon_help.png")));
+        
         this.mainMenuGameNew.setAccelerator(KeyStroke.getKeyStroke('N', KeyEvent.CTRL_DOWN_MASK));
         this.mainMenuGameLoad.setAccelerator(KeyStroke.getKeyStroke('O', KeyEvent.CTRL_DOWN_MASK));
         this.mainMenuGameSave.setAccelerator(KeyStroke.getKeyStroke('S', KeyEvent.CTRL_DOWN_MASK));
