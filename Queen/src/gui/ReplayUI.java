@@ -30,17 +30,17 @@ public class ReplayUI extends javax.swing.JFrame {
     private JButton mainMenuOpen;
     private JButton mainMenuHelp;
     private JButton mainMenuQuit;
-    
+
     private Container content;
 
     public ReplayUI() {
         this.initWindow();
         this.initMenu();
         this.initContent();
-        
+
         this.pack();
     }
-    
+
     private void initWindow(){
         this.setTitle("Queen - Přehrávač partií");
         this.setIconImage(new ImageIcon(getClass().getResource("/gfx/icon.png")).getImage());
@@ -48,18 +48,18 @@ public class ReplayUI extends javax.swing.JFrame {
         this.setSize(600, 400);
         this.setResizable(false);
         this.setLocation(50, 50);
-        
+
         this.setLocationRelativeTo(this);
         this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        
+
         this.setVisible(true);
     }
-    
+
     private void initMenu(){
         this.mainMenuBar = new JToolBar();
         this.mainMenuBar.setFloatable(false);
-        
-        
+
+
         this.mainMenuPrev = new JButton();
         this.mainMenuPlay = new JButton();
         this.mainMenuPause = new JButton();
@@ -67,15 +67,15 @@ public class ReplayUI extends javax.swing.JFrame {
         this.mainMenuOpen = new JButton();
         this.mainMenuHelp = new JButton();
         this.mainMenuQuit = new JButton();
-        
-        this.mainMenuPrev.setIcon(new ImageIcon(getClass().getResource("/gfx/control_stop_left.png")));
-        this.mainMenuPlay.setIcon(new ImageIcon(getClass().getResource("/gfx/control_right.png")));
-        this.mainMenuPause.setIcon(new ImageIcon(getClass().getResource("/gfx/control_pause.png")));
-        this.mainMenuNext.setIcon(new ImageIcon(getClass().getResource("/gfx/control_stop_right.png")));
-        this.mainMenuOpen.setIcon(new ImageIcon(getClass().getResource("/gfx/control_eject.png")));
-        this.mainMenuHelp.setIcon(new ImageIcon(getClass().getResource("/gfx/page_about.png")));
+
+        this.mainMenuPrev.setIcon(new ImageIcon(getClass().getResource("/gfx/replay_prev.png")));
+        this.mainMenuPlay.setIcon(new ImageIcon(getClass().getResource("/gfx/replay_play.png")));
+        this.mainMenuPause.setIcon(new ImageIcon(getClass().getResource("/gfx/replay_pause.png")));
+        this.mainMenuNext.setIcon(new ImageIcon(getClass().getResource("/gfx/replay_next.png")));
+        this.mainMenuOpen.setIcon(new ImageIcon(getClass().getResource("/gfx/replay_open.png")));
+        this.mainMenuHelp.setIcon(new ImageIcon(getClass().getResource("/gfx/replay_help.png")));
         this.mainMenuQuit.setIcon(new ImageIcon(getClass().getResource("/gfx/replay_quit.png")));
-        
+
         this.mainMenuBar.add(this.mainMenuPrev);
         this.mainMenuBar.add(this.mainMenuPlay);
         this.mainMenuBar.add(this.mainMenuPause);
@@ -87,21 +87,21 @@ public class ReplayUI extends javax.swing.JFrame {
 
         //this.mainMenuOpen.setAccelerator(KeyStroke.getKeyStroke('O', KeyEvent.CTRL_DOWN_MASK));
         //this.mainMenuQuit.setAccelerator(KeyStroke.getKeyStroke('Q', KeyEvent.CTRL_DOWN_MASK));
-        
+
         this.mainMenuOpen.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 handleDialogLoad(e);
             }
         });
-        
+
         this.mainMenuHelp.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 handleDialogAbout(e);
             }
         });
-        
+
         // Bind close event to Quit
         this.mainMenuQuit.addActionListener(new ActionListener() {
             @Override
@@ -110,40 +110,40 @@ public class ReplayUI extends javax.swing.JFrame {
             }
         });
     }
-    
+
     private void initContent(){
         this.content = this.getContentPane();
-        
+
         this.content.add(this.mainMenuBar, BorderLayout.NORTH);
-        
+
         BattleGroundUI battleground = new BattleGroundUI();
         battleground.setDisabled(DisabledFigures.DISABLE_ALL);
-        
+
         this.content.add(battleground, BorderLayout.SOUTH);
     }
-    
+
     private void handleDialogLoad(ActionEvent e){
         JFileChooser dialog = new JFileChooser();
-        
+
         dialog.setAcceptAllFileFilterUsed(false);
         dialog.addChoosableFileFilter(new FileNameExtensionFilter("txt", "txt"));
         dialog.addChoosableFileFilter(new FileNameExtensionFilter("xml", "xml"));
-        
+
         if(dialog.showOpenDialog(this) == JFileChooser.APPROVE_OPTION){
             String filename = dialog.getSelectedFile().getName();
             String directory = dialog.getCurrentDirectory().toString();
             String extension = dialog.getFileFilter().getDescription();
             String fullPath = directory + "/" + filename;
-            
+
             JOptionPane.showMessageDialog(this, "Hra byla úspěšně načtena", "Queen - Načtení hry", JOptionPane.INFORMATION_MESSAGE);
         }
     }
-    
+
     private void handleDialogAbout(ActionEvent e){
         DialogAbout dialog = new DialogAbout(this, true);
         dialog.setLocationRelativeTo(this);
-        
-        dialog.setVisible(true);        
+
+        dialog.setVisible(true);
     }
 
     /**
@@ -178,7 +178,7 @@ public class ReplayUI extends javax.swing.JFrame {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
