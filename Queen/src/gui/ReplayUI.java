@@ -29,6 +29,7 @@ public class ReplayUI extends javax.swing.JFrame {
     private JButton mainMenuStop;
     private JButton mainMenuNext;
     private JButton mainMenuOpen;
+    private JButton mainMenuLoad;
     
     private JButton mainMenuIncrease;
     private JTextField mainMenuInterval;
@@ -76,6 +77,7 @@ public class ReplayUI extends javax.swing.JFrame {
         this.mainMenuStop = new JButton();
         this.mainMenuNext = new JButton();
         this.mainMenuOpen = new JButton();
+        this.mainMenuLoad = new JButton();
         
         this.mainMenuIncrease = new JButton();
         
@@ -95,6 +97,7 @@ public class ReplayUI extends javax.swing.JFrame {
         this.mainMenuStop.setIcon(new ImageIcon(getClass().getResource("/gfx/replay_stop.png")));
         this.mainMenuNext.setIcon(new ImageIcon(getClass().getResource("/gfx/replay_next.png")));
         this.mainMenuOpen.setIcon(new ImageIcon(getClass().getResource("/gfx/replay_open.png")));
+        this.mainMenuLoad.setIcon(new ImageIcon(getClass().getResource("/gfx/replay_load.png")));
         this.mainMenuIncrease.setIcon(new ImageIcon(getClass().getResource("/gfx/replay_increase.png")));
         this.mainMenuDecrease.setIcon(new ImageIcon(getClass().getResource("/gfx/replay_decrease.png")));
         this.mainMenuHelp.setIcon(new ImageIcon(getClass().getResource("/gfx/replay_help.png")));
@@ -106,6 +109,7 @@ public class ReplayUI extends javax.swing.JFrame {
         this.mainMenuBar.add(this.mainMenuStop);
         this.mainMenuBar.add(this.mainMenuNext);
         this.mainMenuBar.add(this.mainMenuOpen);
+        this.mainMenuBar.add(this.mainMenuLoad);
         this.mainMenuBar.add(new JSeparator());
         
         this.mainMenuBar.add(this.mainMenuInterval);
