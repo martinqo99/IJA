@@ -29,12 +29,21 @@ public class ReplayUI extends javax.swing.JFrame {
     private JButton mainMenuStop;
     private JButton mainMenuNext;
     private JButton mainMenuOpen;
+    
+    private JButton mainMenuIncrease;
+    private JTextField mainMenuInterval;
+    private JButton mainMenuDecrease;
+    
     private JButton mainMenuHelp;
     private JButton mainMenuQuit;
 
     private Container content;
+    
+    private int interval;
 
     public ReplayUI() {
+        this.interval = 1;
+        
         this.initWindow();
         this.initMenu();
         this.initContent();
@@ -67,6 +76,16 @@ public class ReplayUI extends javax.swing.JFrame {
         this.mainMenuStop = new JButton();
         this.mainMenuNext = new JButton();
         this.mainMenuOpen = new JButton();
+        
+        this.mainMenuIncrease = new JButton();
+        
+        this.mainMenuInterval = new JTextField(Integer.toString(this.interval), 1);
+        this.mainMenuInterval.setEditable(false);
+        
+        this.mainMenuInterval.setHorizontalAlignment(JTextField.RIGHT);
+
+        this.mainMenuDecrease = new JButton();
+        
         this.mainMenuHelp = new JButton();
         this.mainMenuQuit = new JButton();
 
@@ -76,6 +95,8 @@ public class ReplayUI extends javax.swing.JFrame {
         this.mainMenuStop.setIcon(new ImageIcon(getClass().getResource("/gfx/replay_stop.png")));
         this.mainMenuNext.setIcon(new ImageIcon(getClass().getResource("/gfx/replay_next.png")));
         this.mainMenuOpen.setIcon(new ImageIcon(getClass().getResource("/gfx/replay_open.png")));
+        this.mainMenuIncrease.setIcon(new ImageIcon(getClass().getResource("/gfx/replay_increase.png")));
+        this.mainMenuDecrease.setIcon(new ImageIcon(getClass().getResource("/gfx/replay_decrease.png")));
         this.mainMenuHelp.setIcon(new ImageIcon(getClass().getResource("/gfx/replay_help.png")));
         this.mainMenuQuit.setIcon(new ImageIcon(getClass().getResource("/gfx/replay_quit.png")));
 
@@ -85,6 +106,12 @@ public class ReplayUI extends javax.swing.JFrame {
         this.mainMenuBar.add(this.mainMenuStop);
         this.mainMenuBar.add(this.mainMenuNext);
         this.mainMenuBar.add(this.mainMenuOpen);
+        this.mainMenuBar.add(new JSeparator());
+        
+        this.mainMenuBar.add(this.mainMenuInterval);
+        this.mainMenuBar.add(this.mainMenuIncrease);
+        this.mainMenuBar.add(this.mainMenuDecrease);
+        
         this.mainMenuBar.add(new JSeparator());
         this.mainMenuBar.add(this.mainMenuHelp);
         this.mainMenuBar.add(this.mainMenuQuit);
@@ -96,6 +123,20 @@ public class ReplayUI extends javax.swing.JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 handleDialogLoad(e);
+            }
+        });
+        
+        this.mainMenuIncrease.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                handleIncrease(e);
+            }
+        });
+        
+        this.mainMenuDecrease.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                handleDecrease(e);
             }
         });
 
@@ -141,6 +182,24 @@ public class ReplayUI extends javax.swing.JFrame {
 
             JOptionPane.showMessageDialog(this, "Hra byla úspěšně načtena", "Queen - Načtení hry", JOptionPane.INFORMATION_MESSAGE);
         }
+    }
+    
+    private void handleIncrease(ActionEvent e){
+        this.interval++;
+        
+        if(this.interval > 10)
+            this.interval = 10;
+        
+        this.mainMenuInterval.setText(Integer.toString(this.interval));
+    }
+    
+    private void handleDecrease(ActionEvent e){
+        this.interval--;
+        
+        if(this.interval < 1)
+            this.interval = 1;
+        
+        this.mainMenuInterval.setText(Integer.toString(this.interval));
     }
 
     private void handleDialogAbout(ActionEvent e){
