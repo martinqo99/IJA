@@ -10,6 +10,7 @@ package queen.basis;
 
 import queen.figures.*;
 import java.awt.*;
+import java.util.Vector;
 
 /**
  * @author      Frantisek Kolacek <xkolac12 @ stud.fit.vutbr.cz>
@@ -20,6 +21,8 @@ public class Desk {
 
     private int dimension;
     private Field battleField[];
+    
+    private Vector rounds;
 
     /**
      * Konstruktor pro objekt Desk
@@ -27,6 +30,8 @@ public class Desk {
      */
     public Desk(int dimension){
         this.dimension = dimension;
+        
+        this.rounds = new Vector();
 
         this.prepareBattleGround();
         this.prepareSoldiers();
@@ -194,7 +199,9 @@ public class Desk {
             return false;
 
         figure.move(to);
-
+        
+        this.rounds.add(new Move(from, to, false));
+        
         if(figure.getColor() == Color.WHITE && to.getRow() == this.dimension && !"Rook".equals(figure.getClass().getSimpleName()))
             figure = new Rook(this, to, Color.WHITE);
 
@@ -205,6 +212,14 @@ public class Desk {
         this.at(to).setFigure(figure);
 
         return true;
+    }
+    
+    /**
+     *
+     * @return
+     */
+    public Vector getRounds(){
+        return this.rounds;
     }
 
 

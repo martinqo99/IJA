@@ -32,9 +32,8 @@ public class BattleGroundUI extends JPanel {
     
     private Desk battleground;
     private FieldButtonUI battlegroundUI[];
-    
+
     private JTextArea logUI;
-    private Vector<String> logs;
 
     /**
      * Creates new form BattleGroundUI
@@ -64,11 +63,10 @@ public class BattleGroundUI extends JPanel {
         
         this.logUI = new JTextArea();
         this.logUI.setBackground(new Color(239, 239, 239));
-        //this.logUI.setEditable(false);
+        this.logUI.setEditable(false);
         this.logUI.setBorder(new EmptyBorder(5, 5, 5, 5));
         this.logUI.setPreferredSize(new Dimension(150, 400));
-        
-        this.logs = new Vector<>();
+
     }
     
     private void initBattleGround(){
@@ -129,7 +127,8 @@ public class BattleGroundUI extends JPanel {
                 if(this.battleGroundWhiteTurn && fieldUI.getField().getFigure().getColor() == Color.WHITE || !this.battleGroundWhiteTurn && fieldUI.getField().getFigure().getColor() == Color.BLACK){
                     this.battleGroundActiveField = fieldUI;
                     this.battleGroundWhiteTurn = !this.battleGroundWhiteTurn;
-                    fieldUI.toogle();                
+                    fieldUI.toogle();
+
                 }
                 else{
                     JOptionPane.showMessageDialog(this, "Hráč není na tahu!", "Queen - Chybný tah", JOptionPane.ERROR_MESSAGE);
@@ -158,8 +157,26 @@ public class BattleGroundUI extends JPanel {
                 if(this.battleground.move(this.battleGroundActiveField.getField().getPosition(), fieldUI.getField().getPosition())){
                     //JOptionPane.showMessageDialog(this, "Tah se provedel", "Queen - Potvrzeni tahu", JOptionPane.INFORMATION_MESSAGE);
                     
+                    Vector rounds = this.battleground.getRounds();
+                    int roundsCounter = 1;
+                    String roundsString = "";
+                    
+                    for(int i = 0; i < rounds.size(); i++){
+                        if(i % 2 == 0)
+                            roundsString += Integer.toString(roundsCounter) + ". ";
+
+                        roundsString += ((Move)rounds.get(i)).toString();
+                        
+                        if(i % 2 == 0)
+                            roundsString += " ";
+                        else{
+                            roundsString += "\n";
+                            roundsCounter++;
+                        }
+                    }
+                    
                     //this.logs.add(fieldUI.getField().getPosition().toString());
-                    //this.logUI.append(fieldUI.getField().getPosition().toString());
+                    this.logUI.setText(roundsString);
                     
                     fieldUI.reload();
                     

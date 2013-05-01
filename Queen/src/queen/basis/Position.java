@@ -29,6 +29,15 @@ public class Position {
     }
     
     /**
+     * Kopirovaci konstruktor pro objekt Position
+     * @param position  instance objektu Position
+     */
+    public Position(Position position){
+        this.column = position.getColumn();
+        this.row = position.getRow();
+    }
+    
+    /**
      * Getter pro znak sloupce
      * @return  znak sloupce
      */
@@ -64,7 +73,7 @@ public class Position {
     
     @Override
     public String toString(){
-        return Character.toString(column) + Integer.toString(row);
+        return new String(Character.toString(this.column) + Integer.toString(this.row));
     }
     
 }
