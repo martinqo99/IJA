@@ -55,7 +55,7 @@ public class Stone extends Figure{
             // Volna pozice
             if(this.desk.at(step1).getFigure() == null)
                 possibilities.add(new Position(step1.getColumn(), step1.getRow()));
-            else{
+            else if(this.color != this.desk.at(step1).getFigure().getColor()){
                 step2 = new Position((char)(step1.getColumn() - 1), step1.getRow() + rowStep);
 
                 if(this.desk.at(step2).getFigure() == null)
@@ -69,7 +69,7 @@ public class Stone extends Figure{
             // Volna pozice
             if(this.desk.at(step1).getFigure() == null)
                 possibilities.add(new Position(step1.getColumn(), step1.getRow()));
-            else{
+            else if(this.color != this.desk.at(step1).getFigure().getColor()){
                 step2 = new Position((char)(step1.getColumn() + 1), step1.getRow() + rowStep);
 
                 if(this.desk.at(step2).getFigure() == null)
