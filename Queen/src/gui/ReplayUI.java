@@ -17,33 +17,27 @@ import javax.swing.*;
  * @version     0.91
  * @since       2013-04-30
  */
-public class QueenUI extends JFrame {
+public class ReplayUI extends javax.swing.JFrame {
 
     private JMenuBar mainMenuBar;
-    private JMenu mainMenuGame;
-    private JMenuItem mainMenuGameNew;
-    private JMenuItem mainMenuGameLoad;
-    private JMenuItem mainMenuGameSave;
-    private JMenuItem mainMenuGameReplay;
-    private JMenuItem mainMenuGameQuit;
+    private JMenu mainMenuFile;
+    private JMenuItem mainMenuFileLoad;
+    private JMenuItem mainMenuFileQuit;
     private JMenu mainMenuHelp;
     private JMenuItem mainMenuHelpAbout;
     
     private Container content;
-    
-    /**
-     * Creates new form QueenUI
-     */
-    public QueenUI() {
-        initWindow();
-        initMenu();
-        initContent();
+
+    public ReplayUI() {
+        this.initWindow();
+        this.initMenu();
+        this.initContent();
         
         this.pack();
     }
-
+    
     private void initWindow(){
-        this.setTitle("Queen - IJA projekt");
+        this.setTitle("Queen - Přehrávač partií");
         this.setIconImage(new ImageIcon(getClass().getResource("/gfx/icon.png")).getImage());
 
         this.setSize(600, 400);
@@ -51,7 +45,7 @@ public class QueenUI extends JFrame {
         this.setLocation(50, 50);
         
         this.setLocationRelativeTo(this);
-        this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         
         this.setVisible(true);
     }
@@ -61,52 +55,31 @@ public class QueenUI extends JFrame {
         this.mainMenuBar = new JMenuBar();
         
         //Create each menu
-        this.mainMenuGame = new JMenu("Hra");
+        this.mainMenuFile = new JMenu("Soubor");
         this.mainMenuHelp = new JMenu("Nápověda");
         
-        this.mainMenuGame.setMnemonic('H');
+        this.mainMenuFile.setMnemonic('S');
         this.mainMenuHelp.setMnemonic('N');
         
         //Create menu items
-        this.mainMenuGameNew = new JMenuItem("Nová");
-        this.mainMenuGameLoad = new JMenuItem("Načíst");
-        this.mainMenuGameSave = new JMenuItem("Uložit");
-        this.mainMenuGameReplay = new JMenuItem("Přehrát");
-        this.mainMenuGameQuit = new JMenuItem("Ukončit");
+        this.mainMenuFileLoad = new JMenuItem("Načíst");
+        this.mainMenuFileQuit = new JMenuItem("Ukončit");
         this.mainMenuHelpAbout = new JMenuItem("O programu");
         
-        this.mainMenuGameNew.setAccelerator(KeyStroke.getKeyStroke('N', KeyEvent.CTRL_DOWN_MASK));
-        this.mainMenuGameLoad.setAccelerator(KeyStroke.getKeyStroke('O', KeyEvent.CTRL_DOWN_MASK));
-        this.mainMenuGameSave.setAccelerator(KeyStroke.getKeyStroke('S', KeyEvent.CTRL_DOWN_MASK));
-        this.mainMenuGameReplay.setAccelerator(KeyStroke.getKeyStroke('R', KeyEvent.CTRL_DOWN_MASK));
+        this.mainMenuFileLoad.setAccelerator(KeyStroke.getKeyStroke('O', KeyEvent.CTRL_DOWN_MASK));
         
-        this.mainMenuGameLoad.addActionListener(new ActionListener() {
+        this.mainMenuFileLoad.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                handleDialogLoad(e);
+                //handleDialogLoad(e);
             }
         });
-        
-        this.mainMenuGameSave.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                handleDialogSave(e);
-            }
-        });
-        
-        this.mainMenuGameReplay.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                handleDialogReplay(e);
-            }
-        });
-        
         
         // Bind close event to Quit
-        this.mainMenuGameQuit.addActionListener(new ActionListener() {
+        this.mainMenuFileQuit.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.exit(0);
+                dispose();
             }
         });
         
@@ -117,48 +90,21 @@ public class QueenUI extends JFrame {
             }
         });
         
-        this.mainMenuGame.add(this.mainMenuGameNew);
-        this.mainMenuGame.add(this.mainMenuGameLoad);
-        this.mainMenuGame.add(this.mainMenuGameSave);
-        this.mainMenuGame.add(this.mainMenuGameReplay);
-        this.mainMenuGame.add(new JSeparator());
-        this.mainMenuGame.add(this.mainMenuGameQuit);
+        this.mainMenuFile.add(this.mainMenuFileLoad);
+        this.mainMenuFile.add(new JSeparator());
+        this.mainMenuFile.add(this.mainMenuFileQuit);
         this.mainMenuHelp.add(this.mainMenuHelpAbout);
         
-        this.mainMenuBar.add(this.mainMenuGame);
+        this.mainMenuBar.add(this.mainMenuFile);
         this.mainMenuBar.add(this.mainMenuHelp);
         
         this.setJMenuBar(this.mainMenuBar);        
     }
-
+    
     private void initContent(){
         this.content = this.getContentPane();
         
         this.content.add(new BattleGroundUI());
-    }
-    
-    private void handleDialogLoad(ActionEvent e){
-        DialogLoad dialog = new DialogLoad(this, true);
-        dialog.setLocationRelativeTo(this);
-        
-        dialog.setVisible(true);
-    }
-    
-    private void handleDialogSave(ActionEvent e){
-        DialogSave dialog = new DialogSave(this, true);
-        dialog.setLocationRelativeTo(this);
-        
-        dialog.setVisible(true);
-    }
-    
-    private void handleDialogReplay(ActionEvent e){
-        Thread thread = new Thread(){
-            public void run(){
-                new ReplayUI().setVisible(true);
-            }
-        };
-        
-        thread.start();
     }
     
     private void handleDialogAbout(ActionEvent e){
@@ -210,20 +156,20 @@ public class QueenUI extends JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(QueenUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ReplayUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(QueenUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ReplayUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(QueenUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ReplayUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(QueenUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ReplayUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new QueenUI().setVisible(true);
+                new ReplayUI().setVisible(true);
             }
         });
     }
