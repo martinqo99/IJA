@@ -8,6 +8,8 @@
 
 package gui;
 
+import gui.basis.*;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -32,6 +34,8 @@ public class BattleGroundUI extends JPanel {
     
     private Desk battleground;
     private FieldButtonUI battlegroundUI[];
+    
+    private DisabledFigures disabled;
 
     private JTextArea logUI;
 
@@ -60,6 +64,8 @@ public class BattleGroundUI extends JPanel {
         this.battleGroundWhiteTurn = true;
         this.battleground = new Desk(this.dimension);
         this.battlegroundUI = new FieldButtonUI[this.dimension * this.dimension];
+        
+        this.disabled = DisabledFigures.DISABLE_NONE;
         
         this.logUI = new JTextArea();
         this.logUI.setBackground(new Color(239, 239, 239));
@@ -119,7 +125,12 @@ public class BattleGroundUI extends JPanel {
     
     /* Vsechna ta klikaci magie */
     private void handleClickBattleGround(ActionEvent e){
-        FieldButtonUI fieldUI = (FieldButtonUI)e.getSource();        
+        FieldButtonUI fieldUI = (FieldButtonUI)e.getSource();
+        
+        if(this.disabled == DisabledFigures.DISABLE_ALL)
+            return;
+        
+        
 
         // Pole neni aktivovane, muze klikat pouze na figurky
         if(this.battleGroundActiveField == null){
@@ -187,9 +198,11 @@ public class BattleGroundUI extends JPanel {
                     JOptionPane.showMessageDialog(this, "Nelze provést tah na toto pole!", "Queen - Chybný tah", JOptionPane.ERROR_MESSAGE);
                 }
             }        
-        }
-
-        
+        }       
+    }
+    
+    public void setDisabled(DisabledFigures disabled){
+        this.disabled = disabled;
     }
 
     /**

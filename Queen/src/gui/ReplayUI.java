@@ -8,6 +8,8 @@
 
 package gui;
 
+import gui.basis.*;
+
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
@@ -27,8 +29,6 @@ public class ReplayUI extends javax.swing.JFrame {
     private JButton mainMenuOpen;
     private JButton mainMenuHelp;
     private JButton mainMenuQuit;
-    
-
     
     private Container content;
 
@@ -90,7 +90,7 @@ public class ReplayUI extends javax.swing.JFrame {
         this.mainMenuOpen.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //handleDialogLoad(e);
+                handleDialogLoad(e);
             }
         });
         
@@ -114,7 +114,18 @@ public class ReplayUI extends javax.swing.JFrame {
         this.content = this.getContentPane();
         
         this.content.add(this.mainMenuBar, BorderLayout.NORTH);
-        this.content.add(new BattleGroundUI(), BorderLayout.SOUTH);
+        
+        BattleGroundUI battleground = new BattleGroundUI();
+        battleground.setDisabled(DisabledFigures.DISABLE_ALL);
+        
+        this.content.add(battleground, BorderLayout.SOUTH);
+    }
+    
+    private void handleDialogLoad(ActionEvent e){
+        DialogLoad dialog = new DialogLoad(this, true);
+        dialog.setLocationRelativeTo(this);
+        
+        dialog.setVisible(true);
     }
     
     private void handleDialogAbout(ActionEvent e){
