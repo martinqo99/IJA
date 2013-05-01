@@ -38,24 +38,6 @@ public class Stone extends Figure{
             return true;
         else
             return false;
-
-        /*
-        if(this.color == Color.BLACK && position.getRow() >= this.position.getRow())
-            return false;
-
-        if(this.color == Color.WHITE && position.getRow() <= this.position.getRow())
-            return false;
-
-        int stepRow = position.getRow() - this.position.getRow();
-        int stepColumn = position.getColumn() - this.position.getColumn();
-
-        if(stepRow < 0) stepRow *= -1;
-        if(stepColumn < 0) stepColumn *= -1;
-
-        // Pohyb po diagonale
-        if(stepRow != stepColumn)
-            return false;
-        */
     }
 
     @Override

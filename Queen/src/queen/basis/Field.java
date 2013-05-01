@@ -69,9 +69,9 @@ public class Field {
     }
 
     /**
-     * Umisteni figurky na herni plan
+     * Umisteni figurky na herni desku
      * @param figure odkaz na figurku
-     * @return puvodni figurka na hernim planu
+     * @return puvodni figurka na herni desce
      */
     public Figure setFigure(Figure figure){
         Figure tmp = this.figure;

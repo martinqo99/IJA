@@ -195,10 +195,10 @@ public class Desk {
 
         figure.move(to);
 
-        if(figure.getColor() == Color.WHITE && to.getRow() == this.dimension)
+        if(figure.getColor() == Color.WHITE && to.getRow() == this.dimension && !"Rook".equals(figure.getClass().getSimpleName()))
             figure = new Rook(this, to, Color.WHITE);
 
-        if(figure.getColor() == Color.BLACK && to.getRow() == 1)
+        if(figure.getColor() == Color.BLACK && to.getRow() == 1 && !"Rook".equals(figure.getClass().getSimpleName()))
             figure = new Rook(this, to, Color.BLACK);
 
         this.at(from).removeFigure();
