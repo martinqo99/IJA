@@ -8,6 +8,9 @@
 
 package queen.basis;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  * @author      Frantisek Kolacek <xkolac12 @ stud.fit.vutbr.cz>
  * @version     0.91
@@ -35,6 +38,24 @@ public class Position {
     public Position(Position position){
         this.column = position.getColumn();
         this.row = position.getRow();
+    }
+    
+    /**
+     *
+     * @param position
+     */
+    public Position(String position){
+        Pattern regex = Pattern.compile("^([a-z])([0-9])$");
+        Matcher match = regex.matcher(position);
+        
+        if(match.find()){
+            this.column = match.group(1).charAt(0);
+            this.row = Integer.parseInt(match.group(2));
+        }
+        else{
+            this.column = 'a';
+            this.row = 1;
+        }            
     }
     
     /**

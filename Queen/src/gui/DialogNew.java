@@ -1,15 +1,20 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Projekt: Queen
+ * Predmet: IJA - Seminar Java
+ * Autori:
+ *          xkolac12 < xkolac12 @ stud.fit.vutbr.cz >
+ *          xmatya03 < xmatya03 @ stud.fit.vutbr.cz >
  */
+
 package gui;
 import javax.swing.*;
 import java.awt.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
- *
- * @author petr
+ * @author      Frantisek Kolacek <xkolac12 @ stud.fit.vutbr.cz>
+ * @version     0.91
+ * @since       2013-04-30
  */
 public class DialogNew extends javax.swing.JDialog {
 

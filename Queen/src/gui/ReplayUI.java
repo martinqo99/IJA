@@ -12,6 +12,11 @@ import gui.basis.*;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
@@ -41,9 +46,11 @@ public class ReplayUI extends javax.swing.JFrame {
     private Container content;
     
     private int interval;
+    private Vector rounds;
 
     public ReplayUI() {
         this.interval = 1;
+        this.rounds = new Vector();
         
         this.initWindow();
         this.initMenu();
@@ -126,6 +133,13 @@ public class ReplayUI extends javax.swing.JFrame {
         this.mainMenuOpen.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                handleDialogOpen(e);
+            }
+        });
+        
+       this.mainMenuLoad.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
                 handleDialogLoad(e);
             }
         });
@@ -171,7 +185,7 @@ public class ReplayUI extends javax.swing.JFrame {
         this.content.add(battleground, BorderLayout.SOUTH);
     }
 
-    private void handleDialogLoad(ActionEvent e){
+    private void handleDialogOpen(ActionEvent e){
         JFileChooser dialog = new JFileChooser();
 
         dialog.setAcceptAllFileFilterUsed(false);
@@ -181,10 +195,45 @@ public class ReplayUI extends javax.swing.JFrame {
         if(dialog.showOpenDialog(this) == JFileChooser.APPROVE_OPTION){
             String filename = dialog.getSelectedFile().getName();
             String directory = dialog.getCurrentDirectory().toString();
-            String extension = dialog.getFileFilter().getDescription();
+            //String extension = dialog.getFileFilter().getDescription();
             String fullPath = directory + "/" + filename;
+            
+            try {
+                Notation notation = new Notation();
+                
+                notation.loadFromFile(fullPath);
+                
+                this.rounds = notation.getRounds();
+                
+                JOptionPane.showMessageDialog(this, "Hra byla úspěšně načtena", "Queen - Načtení hry", JOptionPane.INFORMATION_MESSAGE);
+                
+            } catch (FileNotFoundException ex) {
+                JOptionPane.showMessageDialog(this, "Vstupní soubor se nepodařilo načíst!", "Queen - Chyba při načítání hry", JOptionPane.ERROR_MESSAGE);
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(this, "Vstupní soubor se nepodařilo načíst!", "Queen - Chyba při načítání hry", JOptionPane.ERROR_MESSAGE);
+            }
+            
+        }
+    }
+    
+    private void handleDialogLoad(ActionEvent e){
+        DialogRawInput dialog = new DialogRawInput(this, true);
+        dialog.setLocationRelativeTo(this);
 
-            JOptionPane.showMessageDialog(this, "Hra byla úspěšně načtena", "Queen - Načtení hry", JOptionPane.INFORMATION_MESSAGE);
+        dialog.setVisible(true);
+        
+        if(dialog.isAccepted()){
+            try {
+                Notation notation = new Notation();
+            
+                notation.loadFromRaw(dialog.getInputText());
+                
+                this.rounds = notation.getRounds();
+
+                JOptionPane.showMessageDialog(this, "Hra byla úspěšně načtena", "Queen - Načtení hry", JOptionPane.INFORMATION_MESSAGE);
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(this, "Vstupní soubor se nepodařilo načíst!", "Queen - Chyba při načítání hry", JOptionPane.ERROR_MESSAGE);
+            }
         }
     }
     
