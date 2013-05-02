@@ -53,6 +53,7 @@ public class Stone extends Figure{
         Position step1;
         Position step2;
         Possibility possibility = null;
+        boolean areYouThereAssassin = false;
 
         // Vlevo
         step1 = new Position((char)(this.position.getColumn() - 1), this.position.getRow() + rowStep);
@@ -66,6 +67,7 @@ public class Stone extends Figure{
                 step2 = new Position((char)(step1.getColumn() - 1), step1.getRow() + rowStep);
 
                 if(!this.desk.isDeserter(step2) && this.desk.at(step2).getFigure() == null) {
+                    areYouThereAssassin = true;
                     possibility = new Possibility(step2);
                     possibility.killVictim(step1);
                     possibilities.add(possibility);
@@ -85,37 +87,25 @@ public class Stone extends Figure{
                 step2 = new Position((char)(step1.getColumn() + 1), step1.getRow() + rowStep);
 
                 if(!this.desk.isDeserter(step2) && this.desk.at(step2).getFigure() == null) {
+                    areYouThereAssassin = true;
                     possibility = new Possibility(step2);
                     possibility.killVictim(step1);
                     possibilities.add(possibility);
                 }
             }
         }
-        /*
-        // Vpravo
-        step1 = new Position((char)(this.position.getColumn() + 1), this.position.getRow() + rowStep);
-        if(!this.desk.isDeserter(step1)){
-            // Volna pozice
-            if(this.desk.at(step1).getFigure() == null && possibilities.size() > 0 && ((Possibility)possibilities.firstElement()).killed() == 0)
-                possibilities.add(new Possibility(step1));
-            else if (this.desk.at(step1).getFigure() == null && possibilities.size() == 0)
-                possibilities.add(new Possibility(step1));
-            else if(this.color != this.desk.at(step1).getFigure().getColor()){
-                step2 = new Position((char)(step1.getColumn() + 1), step1.getRow() + rowStep);
-
-                if(!this.desk.isDeserter(step2) && this.desk.at(step2).getFigure() == null) {
-                    possibility = new Possibility(step2);
-                    possibility.killVictim(step1);
-                    if (possibilities.size() > 0 && ((Possibility)possibilities.firstElement()).killed() > 0)
-                        possibilities.add(new Possibility(possibility));
-                    else {
-                        possibilities = new Vector();
-                        possibilities.add(new Possibility(possibility));
-                    }
-                }
+        
+        if(areYouThereAssassin){
+            Vector tmp = possibilities;
+            possibilities = new Vector();
+            
+            for(int i = 0; i < tmp.size(); i++){
+                possibility = (Possibility)tmp.get(i);
+                
+                if(possibility.killed() > 0)
+                    possibilities.add(possibility);                
             }
         }
-        */
 
         return possibilities;
     }
