@@ -66,6 +66,12 @@ public class Notation {
         writer.close();
     }
 
+    /**
+     *
+     * @param fileName
+     * @throws FileNotFoundException
+     * @throws IOException
+     */
     public void loadFromFile(String fileName) throws FileNotFoundException, IOException{
     
         BufferedReader reader = new BufferedReader(new FileReader(fileName));
@@ -85,6 +91,11 @@ public class Notation {
         this.loadFromRaw(builder.toString());
     }
     
+    /**
+     *
+     * @param raw
+     * @throws IOException
+     */
     public void loadFromRaw(String raw) throws IOException{
         this.initNotation();
         
@@ -111,30 +122,32 @@ public class Notation {
                 
                 String operator;
                 
-                operator = matchFull.group(2);
-                this.rounds.add(new Move(new Position(matchFull.group(1)), new Position(matchFull.group(3)), ("-".equals(operator))? true : false ));
+                operator = matchFull.group(3);
+                this.rounds.add(new Move(new Position(matchFull.group(2)), new Position(matchFull.group(4)), ("x".equals(operator))? true : false ));
                 
-                operator = matchFull.group(5);
-                this.rounds.add(new Move(new Position(matchFull.group(4)), new Position(matchFull.group(6)), ("-".equals(operator))? true : false ));                
+                operator = matchFull.group(6);
+                this.rounds.add(new Move(new Position(matchFull.group(5)), new Position(matchFull.group(7)), ("x".equals(operator))? true : false ));                
             }
             else if(matchHalf.find()){
                 //System.out.println("Half: " + line);
                 
                 String operator;
                 
-                operator = matchHalf.group(2);
-                this.rounds.add(new Move(new Position(matchHalf.group(1)), new Position(matchHalf.group(3)), ("-".equals(operator))? true : false ));
+                operator = matchHalf.group(3);
+                this.rounds.add(new Move(new Position(matchHalf.group(2)), new Position(matchHalf.group(4)), ("x".equals(operator))? true : false ));
             }
             else
                 throw new IOException();            
         }
         
-        
-        
-        for(int i = 0; i < this.rounds.size(); i++)
-            System.out.println(this.rounds.get(i).toString());
+        //for(int i = 0; i < this.rounds.size(); i++)
+        //    System.out.println(this.rounds.get(i).toString());
     }
     
+    /**
+     *
+     * @return
+     */
     public Vector getRounds(){
         return this.rounds;
     }

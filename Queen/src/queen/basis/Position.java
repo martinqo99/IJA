@@ -45,6 +45,7 @@ public class Position {
      * @param position
      */
     public Position(String position){
+        //System.out.println("Position init: " + position);
         Pattern regex = Pattern.compile("^([a-z])([0-9])$");
         Matcher match = regex.matcher(position);
         
