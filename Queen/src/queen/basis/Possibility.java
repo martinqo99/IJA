@@ -16,7 +16,7 @@ import java.util.Vector;
  * @since       2013-04-30
  */
 public class Possibility {
-    
+
     private Position position;
     private Vector victims;
 
@@ -24,28 +24,33 @@ public class Possibility {
         this.position = new Position(position);
         this.victims = new Vector();
     }
-    
+
     public Possibility(Possibility possibility){
         this.position = new Position(possibility.getPosition());
         this.victims = new Vector(possibility.getVictims());
     }
-    
+
+    public Possibility(Position position, Vector victim){
+        this.position = new Position(position);
+        this.victims = new Vector(victim);
+    }
+
     public Position getPosition(){
         return this.position;
     }
-    
+
     public void killVictim(Position victim){
         this.victims.add(new Position(victim));
     }
-    
+
     public Vector getVictims(){
         return this.victims;
     }
-    
+
     public int killed(){
         return this.victims.size();
-    } 
-    
+    }
+
     /**
      * Porovnani dvou objektu Position
      * @param position
@@ -57,11 +62,11 @@ public class Possibility {
             return false;
         else if(object.getClass() == Position.class){
             Position position = (Position) object;
-            
+
             if(this.position.getColumn() == position.getColumn() && this.position.getRow() == position.getRow())
                 return true;
-        }       
-        
+        }
+
         return false;
     }
 }
