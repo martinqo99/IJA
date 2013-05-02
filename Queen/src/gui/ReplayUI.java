@@ -53,12 +53,14 @@ public class ReplayUI extends javax.swing.JFrame {
     
     private int roundNumber;
     private Timer roundTimer;
+    private boolean roundTimerLock;
 
     public ReplayUI() {
         this.interval = 1;
         this.rounds = new Vector();
         this.roundNumber = 0;
         this.roundTimer = null;
+        this.roundTimerLock = false;
         
         this.initWindow();
         this.initMenu();
@@ -243,6 +245,16 @@ public class ReplayUI extends javax.swing.JFrame {
             return;
         
         this.roundNumber--;
+        
+        int count = this.roundNumber;
+        
+        this.roundTimerLock = true;
+        this.initContent();
+        this.roundNumber = 0;
+        for(int i = 0 ; i < count; i++)
+            this.handleNext(e);            
+
+        this.roundTimerLock = false;
     }
     
     private void handlePlay(ActionEvent e){
@@ -262,7 +274,8 @@ public class ReplayUI extends javax.swing.JFrame {
         ActionListener taskPerformer = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                handleNext(e);
+                if(!roundTimerLock)
+                    handleNext(e);
             }
         };
         
