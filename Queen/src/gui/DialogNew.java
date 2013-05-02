@@ -7,6 +7,7 @@
  */
 
 package gui;
+import gui.basis.GameType;
 import javax.swing.*;
 import java.awt.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -18,13 +19,50 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  */
 public class DialogNew extends javax.swing.JDialog {
 
+    private boolean accepted;
+    
     /**
      * Creates new form DialogNew
      */
     public DialogNew(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        
+        this.accepted = false;
     }
+    
+    public boolean isAccepted(){
+        return this.accepted;
+    }
+    
+    public GameType getGameType(){
+        if(this.radioPlayerVsPlayer.isSelected())
+            return GameType.PLAYER_VS_PLAYER;
+        else if(this.radioPlayerVsPC.isSelected())
+            return GameType.PLAYER_VS_PC;
+        else
+            return GameType.PLAYER_VS_NETWORK;
+    }
+    
+    public Color getPlayerColor(){
+        if("Bílá".equals(this.inputPlayerColor.getSelectedItem().toString()))
+            return Color.WHITE;
+        else
+            return Color.BLACK;
+    }
+    
+    public String getRemoteHost(){
+        return this.inputRemoteHost.getText();
+    }
+    
+    public boolean isStoredGame(){
+        return this.checkFileName.isSelected();
+    }
+    
+    public String getStoredGameFileName(){
+        return this.inputFileName.getText();
+    }    
+    
     
     private void handleInputFile(){
         if(!this.inputFileName.isEnabled())
@@ -45,7 +83,7 @@ public class DialogNew extends javax.swing.JDialog {
             this.inputFileName.setText(fullPath);
         }
     }
-
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -135,7 +173,7 @@ public class DialogNew extends javax.swing.JDialog {
 
         inputPlayerColor.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Bílá", "Černá" }));
 
-        inputRemoteHost.setText("localhost:1213");
+        inputRemoteHost.setText("localhost");
         inputRemoteHost.setToolTipText("Zadejte adresu vzdáleného počítače");
         inputRemoteHost.setEnabled(false);
         inputRemoteHost.addActionListener(new java.awt.event.ActionListener() {
@@ -228,10 +266,15 @@ public class DialogNew extends javax.swing.JDialog {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(inputFileName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(buttFileName, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(25, Short.MAX_VALUE))
+                .addContainerGap(26, Short.MAX_VALUE))
         );
 
         jButton1.setText("Vytvořit hru");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("Zrušit");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -267,7 +310,7 @@ public class DialogNew extends javax.swing.JDialog {
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
                     .addComponent(jButton2))
@@ -319,6 +362,21 @@ public class DialogNew extends javax.swing.JDialog {
     private void buttFileNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttFileNameActionPerformed
         this.handleInputFile();
     }//GEN-LAST:event_buttFileNameActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        if(this.getGameType() == GameType.PLAYER_VS_NETWORK && this.getRemoteHost().isEmpty()){
+            JOptionPane.showMessageDialog(this, "Nebyla zadána adresa vzdáleného hosta!", "Queen - Chyba při vytváření hry", JOptionPane.ERROR_MESSAGE);;
+            return;
+        }
+        
+        if(this.isStoredGame() && this.getStoredGameFileName().isEmpty()){
+            JOptionPane.showMessageDialog(this, "Nebyl vybrán soubor obsahující uloženou hru!", "Queen - Chyba při vytváření hry", JOptionPane.ERROR_MESSAGE);;
+            return;        
+        }
+        
+        this.accepted = true;
+        this.dispose();
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
