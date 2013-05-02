@@ -170,9 +170,14 @@ public class BattleGroundUI extends JPanel {
             }
             // Uspesny klik
             else{
-                //JOptionPane.showMessageDialog(this, "Tah se provede", "Queen - Potvrzeni tahu", JOptionPane.INFORMATION_MESSAGE);
-                
-                if(this.battleground.move(this.battleGroundActiveField.getField().getPosition(), fieldUI.getField().getPosition())){
+                //if(this.battleground.move(this.battleGroundActiveField.getField().getPosition(), fieldUI.getField().getPosition())){
+                if(this.battleGroundActiveField.getField().getFigure().canMove(fieldUI.getField().getPosition())){
+                    
+                    Vector victims = this.battleground.move(this.battleGroundActiveField.getField().getPosition(), fieldUI.getField().getPosition());
+                    
+                    
+                    
+                    
                     //JOptionPane.showMessageDialog(this, "Tah se provedel", "Queen - Potvrzeni tahu", JOptionPane.INFORMATION_MESSAGE);
                     
                     Vector rounds = this.battleground.getRounds();

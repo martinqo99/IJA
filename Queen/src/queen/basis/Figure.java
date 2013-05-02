@@ -67,18 +67,34 @@ abstract public class Figure {
         return this.desk;
     }
     
+
     /**
-     * Metody pro premisteni figurky
-     * @param position  cilova pozice na herni desce
-     * @return          true pokud figurka muze pohyb uskutecnit, jinak false
+     *
+     * @param position
+     * @return
+     * @throws RuntimeException
      */
-    public boolean move(Position position){
-        if(this.canMove(position)){
-            this.position = position;
-            return true;
+    public Vector move(Position position) throws RuntimeException{
+        
+        if(!this.canMove(position))
+            throw new RuntimeException();
+        
+        Vector possibilities = this.canMovePossibilities();
+        Possibility possibility;
+        Vector victims = null;
+        
+        this.position = position;
+        
+        for(int i = 0; i < possibilities.size(); i++){
+            possibility = (Possibility)possibilities.get(i);
+            
+            if(possibility.equals(position)){
+                victims = possibility.getVictims();
+                break;
+            }                
         }
-        else
-            return false;
+
+        return victims;
     }
     
     /**

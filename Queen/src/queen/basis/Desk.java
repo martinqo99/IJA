@@ -165,7 +165,7 @@ public class Desk {
      * @param toRow cislo ciloveho radku
      * @return bylo pohnuto figurkou
      */
-    public boolean move(char fromColumn, int fromRow, char toColumn, int toRow){
+    public Vector move(char fromColumn, int fromRow, char toColumn, int toRow){
         return this.move(new Position(fromColumn, fromRow), new Position(fromColumn, fromRow));
     }
 
@@ -175,7 +175,9 @@ public class Desk {
      * @param to cilova pozice
      * @return bylo pohnuto figurkou
      */
-    public boolean move(Position from, Position to){
+    public Vector move(Position from, Position to){
+        
+        /* PRESUNOUT!
         // Nelze skakat mimo sachovnici
         if(this.isDeserter(from) || this.isDeserter(to))
             return false;
@@ -187,20 +189,21 @@ public class Desk {
         // Nelze skocit na jinou figurku
         if(this.at(to).getFigure() != null)
             return false;
+        */
 
         Figure figure = this.at(from).getFigure();
 
         // Pokud neni cim skakat
         if(figure == null)
-            return false;
+            throw new RuntimeException();
 
         // Figurka se tam neumi dostat
         if(!figure.canMove(to))
-            return false;
+            throw new RuntimeException();
 
-        figure.move(to);
+        Vector victims = figure.move(to);
         
-        this.rounds.add(new Move(from, to, false));
+        this.rounds.add(new Move(from, to, (victims.size() == 0)? false : true));
         
         if(figure.getColor() == Color.WHITE && to.getRow() == this.dimension && !"Rook".equals(figure.getClass().getSimpleName()))
             figure = new Rook(this, to, Color.WHITE);
@@ -211,7 +214,7 @@ public class Desk {
         this.at(from).removeFigure();
         this.at(to).setFigure(figure);
 
-        return true;
+        return victims;
     }
     
     /**
