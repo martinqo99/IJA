@@ -55,14 +55,14 @@ public class Rook extends Figure{
             if(this.desk.at(step).getFigure() == null) {
                 possibility = new Possibility(step, kill);
                 possibilities.add(possibility);
+                if (kill.size() > 0)
+                    areYouThereAssassin = true;
             }
             else
                 if (this.getColor() == this.desk.at(step).getFigure().getColor())
                     break;
-                else {
+                else
                     kill.add(new Position(step.getColumn(), step.getRow()));
-                    areYouThereAssassin = true;
-                }
         }
         kill = new Vector();
         //vpravo nahoru
@@ -73,14 +73,14 @@ public class Rook extends Figure{
             if(this.desk.at(step).getFigure() == null) {
                 possibility = new Possibility(step, kill);
                 possibilities.add(possibility);
+                if (kill.size() > 0)
+                    areYouThereAssassin = true;
             }
             else
                 if (this.getColor() == this.desk.at(step).getFigure().getColor())
                     break;
-                else {
+                else
                     kill.add(new Position(step.getColumn(), step.getRow()));
-                    areYouThereAssassin = true;
-                }
         }
         kill = new Vector();
         //vlevo dolu
@@ -91,14 +91,14 @@ public class Rook extends Figure{
             if(this.desk.at(step).getFigure() == null) {
                 possibility = new Possibility(step, kill);
                 possibilities.add(possibility);
+                if (kill.size() > 0)
+                    areYouThereAssassin = true;
             }
             else
                 if (this.getColor() == this.desk.at(step).getFigure().getColor())
                     break;
-                else {
+                else
                     kill.add(new Position(step.getColumn(), step.getRow()));
-                    areYouThereAssassin = true;
-                }
         }
         kill = new Vector();
         //vpravo dolu
@@ -109,14 +109,14 @@ public class Rook extends Figure{
             if(this.desk.at(step).getFigure() == null) {
                 possibility = new Possibility(step, kill);
                 possibilities.add(possibility);
+                if (kill.size() > 0)
+                    areYouThereAssassin = true;
             }
             else
                 if (this.getColor() == this.desk.at(step).getFigure().getColor())
                     break;
-                else {
+                else
                     kill.add(new Position(step.getColumn(), step.getRow()));
-                    areYouThereAssassin = true;
-                }
         }
 
         if(areYouThereAssassin){
