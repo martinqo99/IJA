@@ -172,7 +172,6 @@ public class BattleGroundUI extends JPanel {
             else{
                 //if(this.battleground.move(this.battleGroundActiveField.getField().getPosition(), fieldUI.getField().getPosition())){
                 if(this.battleGroundActiveField.getField().getFigure().canMove(fieldUI.getField().getPosition())){
-                    
                     Vector victims = this.battleground.move(this.battleGroundActiveField.getField().getPosition(), fieldUI.getField().getPosition());
                     
                     Vector rounds = this.battleground.getRounds();
@@ -182,14 +181,14 @@ public class BattleGroundUI extends JPanel {
                     for(int i = 0; i < rounds.size(); i++){
                         if(i % 2 == 0)
                             roundsString += Integer.toString(roundsCounter) + ". ";
-
-                        roundsString += ((Move)rounds.get(i)).toString();
                         
-                        if(i % 2 == 0)
-                            roundsString += " ";
-                        else{
-                            roundsString += "\n";
-                            roundsCounter++;
+                            roundsString += ((Move)rounds.get(i)).toString();
+                            
+                            if(i % 2 == 0)
+                                roundsString += " ";
+                            else{
+                                roundsString += "\n";
+                                roundsCounter++;
                         }
                     }
                     
@@ -197,7 +196,7 @@ public class BattleGroundUI extends JPanel {
                     this.logUI.setText(roundsString);
                     
                     fieldUI.reload();
-                    
+                            
                     for(int i = 0; i < victims.size(); i++){
                         Position position = (Position) victims.get(i);
             
@@ -205,7 +204,7 @@ public class BattleGroundUI extends JPanel {
                     }
                     
                     this.battleGroundActiveField.toogle();
-                    this.battleGroundActiveField = null;                
+                    this.battleGroundActiveField = null; 
                 }
                 else{
                     JOptionPane.showMessageDialog(this, "Nelze provést tah na toto pole!", "Queen - Chybný tah", JOptionPane.ERROR_MESSAGE);
@@ -214,12 +213,41 @@ public class BattleGroundUI extends JPanel {
         }       
     }
     
+    public Desk getBattleground(){
+        return this.battleground;
+    }
+    
     public void setDisabled(DisabledFigures disabled){
         this.disabled = disabled;
     }
     
     public Vector getRounds(){
         return this.battleground.getRounds();
+    }
+    
+    public void reload(){
+        Vector rounds = this.battleground.getRounds();
+        int roundsCounter = 1;
+        String roundsString = "";
+                    
+        for(int i = 0; i < rounds.size(); i++){
+            if(i % 2 == 0)
+                roundsString += Integer.toString(roundsCounter) + ". ";
+                        
+            roundsString += ((Move)rounds.get(i)).toString();
+                            
+            if(i % 2 == 0)
+                roundsString += " ";
+            else{
+                roundsString += "\n";
+                roundsCounter++;
+            }
+        }
+                    
+        this.logUI.setText(roundsString);
+        
+        for(int i = 0; i < this.battlegroundUI.length; i++)
+            this.battlegroundUI[i].reload();
     }
 
     /**

@@ -107,8 +107,8 @@ public class Notation {
     }    
     
     private void parse() throws IOException{
-        Pattern regexFull = Pattern.compile("^([0-9])\\. ([a-z][0-9])([x\\-])([a-z][0-9]) ([a-z][0-9])([x\\-])([a-z][0-9])$");
-        Pattern regexHalf = Pattern.compile("^([0-9])\\. ([a-z][0-9])([x\\-])([a-z][0-9])[ ]?$");
+        Pattern regexFull = Pattern.compile("^([0-9]+)\\. ([a-z][0-9])([x\\-])([a-z][0-9]) ([a-z][0-9])([x\\-])([a-z][0-9])$");
+        Pattern regexHalf = Pattern.compile("^([0-9]+)\\. ([a-z][0-9])([x\\-])([a-z][0-9])[ ]?$");
 
         // Radku po radce
         for(int i = 0; i < this.raw.size(); i++){

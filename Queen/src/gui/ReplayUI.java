@@ -19,6 +19,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import queen.basis.Move;
 
 /**
  * @author      Frantisek Kolacek <xkolac12 @ stud.fit.vutbr.cz>
@@ -45,12 +46,19 @@ public class ReplayUI extends javax.swing.JFrame {
 
     private Container content;
     
+    private BattleGroundUI battleground;
+    
     private int interval;
     private Vector rounds;
+    
+    private int roundNumber;
+    private Timer roundTimer;
 
     public ReplayUI() {
         this.interval = 1;
         this.rounds = new Vector();
+        this.roundNumber = 0;
+        this.roundTimer = null;
         
         this.initWindow();
         this.initMenu();
@@ -130,6 +138,41 @@ public class ReplayUI extends javax.swing.JFrame {
         //this.mainMenuOpen.setAccelerator(KeyStroke.getKeyStroke('O', KeyEvent.CTRL_DOWN_MASK));
         //this.mainMenuQuit.setAccelerator(KeyStroke.getKeyStroke('Q', KeyEvent.CTRL_DOWN_MASK));
 
+        this.mainMenuPrev.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                handlePrev(e);
+            }
+        });
+        
+        this.mainMenuPlay.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                handlePlay(e);
+            }
+        });
+        
+        this.mainMenuPause.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                handlePause(e);
+            }
+        });
+        
+        this.mainMenuStop.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                handleStop(e);
+            }
+        });
+        
+        this.mainMenuNext.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                handleNext(e);
+            }
+        });        
+        
         this.mainMenuOpen.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -169,6 +212,9 @@ public class ReplayUI extends javax.swing.JFrame {
         this.mainMenuQuit.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                if(roundTimer != null)
+                    roundTimer.stop();
+                
                 dispose();
             }
         });
@@ -176,13 +222,78 @@ public class ReplayUI extends javax.swing.JFrame {
 
     private void initContent(){
         this.content = this.getContentPane();
+        this.content.removeAll();
 
         this.content.add(this.mainMenuBar, BorderLayout.NORTH);
 
-        BattleGroundUI battleground = new BattleGroundUI();
-        battleground.setDisabled(DisabledFigures.DISABLE_ALL);
+        this.battleground = new BattleGroundUI();
+        this.battleground.setDisabled(DisabledFigures.DISABLE_ALL);
 
-        this.content.add(battleground, BorderLayout.SOUTH);
+        this.content.add(this.battleground, BorderLayout.SOUTH);
+        
+        this.setContentPane(this.content);
+        this.pack();
+    }
+    
+    private void handlePrev(ActionEvent e){
+        if(this.rounds.isEmpty())
+            return;
+        
+        if(this.roundNumber <= 0)
+            return;
+        
+        this.roundNumber--;
+    }
+    
+    private void handlePlay(ActionEvent e){
+        if(this.rounds.isEmpty())
+            return;
+        
+        if(this.roundNumber >= this.rounds.size()){
+            if(this.roundTimer != null)
+                this.roundTimer.stop();
+            
+            return;
+        }
+        
+        if(this.roundTimer != null)
+            this.roundTimer.stop();
+        
+        ActionListener taskPerformer = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                handleNext(e);
+            }
+        };
+        
+        this.roundTimer = new Timer(this.interval * 1000, taskPerformer);
+        this.roundTimer.start();
+    }
+    
+    private void handlePause(ActionEvent e){
+        if(this.roundTimer != null)
+            this.roundTimer.stop();
+    }
+    
+    private void handleStop(ActionEvent e){
+        if(this.roundTimer != null)
+            this.roundTimer.stop();
+        
+        this.initContent();
+        this.roundNumber = 0;
+    }
+    
+    private void handleNext(ActionEvent e){
+        if(this.rounds.isEmpty())
+            return;  
+        
+        if(this.roundNumber >= this.rounds.size())
+            return;
+        
+        Move round = (Move)this.rounds.get(this.roundNumber);
+        this.battleground.getBattleground().move(round.getFrom(), round.getTo());
+        this.battleground.reload();
+        this.roundNumber++;
     }
 
     private void handleDialogOpen(ActionEvent e){
@@ -204,6 +315,10 @@ public class ReplayUI extends javax.swing.JFrame {
                 notation.loadFromFile(fullPath);
                 
                 this.rounds = notation.getRounds();
+                this.roundNumber = 0;
+                
+                // Clear desk
+                this.initContent();
                 
                 JOptionPane.showMessageDialog(this, "Hra byla úspěšně načtena", "Queen - Načtení hry", JOptionPane.INFORMATION_MESSAGE);
                 
@@ -229,6 +344,10 @@ public class ReplayUI extends javax.swing.JFrame {
                 notation.loadFromRaw(dialog.getInputText());
                 
                 this.rounds = notation.getRounds();
+                this.roundNumber = 0;
+                
+                // Clear desk
+                this.initContent();
 
                 JOptionPane.showMessageDialog(this, "Hra byla úspěšně načtena", "Queen - Načtení hry", JOptionPane.INFORMATION_MESSAGE);
             } catch (IOException ex) {
@@ -244,6 +363,9 @@ public class ReplayUI extends javax.swing.JFrame {
             this.interval = 10;
         
         this.mainMenuInterval.setText(Integer.toString(this.interval));
+        
+        this.handlePause(e);
+        this.handlePlay(e);
     }
     
     private void handleDecrease(ActionEvent e){
@@ -253,6 +375,9 @@ public class ReplayUI extends javax.swing.JFrame {
             this.interval = 1;
         
         this.mainMenuInterval.setText(Integer.toString(this.interval));
+        
+        this.handlePause(e);
+        this.handlePlay(e);
     }
 
     private void handleDialogAbout(ActionEvent e){
