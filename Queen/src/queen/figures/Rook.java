@@ -31,10 +31,14 @@ public class Rook extends Figure{
     public boolean canMove(Position position){
         Vector possibilities = this.canMovePossibilities();
 
-        if(possibilities.contains(position))
-            return true;
-        else
-            return false;
+        for(int i = 0; i < possibilities.size(); i++){
+            Possibility possibility = (Possibility)possibilities.get(i);
+
+            if(possibility.getPosition().equals(position))
+                return true;
+        }
+
+        return false;
     }
 
     @Override
@@ -62,7 +66,7 @@ public class Rook extends Figure{
                 if (this.getColor() == this.desk.at(step).getFigure().getColor())
                     break;
                 else
-                    kill.add(new Position(step.getColumn(), step.getRow()));
+                    kill.add(new Position(step));
         }
         kill = new Vector();
         //vpravo nahoru
@@ -80,7 +84,7 @@ public class Rook extends Figure{
                 if (this.getColor() == this.desk.at(step).getFigure().getColor())
                     break;
                 else
-                    kill.add(new Position(step.getColumn(), step.getRow()));
+                    kill.add(new Position(step));
         }
         kill = new Vector();
         //vlevo dolu
@@ -98,7 +102,7 @@ public class Rook extends Figure{
                 if (this.getColor() == this.desk.at(step).getFigure().getColor())
                     break;
                 else
-                    kill.add(new Position(step.getColumn(), step.getRow()));
+                    kill.add(new Position(step));
         }
         kill = new Vector();
         //vpravo dolu
@@ -116,7 +120,7 @@ public class Rook extends Figure{
                 if (this.getColor() == this.desk.at(step).getFigure().getColor())
                     break;
                 else
-                    kill.add(new Position(step.getColumn(), step.getRow()));
+                    kill.add(new Position(step));
         }
 
         if(areYouThereAssassin){
