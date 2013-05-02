@@ -39,5 +39,24 @@ public class Possibility {
     
     public int killed(){
         return this.victims.size();
-    }    
+    } 
+    
+    /**
+     * Porovnani dvou objektu Position
+     * @param position
+     * @return true pokud jsou shodne, jinak false
+     */
+    @Override
+    public boolean equals(Object object){
+        if(object == null)
+            return false;
+        else if(object.getClass() == Position.class){
+            Position position = (Position) object;
+            
+            if(this.position.getColumn() == position.getColumn() && this.position.getRow() == position.getRow())
+                return true;
+        }       
+        
+        return false;
+    }
 }
