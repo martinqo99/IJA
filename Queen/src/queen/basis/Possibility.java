@@ -25,6 +25,11 @@ public class Possibility {
         this.victims = new Vector();
     }
     
+    public Possibility(Possibility possibility){
+        this.position = new Position(possibility.getPosition());
+        this.victims = new Vector(possibility.getVictims());
+    }
+    
     public Position getPosition(){
         return this.position;
     }
