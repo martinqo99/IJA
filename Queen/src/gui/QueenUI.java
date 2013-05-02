@@ -166,7 +166,11 @@ public class QueenUI extends JFrame {
         DialogNew dialog = new DialogNew(this, true);
         dialog.setLocationRelativeTo(this);
         
-        dialog.setVisible(true);     
+        dialog.setVisible(true);    
+        
+        if(dialog.isAccepted()){
+        
+        }
     }
     
     /*

@@ -365,12 +365,12 @@ public class DialogNew extends javax.swing.JDialog {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         if(this.getGameType() == GameType.PLAYER_VS_NETWORK && this.getRemoteHost().isEmpty()){
-            JOptionPane.showMessageDialog(this, "Nebyla zadána adresa vzdáleného hosta!", "Queen - Chyba při vytváření hry", JOptionPane.ERROR_MESSAGE);;
+            JOptionPane.showMessageDialog(this, "Nebyla zadána adresa vzdáleného hosta!", "Queen - Chyba při vytváření hry", JOptionPane.ERROR_MESSAGE);
             return;
         }
         
         if(this.isStoredGame() && this.getStoredGameFileName().isEmpty()){
-            JOptionPane.showMessageDialog(this, "Nebyl vybrán soubor obsahující uloženou hru!", "Queen - Chyba při vytváření hry", JOptionPane.ERROR_MESSAGE);;
+            JOptionPane.showMessageDialog(this, "Nebyl vybrán soubor obsahující uloženou hru!", "Queen - Chyba při vytváření hry", JOptionPane.ERROR_MESSAGE);
             return;        
         }
         
