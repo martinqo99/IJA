@@ -8,8 +8,10 @@
 
 package gui;
 
+import gui.basis.Notation;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.FileNotFoundException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
@@ -33,6 +35,7 @@ public class QueenUI extends JFrame {
     private JMenuItem mainMenuHelpAbout;
     
     private Container content;
+    private BattleGroundUI battleground;
     
     /**
      * Creates new form QueenUI
@@ -154,7 +157,9 @@ public class QueenUI extends JFrame {
     private void initContent(){
         this.content = this.getContentPane();
         
-        this.content.add(new BattleGroundUI());
+        this.battleground = new BattleGroundUI();
+        
+        this.content.add(this.battleground);
     }
     
     private void handleDialogNew(ActionEvent e){
@@ -186,7 +191,13 @@ public class QueenUI extends JFrame {
             String extension = dialog.getFileFilter().getDescription();
             String fullPath = directory + "/" + filename;
             
-            JOptionPane.showMessageDialog(this, "Hra byla úspěšně uložena", "Queen - Uložení hry", JOptionPane.INFORMATION_MESSAGE);
+            try {
+                Notation.saveToFile(fullPath, this.battleground.getRounds());
+                
+                JOptionPane.showMessageDialog(this, "Hra byla úspěšně uložena", "Queen - Uložení hry", JOptionPane.INFORMATION_MESSAGE);
+            } catch (FileNotFoundException ex) {
+                JOptionPane.showMessageDialog(this, "Hru se nepodařilo uložit!", "Queen - Chyba při ukládání hry", JOptionPane.ERROR_MESSAGE);
+            }
         }
     }
     

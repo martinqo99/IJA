@@ -12,6 +12,7 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Arrays;
 import java.util.Vector;
 import java.util.regex.Matcher;
@@ -32,6 +33,37 @@ public class Notation {
     public void initNotation(){
         this.raw = new Vector();
         this.rounds = new Vector();
+    }
+    
+    /**
+     *
+     * @param fileName
+     * @param rounds
+     * @throws FileNotFoundException
+     */
+    public static void saveToFile(String fileName, Vector rounds) throws FileNotFoundException{
+        PrintWriter writer = new PrintWriter(fileName);
+
+        int roundsCounter = 1;
+        String roundsString = "";
+                    
+        for(int i = 0; i < rounds.size(); i++){
+            if(i % 2 == 0)
+                roundsString += Integer.toString(roundsCounter) + ". ";
+
+                roundsString += ((Move)rounds.get(i)).toString();
+                        
+                if(i % 2 == 0)
+                    roundsString += " ";
+                else{
+                    roundsString += "\n";
+                    roundsCounter++;
+                }
+        }
+        
+        writer.print(roundsString);
+        
+        writer.close();
     }
 
     public void loadFromFile(String fileName) throws FileNotFoundException, IOException{

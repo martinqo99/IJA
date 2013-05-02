@@ -211,6 +211,10 @@ public class BattleGroundUI extends JPanel {
     public void setDisabled(DisabledFigures disabled){
         this.disabled = disabled;
     }
+    
+    public Vector getRounds(){
+        return this.battleground.getRounds();
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
