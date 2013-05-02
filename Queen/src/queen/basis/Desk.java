@@ -203,6 +203,12 @@ public class Desk {
 
         Vector victims = figure.move(to);
         
+        for(int i = 0; i < victims.size(); i++){
+            Position position = (Position) victims.get(i);
+            
+            this.at(position).removeFigure();
+        }
+        
         this.rounds.add(new Move(from, to, (victims.size() == 0)? false : true));
         
         if(figure.getColor() == Color.WHITE && to.getRow() == this.dimension && !"Rook".equals(figure.getClass().getSimpleName()))

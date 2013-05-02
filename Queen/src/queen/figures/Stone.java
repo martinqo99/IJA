@@ -33,11 +33,15 @@ public class Stone extends Figure{
     public boolean canMove(Position position){
 
         Vector possibilities = this.canMovePossibilities();
+        
+        for(int i = 0; i < possibilities.size(); i++){
+            Possibility possibility = (Possibility)possibilities.get(i);
+            
+            if(possibility.getPosition().equals(position))
+                return true;
+        }
 
-        if(possibilities.contains(position))
-            return true;
-        else
-            return false;
+        return false;
     }
 
     @Override
@@ -48,7 +52,7 @@ public class Stone extends Figure{
 
         Position step1;
         Position step2;
-        Possibility possibility;
+        Possibility possibility = null;
 
         // Vlevo
         step1 = new Position((char)(this.position.getColumn() - 1), this.position.getRow() + rowStep);
@@ -56,7 +60,7 @@ public class Stone extends Figure{
             // Volna pozice
             if(this.desk.at(step1).getFigure() == null) {
                 possibility = new Possibility(step1);
-                possibilities.add(new Possibility(possibility));
+                possibilities.add(possibility);
             }
             else if(this.color != this.desk.at(step1).getFigure().getColor()){
                 step2 = new Position((char)(step1.getColumn() - 1), step1.getRow() + rowStep);
@@ -64,11 +68,30 @@ public class Stone extends Figure{
                 if(!this.desk.isDeserter(step2) && this.desk.at(step2).getFigure() == null) {
                     possibility = new Possibility(step2);
                     possibility.killVictim(step1);
-                    possibilities.add(new Possibility(possibility));
+                    possibilities.add(possibility);
                 }
             }
         }
+        
+        // Vpravo
+        step1 = new Position((char)(this.position.getColumn() + 1), this.position.getRow() + rowStep);
+        if(!this.desk.isDeserter(step1)){
+            // Volna pozice
+            if(this.desk.at(step1).getFigure() == null) {
+                possibility = new Possibility(step1);
+                possibilities.add(possibility);
+            }
+            else if(this.color != this.desk.at(step1).getFigure().getColor()){
+                step2 = new Position((char)(step1.getColumn() + 1), step1.getRow() + rowStep);
 
+                if(!this.desk.isDeserter(step2) && this.desk.at(step2).getFigure() == null) {
+                    possibility = new Possibility(step2);
+                    possibility.killVictim(step1);
+                    possibilities.add(possibility);
+                }
+            }
+        }
+        /*
         // Vpravo
         step1 = new Position((char)(this.position.getColumn() + 1), this.position.getRow() + rowStep);
         if(!this.desk.isDeserter(step1)){
@@ -92,6 +115,7 @@ public class Stone extends Figure{
                 }
             }
         }
+        */
 
         return possibilities;
     }

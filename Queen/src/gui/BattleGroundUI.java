@@ -175,11 +175,6 @@ public class BattleGroundUI extends JPanel {
                     
                     Vector victims = this.battleground.move(this.battleGroundActiveField.getField().getPosition(), fieldUI.getField().getPosition());
                     
-                    
-                    
-                    
-                    //JOptionPane.showMessageDialog(this, "Tah se provedel", "Queen - Potvrzeni tahu", JOptionPane.INFORMATION_MESSAGE);
-                    
                     Vector rounds = this.battleground.getRounds();
                     int roundsCounter = 1;
                     String roundsString = "";
@@ -202,6 +197,12 @@ public class BattleGroundUI extends JPanel {
                     this.logUI.setText(roundsString);
                     
                     fieldUI.reload();
+                    
+                    for(int i = 0; i < victims.size(); i++){
+                        Position position = (Position) victims.get(i);
+            
+                        this.battlegroundUI[this.battleground.pos(position)].reload();
+                    }
                     
                     this.battleGroundActiveField.toogle();
                     this.battleGroundActiveField = null;                
