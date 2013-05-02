@@ -137,7 +137,7 @@ public class ReplayUI extends javax.swing.JFrame {
             }
         });
         
-       this.mainMenuLoad.addActionListener(new ActionListener() {
+        this.mainMenuLoad.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 handleDialogLoad(e);
