@@ -8,6 +8,8 @@
 
 package gui;
 
+import javax.swing.JOptionPane;
+
 /**
  * @author      Frantisek Kolacek <xkolac12 @ stud.fit.vutbr.cz>
  * @version     0.91
@@ -106,6 +108,11 @@ public class DialogRawInput extends javax.swing.JDialog {
     }//GEN-LAST:event_buttCancelActionPerformed
 
     private void buttSubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttSubmitActionPerformed
+        if(this.inputText.getText().isEmpty()){
+            JOptionPane.showMessageDialog(this, "Nelze načíst prázdnou hru!", "Queen - Chyba při načítání hry", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
         this.accepted = true;
         this.dispose();
     }//GEN-LAST:event_buttSubmitActionPerformed

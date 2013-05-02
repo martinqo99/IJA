@@ -208,9 +208,9 @@ public class ReplayUI extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "Hra byla úspěšně načtena", "Queen - Načtení hry", JOptionPane.INFORMATION_MESSAGE);
                 
             } catch (FileNotFoundException ex) {
-                JOptionPane.showMessageDialog(this, "Vstupní soubor se nepodařilo načíst!", "Queen - Chyba při načítání hry", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Hru se nepodařilo načíst!", "Queen - Chyba při načítání hry", JOptionPane.ERROR_MESSAGE);
             } catch (IOException ex) {
-                JOptionPane.showMessageDialog(this, "Vstupní soubor se nepodařilo načíst!", "Queen - Chyba při načítání hry", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Hru se nepodařilo načíst!", "Queen - Chyba při načítání hry", JOptionPane.ERROR_MESSAGE);
             }
             
         }
@@ -232,7 +232,7 @@ public class ReplayUI extends javax.swing.JFrame {
 
                 JOptionPane.showMessageDialog(this, "Hra byla úspěšně načtena", "Queen - Načtení hry", JOptionPane.INFORMATION_MESSAGE);
             } catch (IOException ex) {
-                JOptionPane.showMessageDialog(this, "Vstupní soubor se nepodařilo načíst!", "Queen - Chyba při načítání hry", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Hru se nepodařilo načíst!", "Queen - Chyba při načítání hry", JOptionPane.ERROR_MESSAGE);
             }
         }
     }
