@@ -48,7 +48,7 @@ public class Notation {
      * @throws FileNotFoundException
      */
     public static void saveToFile(String fileName, Vector rounds) throws FileNotFoundException{
-        if (fileName.matches(".*\\.txt")) {
+        if (fileName.matches(".*\\.txt")) { // ukladame do textoveho souboru
             PrintWriter writer = new PrintWriter(fileName);
 
             int roundsCounter = 1;
@@ -70,7 +70,7 @@ public class Notation {
 
             writer.close();
         }
-        else {
+        else { // ukladame do XML
             try {
                 DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
                 DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
@@ -109,22 +109,49 @@ public class Notation {
      * @throws IOException
      */
     public void loadFromFile(String fileName) throws FileNotFoundException, IOException{
+        if (fileName.matches(".*\\.txt")) {
+            BufferedReader reader = new BufferedReader(new FileReader(fileName));
+            StringBuilder builder = new StringBuilder();
+            String line = reader.readLine();
 
-        BufferedReader reader = new BufferedReader(new FileReader(fileName));
-        StringBuilder builder = new StringBuilder();
-        String line = reader.readLine();
+            while(line != null){
 
-        while(line != null){
+                builder.append(line);
+                builder.append("\n");
 
-            builder.append(line);
-            builder.append("\n");
+                line = reader.readLine();
+            }
 
-            line = reader.readLine();
+            reader.close();
+
+            this.loadFromRaw(builder.toString());
         }
-
-        reader.close();
-
-        this.loadFromRaw(builder.toString());
+        else {
+            try {
+                File xmlFile = new File(fileName);
+                DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+                DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+                Document doc = dBuilder.parse(xmlFile);
+                Element root = doc.getDocumentElement();
+                if (!root.getNodeName().matches("game"))
+                    throw new IOException();
+                StringBuilder builder = new StringBuilder();
+                NodeList move = doc.getElementsByTagName("move");
+                NodeList countermove = doc.getElementsByTagName("countermove");
+                for (int i = 0; i < move.getLength(); i++) {
+                    builder.append(Integer.toString(i)+". ");
+                    Element actMove = (Element)move.item(i);
+                    Element actCountermove = (Element)countermove.item(i);
+                    builder.append(actMove.getTextContent());
+                    if (i < countermove.getLength())
+                        builder.append(" "+actCountermove.getTextContent());
+                    builder.append("\n");
+                }
+                this.loadFromRaw(builder.toString());
+            } catch (Exception e) {
+                // chytam
+            }
+        }
     }
 
     /**
