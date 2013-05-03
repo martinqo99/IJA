@@ -16,9 +16,11 @@ import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.util.Random;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.management.RuntimeErrorException;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import queen.basis.*;
@@ -130,9 +132,17 @@ public class BattleGroundUI extends JPanel {
         }
     }
     
+    /**
+     *
+     * @param gameType
+     * @param playerColor
+     * @param remoteHost
+     * @param fileName
+     */
     public void initGame(GameType gameType, Color playerColor, String remoteHost, String fileName){
         this.gameType = gameType;
         
+        // Nacteni hry
         if(!fileName.isEmpty()){
             Notation notation = new Notation();
             try {
@@ -160,9 +170,7 @@ public class BattleGroundUI extends JPanel {
             }
         }
         
-        
-        
-        
+        // Samotne spousten
         if(this.gameType == GameType.REPLAY)
             this.initReplay();
         else if(this.gameType == GameType.PLAYER_VS_PLAYER){
@@ -172,12 +180,20 @@ public class BattleGroundUI extends JPanel {
             this.playerColor = playerColor;
             
             this.disabled = (this.playerColor == Color.WHITE)? DisabledFigures.DISABLE_BLACK : DisabledFigures.DISABLE_WHITE;
+            
+            // AI je na tahu
+            if(this.playerColor != this.battleground.getRoundColor()){
+                this.AImove();
+            }
         }
         else{
             throw new RuntimeException("Not implemented yet");
         }
     }
     
+    /**
+     *
+     */
     public void initReplay(){
         this.gameType = GameType.REPLAY;
         this.disabled = DisabledFigures.DISABLE_ALL;
@@ -323,7 +339,11 @@ public class BattleGroundUI extends JPanel {
                         if(this.battleground.isEndOfAllHope()){
                             JOptionPane.showMessageDialog(this, ((fieldUI.getField().getFigure().getColor() == Color.WHITE)? "Bílý" : "Černý")+ " hráč vyhrál hru!", "Queen - Konec hry", JOptionPane.INFORMATION_MESSAGE);
                             this.disabled = DisabledFigures.DISABLE_ALL;
+                            return;
                         }
+                        
+                        if(this.gameType == GameType.PLAYER_VS_PC)
+                            this.AImove();
                         
                     }
                     catch(RuntimeException err){
@@ -338,40 +358,100 @@ public class BattleGroundUI extends JPanel {
         }       
     }
     
-    public void createGame(GameType type, Color player, String remoteHost, String fileName){
-        this.gameType = type;
-        
-        if(this.gameType == GameType.PLAYER_VS_PLAYER){
-            
+    private void AImove(){
+        Vector possible = new Vector();
+                
+        // Pokud vybira jen ze skoku, bude chytrej, relativne
+        Vector assassins = this.battleground.getReadyAssassins();
+        if(assassins.size() > 0){
+            for(int i = 0; i < assassins.size(); i++){
+                Position assassin = (Position)assassins.get(i);
+                
+                Vector possibilities = this.battlegroundUI[this.battleground.pos(assassin)].getField().getFigure().canMovePossibilities();
+                
+                if(possibilities.size() > 0){
+                    for(int j = 0; j < possibilities.size(); j++){
+                        possible.add(possibilities.get(j));
+                    }
+                }
+            }
         }
-        else if(this.gameType == GameType.PLAYER_VS_PC){
-        
-        }
+        // Bude uplne blbej, pardon, nahodnej
         else{
-            throw new RuntimeException("Not implemented yet");
-        }        
+            for(int i = 0; i < this.battlegroundUI.length; i++){
+                if(this.battlegroundUI[i].getField().getFigure() == null)
+                    continue;
+                
+                if(this.battlegroundUI[i].getField().getFigure().getColor() != this.battleground.getRoundColor())
+                    continue;
+                
+                Vector possibilities = this.battlegroundUI[i].getField().getFigure().canMovePossibilities();
+                
+                if(possibilities.size() > 0){
+                    for(int j = 0; j < possibilities.size(); j++){
+                        possible.add(possibilities.get(j));
+                    }
+                }
+            }
+        }
+        
+        // AI ma kam tahnout
+        if(possible.size() > 0){
+            Random rand = new Random();
+            
+            int randomNum = rand.nextInt(possible.size() + 1);
+            
+            if(randomNum >= possible.size())
+                randomNum = possible.size() - 1;
+            
+            Possibility possibility = (Possibility)possible.get(randomNum);
+            
+            this.battleground.move(possibility.getKiller(), possibility.getPosition());
+            
+            this.reload();
+        }
+        // Nema, AI prohrala
+        else{
+            JOptionPane.showMessageDialog(this, "Hráč vyhrál hru!", "Queen - Konec hry", JOptionPane.INFORMATION_MESSAGE);
+            this.disabled = DisabledFigures.DISABLE_ALL;
+        }
     }
     
+    /**
+     *
+     * @param moveHinting
+     */
     public void setMoveHinting(boolean moveHinting){
         this.moveHinting = moveHinting;
     }
     
+    /**
+     *
+     * @return
+     */
     public Desk getBattleground(){
         return this.battleground;
     }
     
+    /**
+     *
+     * @return
+     */
     public GameType getGameType(){
         return this.gameType;
     }
     
-    //public void setDisabled(DisabledFigures disabled){
-    //    this.disabled = disabled;
-    //}
-    
+    /**
+     *
+     * @return
+     */
     public Vector getRounds(){
         return this.battleground.getRounds();
     }
     
+    /**
+     *
+     */
     public void reload(){
         Vector rounds = this.battleground.getRounds();
         int roundsCounter = 1;
