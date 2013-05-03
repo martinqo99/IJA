@@ -13,9 +13,14 @@ import gui.basis.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
+import java.io.PrintWriter;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.Random;
 import java.util.Vector;
 import java.util.logging.Level;
@@ -47,6 +52,10 @@ public class BattleGroundUI extends JPanel {
     private boolean hardCoreMode;
     
     private int localPort;
+    private ServerSocket localServer;
+    private Socket handler;
+    private PrintWriter handlerInput;
+    private BufferedReader handlerOutput;
 
     private JTextArea logUI;
 
@@ -81,7 +90,7 @@ public class BattleGroundUI extends JPanel {
         this.hardCoreMode = false;
         
         this.localPort = 5678;
-
+ 
         this.logUI = new JTextArea();
         this.logUI.setBackground(new Color(239, 239, 239));
         this.logUI.setEditable(false);
@@ -192,13 +201,133 @@ public class BattleGroundUI extends JPanel {
                 this.AImove();
             }
         }
+        // Lokalni port binding
         else if(this.gameType == GameType.PLAYER_VS_NETWORK_LOCAL){
-            this.localPort = localPort;
+            try {  
+                if(this.localServer != null)
+                    this.localServer.close();
+                
+                if(this.handler != null)
+                    this.handler.close();
             
-            System.out.println("Server listen on: " + Integer.toString(this.localPort));
+                this.localPort = localPort;
+                
+                this.localServer = new ServerSocket(this.localPort);
+
+                this.handler = this.localServer.accept();
+                
+                this.handlerInput = new PrintWriter(this.handler.getOutputStream(), true);
+                this.handlerOutput = new BufferedReader(new InputStreamReader(this.handler.getInputStream()));
+                
+                String line = null;
+                String roundsBuffer = "";
+                boolean recordRounds = false;
+                
+                do{
+                    while(!this.handlerOutput.ready());
+                    
+                    line = this.handlerOutput.readLine();
+                    
+                    if("END".equals(line))
+                        break;
+                    
+                    if(recordRounds){
+                        roundsBuffer += line + "\n";
+                    }
+                    
+                    if("BEGIN".equals(line))
+                        continue;
+                    
+                    if("BLACK".equals(line))
+                        this.playerColor = Color.WHITE;
+
+                    
+                    if("WHITE".equals(line))
+                        this.playerColor = Color.BLACK;
+
+                    
+                    if("ROUNDS".equals(line))
+                        recordRounds = true;                   
+                    
+                    
+                }while(true);
+                
+                this.disabled = (this.playerColor == Color.WHITE)? DisabledFigures.DISABLE_BLACK : DisabledFigures.DISABLE_WHITE;
+                
+                if(!roundsBuffer.isEmpty()){
+                    Notation notation = new Notation();
+                    notation.loadFromRaw(roundsBuffer);
+                
+                    Vector rounds = notation.getRounds();
+                
+                    for(int i = 0; i < rounds.size(); i++){
+                        Move tmp = (Move)rounds.get(i);
+                    
+                        this.battleground.move(tmp.getFrom(), tmp.getTo());
+                    }
+                
+                    this.reload();
+                }
+                
+                if(this.playerColor == this.battleground.getRoundColor()){
+                    JOptionPane.showMessageDialog(this, "Jste na tahu.", "Queen - Síťová hra", JOptionPane.INFORMATION_MESSAGE);
+                }
+                
+            } catch (IOException ex) {
+                this.disabled = DisabledFigures.DISABLE_ALL;
+                JOptionPane.showMessageDialog(this, "Chyba síťové komunikace!", "Queen - Síťová hra", JOptionPane.ERROR_MESSAGE);
+            }
         }
+        // Vzdalene pripojovani
         else{
-            throw new RuntimeException("Not implemented yet");
+            try{
+                this.playerColor = playerColor;
+
+                this.disabled = (this.playerColor == Color.WHITE)? DisabledFigures.DISABLE_BLACK : DisabledFigures.DISABLE_WHITE;
+                
+                System.out.println("Connect to: " + remoteHost + ":" + Integer.toString(remotePort));
+                
+                if(this.handler != null)
+                    this.handler.close();
+                
+                this.handler = new Socket(remoteHost, remotePort);
+              
+                this.handlerInput = new PrintWriter(this.handler.getOutputStream(), true);
+                this.handlerOutput = new BufferedReader(new InputStreamReader(this.handler.getInputStream()));                
+                
+                Vector rounds = this.battleground.getRounds();
+                int roundsCounter = 1;
+                String roundsString = "";
+
+                for(int i = 0; i < rounds.size(); i++){
+                    if(i % 2 == 0)
+                        roundsString += Integer.toString(roundsCounter) + ". ";
+
+                    roundsString += ((Move)rounds.get(i)).toString();
+
+                    if(i % 2 == 0)
+                        roundsString += " ";
+                    else{
+                        roundsString += "\n";
+                        roundsCounter++;
+                    }
+                }
+                
+                this.handlerInput.print("BEGIN\n");
+                this.handlerInput.print((this.playerColor == Color.WHITE)? "WHITE\n" : "BLACK\n");
+                this.handlerInput.print("ROUNDS\n");
+                this.handlerInput.print(roundsString);
+                this.handlerInput.print("END\n");
+                this.handlerInput.flush();
+                
+                if(this.playerColor == this.battleground.getRoundColor()){
+                    JOptionPane.showMessageDialog(this, "Jste na tahu.", "Queen - Síťová hra", JOptionPane.INFORMATION_MESSAGE);
+                }
+            }
+            catch(IOException ex){
+                this.disabled = DisabledFigures.DISABLE_ALL;
+                JOptionPane.showMessageDialog(this, "Chyba síťové komunikace!", "Queen - Síťová hra", JOptionPane.ERROR_MESSAGE);
+            }
         }
     }
 
