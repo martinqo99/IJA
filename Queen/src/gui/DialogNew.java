@@ -57,6 +57,10 @@ public class DialogNew extends javax.swing.JDialog {
         return this.inputRemoteHost.getText();
     }
     
+    public String getRemotePort(){
+        return this.inputRemoteport.getText();
+    }
+    
     public boolean isStoredGame(){
         return this.checkFileName.isSelected();
     }
@@ -105,11 +109,15 @@ public class DialogNew extends javax.swing.JDialog {
         radioPlayerVsPlayer = new javax.swing.JRadioButton();
         radioPlayerVsPC = new javax.swing.JRadioButton();
         radioPlayerVsNetwork = new javax.swing.JRadioButton();
+        radioPlayerVsNetworkLocal = new javax.swing.JRadioButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         inputPlayerColor = new javax.swing.JComboBox();
         inputRemoteHost = new javax.swing.JTextField();
+        inputRemoteport = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        inputLocalPort = new javax.swing.JTextField();
         jPanel3 = new javax.swing.JPanel();
         inputFileName = new javax.swing.JTextField();
         checkFileName = new javax.swing.JCheckBox();
@@ -142,10 +150,18 @@ public class DialogNew extends javax.swing.JDialog {
         });
 
         buttonGroup1.add(radioPlayerVsNetwork);
-        radioPlayerVsNetwork.setText("Síťová hra");
+        radioPlayerVsNetwork.setText("Síťová hra - připojit");
         radioPlayerVsNetwork.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 radioPlayerVsNetworkActionPerformed(evt);
+            }
+        });
+
+        buttonGroup1.add(radioPlayerVsNetworkLocal);
+        radioPlayerVsNetworkLocal.setText("Síťová hra - hostovat");
+        radioPlayerVsNetworkLocal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                radioPlayerVsNetworkLocalActionPerformed(evt);
             }
         });
 
@@ -158,18 +174,21 @@ public class DialogNew extends javax.swing.JDialog {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(radioPlayerVsPlayer)
                     .addComponent(radioPlayerVsPC)
-                    .addComponent(radioPlayerVsNetwork))
+                    .addComponent(radioPlayerVsNetwork)
+                    .addComponent(radioPlayerVsNetworkLocal))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap(11, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(radioPlayerVsPlayer)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(radioPlayerVsPC)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(radioPlayerVsNetwork))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(radioPlayerVsNetwork)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(radioPlayerVsNetworkLocal))
         );
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Parametry hry"));
@@ -190,6 +209,16 @@ public class DialogNew extends javax.swing.JDialog {
             }
         });
 
+        inputRemoteport.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        inputRemoteport.setText("5678");
+        inputRemoteport.setEnabled(false);
+
+        jLabel3.setText("Místní port");
+
+        inputLocalPort.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        inputLocalPort.setText("5678");
+        inputLocalPort.setEnabled(false);
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -198,14 +227,22 @@ public class DialogNew extends javax.swing.JDialog {
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 99, Short.MAX_VALUE)
-                        .addComponent(inputRemoteHost, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(inputPlayerColor, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(12, 12, 12))
+                        .addComponent(inputPlayerColor, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(12, 12, 12))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 95, Short.MAX_VALUE)
+                        .addComponent(inputRemoteHost, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(inputRemoteport, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(inputLocalPort, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -217,8 +254,13 @@ public class DialogNew extends javax.swing.JDialog {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(inputRemoteHost, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(19, Short.MAX_VALUE))
+                    .addComponent(inputRemoteHost, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(inputRemoteport, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(inputLocalPort, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(13, Short.MAX_VALUE))
         );
 
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Uložená hra"));
@@ -274,7 +316,7 @@ public class DialogNew extends javax.swing.JDialog {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(inputFileName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(buttFileName, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(27, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jButton1.setText("Vytvořit hru");
@@ -297,16 +339,15 @@ public class DialogNew extends javax.swing.JDialog {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jButton2)
+                        .addGap(9, 9, 9)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -314,15 +355,15 @@ public class DialogNew extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2))
-                .addContainerGap())
+                    .addComponent(jButton2)
+                    .addComponent(jButton1))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -349,16 +390,19 @@ public class DialogNew extends javax.swing.JDialog {
 
     private void radioPlayerVsPlayerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioPlayerVsPlayerActionPerformed
         this.inputRemoteHost.setEnabled(false);
+        this.inputRemoteport.setEnabled(false);
         this.inputPlayerColor.setEnabled(false);
     }//GEN-LAST:event_radioPlayerVsPlayerActionPerformed
 
     private void radioPlayerVsNetworkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioPlayerVsNetworkActionPerformed
         this.inputRemoteHost.setEnabled(true);
+        this.inputRemoteport.setEnabled(true);
         this.inputPlayerColor.setEnabled(true);
     }//GEN-LAST:event_radioPlayerVsNetworkActionPerformed
 
     private void radioPlayerVsPCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioPlayerVsPCActionPerformed
         this.inputRemoteHost.setEnabled(false);
+        this.inputRemoteport.setEnabled(false);
         this.inputPlayerColor.setEnabled(true);
     }//GEN-LAST:event_radioPlayerVsPCActionPerformed
 
@@ -388,6 +432,10 @@ public class DialogNew extends javax.swing.JDialog {
         this.accepted = true;
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void radioPlayerVsNetworkLocalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioPlayerVsNetworkLocalActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_radioPlayerVsNetworkLocalActionPerformed
 
     /**
      * @param args the command line arguments
@@ -435,16 +483,20 @@ public class DialogNew extends javax.swing.JDialog {
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JCheckBox checkFileName;
     private javax.swing.JTextField inputFileName;
+    private javax.swing.JTextField inputLocalPort;
     private javax.swing.JComboBox inputPlayerColor;
     private javax.swing.JTextField inputRemoteHost;
+    private javax.swing.JTextField inputRemoteport;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JRadioButton radioPlayerVsNetwork;
+    private javax.swing.JRadioButton radioPlayerVsNetworkLocal;
     private javax.swing.JRadioButton radioPlayerVsPC;
     private javax.swing.JRadioButton radioPlayerVsPlayer;
     // End of variables declaration//GEN-END:variables

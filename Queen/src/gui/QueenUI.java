@@ -196,6 +196,7 @@ public class QueenUI extends JFrame {
             GameType gameType = dialog.getGameType();
             Color playerColor = dialog.getPlayerColor();
             String remoteHost = dialog.getRemoteHost();
+            String remotePort = dialog.getRemotePort();
             String fileName = dialog.getStoredGameFileName(); 
             
             this.initContent();
