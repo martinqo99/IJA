@@ -44,6 +44,7 @@ public class BattleGroundUI extends JPanel {
     private Color playerColor;
     private DisabledFigures disabled;
     private boolean moveHinting;
+    private boolean hardCoreMode;
 
     private JTextArea logUI;
 
@@ -75,6 +76,7 @@ public class BattleGroundUI extends JPanel {
         this.playerColor = Color.WHITE;
         this.disabled = DisabledFigures.DISABLE_NONE;
         this.moveHinting = true;
+        this.hardCoreMode = false;
 
         this.logUI = new JTextArea();
         this.logUI.setBackground(new Color(239, 239, 239));
@@ -397,7 +399,8 @@ public class BattleGroundUI extends JPanel {
 
         // AI ma kam tahnout
         if(possible.size() > 0){
-            if (true/* something Filgy will add*/) {
+            Possibility possibility;
+            if (!this.hardCoreMode) {
                 Random rand = new Random();
 
                 int randomNum = rand.nextInt(possible.size() + 1);
@@ -405,10 +408,10 @@ public class BattleGroundUI extends JPanel {
                 if(randomNum >= possible.size())
                     randomNum = possible.size() - 1;
 
-                Possibility possibility = (Possibility)possible.get(randomNum);
+                possibility = (Possibility)possible.get(randomNum);
             }
             else {
-                Possibility possibility = this.minimax(possible);
+                possibility = this.minimax(possible);
             }
 
             this.battleground.move(possibility.getKiller(), possibility.getPosition());
@@ -427,30 +430,31 @@ public class BattleGroundUI extends JPanel {
         Possibility best = null;
         int best_move_old = 0, best_move_new = 0;
         boolean first = true;
+
         for (int i = 0; i < possible.size(); i++){
             Possibility possibility = (Possibility)possible.get(i);
+
             for (int j = 0; j < assassins.size(); j++){
                 Vector victims = ((Possibility)assassins.get(j)).getVictims();
+
                 for (int k = 0; k < victims.size(); k++){
                     if (((Position)victims.get(k)).equals(possibility.getPosition()))
-                        best_move_new--;
+                        best_move_new--; // odecteme 1 za kazdou figurku, ktera me potom bude ohrozovat
                 }
             }
-            if (possibility.killed() > 0) {
-                best_move_new += possibility.killed();
-            }
-            if (first) {
+            best_move_new += possibility.killed(); // pricteme kolik jich zabijeme
+            
+            if (first) { // urcite to jde lip, ne nebudu to prepisovat
                 best_move_old = best_move_new;
                 best = new Possibility(possibility);
                 first = false;
             }
-            else if (best_move_new > best_move_old) {
+            else if (best_move_new > best_move_old) { // nasli jsme lepsi pohyb
                 best_move_old = best_move_new;
                 best = new Possibility(possibility);
             }
             best_move_new = 0;
         }
-
         return best;
     }
 
@@ -460,6 +464,10 @@ public class BattleGroundUI extends JPanel {
      */
     public void setMoveHinting(boolean moveHinting){
         this.moveHinting = moveHinting;
+    }
+
+    public void setHardCoreMode(boolean hardCoreMode){
+        this.hardCoreMode = hardCoreMode;
     }
 
     /**
