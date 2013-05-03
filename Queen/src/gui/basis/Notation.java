@@ -26,6 +26,7 @@ import javax.xml.parsers.*;
 import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+import org.xml.sax.SAXException;
 
 /**
  * @author      Frantisek Kolacek <xkolac12 @ stud.fit.vutbr.cz>
@@ -142,19 +143,22 @@ public class Notation {
                 NodeList countermove = doc.getElementsByTagName("countermove");
                 
                 for (int i = 0; i < move.getLength(); i++) {
-                    builder.append(Integer.toString(i + 1)+". ");
+                    builder.append(Integer.toString(i + 1)).append(". ");
+                    
                     Element actMove = (Element)move.item(i);
                     Element actCountermove = (Element)countermove.item(i);
                     builder.append(actMove.getTextContent());
+                    
                     if (i < countermove.getLength())
-                        builder.append(" "+actCountermove.getTextContent());
+                        builder.append(" ").append(actCountermove.getTextContent());
+                    
                     builder.append("\n");                    
                     
                 }
 
                 this.loadFromRaw(builder.toString());              
                 
-            } catch (Exception e) {
+            } catch (ParserConfigurationException | SAXException | IOException | DOMException e) {
                 throw new IOException();
             }
         }
