@@ -435,6 +435,7 @@ public class BattleGroundUI extends JPanel {
     }
 
     private Possibility minimax(Vector possible){
+        Vector movePoss; // blbost, hledam jen vrahy, prepisu si to jindy
         Vector assassins = this.battleground.getReadyAssassins(this.battleground.getRoundColor() == Color.BLACK ? Color.WHITE : Color.BLACK);
         Possibility best = null;
         int best_move_old = 0, best_move_new = 0;
@@ -447,7 +448,7 @@ public class BattleGroundUI extends JPanel {
                 Vector victims = ((Possibility)assassins.get(j)).getVictims();
 
                 for (int k = 0; k < victims.size(); k++){
-                    if (((Position)victims.get(k)).equals(possibility.getPosition()))
+                    if (possibility.getPosition().equals((Position)victims.get(k)))//((Position)victims.get(k)).equals(possibility.getPosition())
                         best_move_new--; // odecteme 1 za kazdou figurku, ktera me potom bude ohrozovat
                 }
             }
