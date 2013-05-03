@@ -19,10 +19,11 @@ import java.util.Vector;
  */
 public class Desk {
 
-    private int dimension;
+    private int dimension;    
     private Field battleField[];
     
-    private Vector rounds;
+    private Color roundColor;
+    private Vector rounds;    
 
     /**
      * Konstruktor pro objekt Desk
@@ -31,6 +32,7 @@ public class Desk {
     public Desk(int dimension){
         this.dimension = dimension;
         
+        this.roundColor = Color.WHITE;        
         this.rounds = new Vector();
 
         this.prepareBattleGround();
@@ -196,6 +198,9 @@ public class Desk {
         // Pokud neni cim skakat
         if(figure == null)
             throw new RuntimeException();
+        
+        if(figure.getColor() != this.roundColor)
+            throw new RuntimeException();
 
         // Figurka se tam neumi dostat
         if(!figure.canMove(to))
@@ -219,8 +224,22 @@ public class Desk {
 
         this.at(from).removeFigure();
         this.at(to).setFigure(figure);
+        
+        this.roundColor = (this.roundColor == Color.WHITE)? Color.BLACK : Color.WHITE;
 
         return victims;
+    }
+    
+    public boolean isEnd(){
+        return false;
+    }
+    
+    /**
+     *
+     * @return
+     */
+    public Color getRoundColor(){
+        return this.roundColor;
     }
     
     /**

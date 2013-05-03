@@ -29,7 +29,6 @@ public class BattleGroundUI extends JPanel {
     private Container content;
     
     private int dimension;    
-    private boolean battleGroundWhiteTurn;
     private FieldButtonUI battleGroundActiveField;
     
     private Desk battleground;
@@ -61,7 +60,6 @@ public class BattleGroundUI extends JPanel {
         this.setLayout(new BorderLayout(0, 0));
         
         this.dimension = 8;
-        this.battleGroundWhiteTurn = true;
         this.battleground = new Desk(this.dimension);
         this.battlegroundUI = new FieldButtonUI[this.dimension * this.dimension];
         
@@ -142,9 +140,8 @@ public class BattleGroundUI extends JPanel {
         // Pole neni aktivovane, muze klikat pouze na figurky
         if(this.battleGroundActiveField == null){
             if(fieldUI.getField().getFigure() != null){
-                if(this.battleGroundWhiteTurn && fieldUI.getField().getFigure().getColor() == Color.WHITE || !this.battleGroundWhiteTurn && fieldUI.getField().getFigure().getColor() == Color.BLACK){
+                if(fieldUI.getField().getFigure().getColor() == this.battleground.getRoundColor()){
                     this.battleGroundActiveField = fieldUI;
-                    this.battleGroundWhiteTurn = !this.battleGroundWhiteTurn;
                     fieldUI.toogle();
 
                 }
@@ -161,7 +158,6 @@ public class BattleGroundUI extends JPanel {
             // Tahne na stejnou figuru
             if(fieldUI == this.battleGroundActiveField){
                 this.battleGroundActiveField.toogle();
-                this.battleGroundWhiteTurn = !this.battleGroundWhiteTurn;
                 this.battleGroundActiveField = null;
             }
             // Pokud se pokusime tahnout na jinou figuru
