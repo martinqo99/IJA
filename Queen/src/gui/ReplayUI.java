@@ -38,7 +38,6 @@ public class ReplayUI extends javax.swing.JFrame {
     private JButton mainMenuOpen;
     private JButton mainMenuLoad;
     private JTextField mainMenuLastFrame;
-    private JTextField mainMenuLastFrameTotal;
     private JButton mainMenuIncrease;
     private JTextField mainMenuInterval;
     private JButton mainMenuDecrease;
@@ -102,13 +101,7 @@ public class ReplayUI extends javax.swing.JFrame {
         
         this.mainMenuLastFrame = new JTextField(Integer.toString(this.lastFrame), 1 );
         this.mainMenuLastFrame.setHorizontalAlignment(JTextField.RIGHT);
-        //this.mainMenuLastFrame.setBorder(null);
         this.mainMenuLastFrame.setBackground(this.mainMenuNext.getBackground());
-        
-        this.mainMenuLastFrameTotal = new JTextField(" / " + Integer.toString(this.lastFrame), 1 );
-        this.mainMenuLastFrameTotal.setEditable(false);
-        this.mainMenuLastFrameTotal.setHorizontalAlignment(JTextField.LEFT);
-        this.mainMenuLastFrameTotal.setBorder(null);
         
         this.mainMenuIncrease = new JButton();
         
@@ -142,28 +135,22 @@ public class ReplayUI extends javax.swing.JFrame {
         this.mainMenuOpen.setToolTipText("Načíst záznam ze souboru");
         this.mainMenuLoad.setToolTipText("Načíst záznam ze vstupu");
         this.mainMenuLastFrame.setToolTipText("Poslední tah");
-        this.mainMenuLastFrameTotal.setToolTipText("Počet tahů");
         this.mainMenuIncrease.setToolTipText("Zvýšit prodlevu");
         this.mainMenuInterval.setToolTipText("Prodleva");
         this.mainMenuDecrease.setToolTipText("Snížit prodlevu");
         this.mainMenuHelp.setToolTipText("O programu");
         this.mainMenuQuit.setToolTipText("Ukončit");
-
-
         
         this.mainMenuBar.add(this.mainMenuPrev);
         this.mainMenuBar.add(this.mainMenuPlay);
         this.mainMenuBar.add(this.mainMenuPause);
         this.mainMenuBar.add(this.mainMenuStop);
         this.mainMenuBar.add(this.mainMenuNext);
+        this.mainMenuBar.add(this.mainMenuLastFrame);
+        this.mainMenuBar.add(new JSeparator());
         this.mainMenuBar.add(this.mainMenuOpen);
         this.mainMenuBar.add(this.mainMenuLoad);
         this.mainMenuBar.add(new JSeparator());
-        
-                this.mainMenuBar.add(this.mainMenuLastFrame);
-        this.mainMenuBar.add(this.mainMenuLastFrameTotal);
-        this.mainMenuBar.add(new JSeparator());
-
 
         this.mainMenuBar.add(this.mainMenuDecrease);
         this.mainMenuBar.add(this.mainMenuInterval);
@@ -339,6 +326,28 @@ public class ReplayUI extends javax.swing.JFrame {
         if(this.roundNumber >= this.rounds.size())
             return;
         
+        int tmp;
+        try{
+            tmp = Integer.parseInt(this.mainMenuLastFrame.getText());
+        }
+        catch(NumberFormatException err){
+            tmp = -1;
+        }
+        
+        if(tmp <= 0 || tmp > (this.rounds.size() / 2 + 1))
+            tmp = this.rounds.size() / 2 + 1;
+        
+        this.mainMenuLastFrame.setText(Integer.toString(tmp));
+        
+        if(this.roundNumber >= tmp * 2){
+            if(this.roundTimer != null)
+                this.roundTimer.stop();
+            
+            return;
+            
+        }
+        
+        
         Move round = (Move)this.rounds.get(this.roundNumber);
         this.battleground.getBattleground().move(round.getFrom(), round.getTo());
         this.battleground.reload();
@@ -370,6 +379,8 @@ public class ReplayUI extends javax.swing.JFrame {
                     
                     this.rounds = notation.getRounds();
                     this.roundNumber = 0;
+                    this.lastFrame = this.rounds.size() / 2 + 1;
+                    this.mainMenuLastFrame.setText(Integer.toString(this.lastFrame));
                     
                     // Clear desk
                     this.initContent();
@@ -400,6 +411,10 @@ public class ReplayUI extends javax.swing.JFrame {
                 
                 this.rounds = notation.getRounds();
                 this.roundNumber = 0;
+                
+                
+                this.lastFrame = this.rounds.size() / 2 + 1;
+                this.mainMenuLastFrame.setText(Integer.toString(this.lastFrame));
                 
                 // Clear desk
                 this.initContent();
