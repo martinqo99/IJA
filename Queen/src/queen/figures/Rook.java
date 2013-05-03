@@ -58,6 +58,7 @@ public class Rook extends Figure{
         Position step;
         int row;
         char column;
+        boolean ok = true;
         Possibility possibility = null;
         boolean areYouThereAssassin = false;
         //vlevo nahoru
@@ -66,6 +67,8 @@ public class Rook extends Figure{
             if(this.desk.isDeserter(step))
                 continue;
             if(this.desk.at(step).getFigure() == null) {
+                if (ok == false)
+                    ok = true;
                 possibility = new Possibility(step, kill);
                 possibilities.add(possibility);
                 if (kill.size() > 0)
@@ -74,16 +77,23 @@ public class Rook extends Figure{
             else
                 if (this.getColor() == this.desk.at(step).getFigure().getColor())
                     break;
-                else
+                else {
+                    if (ok == false)
+                        break;
                     kill.add(new Position(step));
+                    ok = false;
+                }
         }
         kill = new Vector();
+        ok = true;
         //vpravo nahoru
         for (row = this.getPosition().getRow()-1, column = (char)(this.getPosition().getColumn()+1); row > 0 && column <= 'h'; row--, column++) {
             step = new Position(column, row);
             if(this.desk.isDeserter(step))
                 continue;
             if(this.desk.at(step).getFigure() == null) {
+                if (ok == false)
+                    ok = true;
                 possibility = new Possibility(step, kill);
                 possibilities.add(possibility);
                 if (kill.size() > 0)
@@ -92,16 +102,23 @@ public class Rook extends Figure{
             else
                 if (this.getColor() == this.desk.at(step).getFigure().getColor())
                     break;
-                else
+                else {
+                    if (ok == false)
+                        break;
                     kill.add(new Position(step));
+                    ok = false;
+                }
         }
         kill = new Vector();
+        ok = true;
         //vlevo dolu
         for (row = this.getPosition().getRow()+1, column = (char)(this.getPosition().getColumn()-1); row <= 8 && column >= 'a'; row++, column--) {
             step = new Position(column, row);
             if(this.desk.isDeserter(step))
                 continue;
             if(this.desk.at(step).getFigure() == null) {
+                if (ok == false)
+                    ok = true;
                 possibility = new Possibility(step, kill);
                 possibilities.add(possibility);
                 if (kill.size() > 0)
@@ -110,16 +127,23 @@ public class Rook extends Figure{
             else
                 if (this.getColor() == this.desk.at(step).getFigure().getColor())
                     break;
-                else
+                else {
+                    if (ok == false)
+                        break;
                     kill.add(new Position(step));
+                    ok = false;
+                }
         }
         kill = new Vector();
+        ok = true;
         //vpravo dolu
         for (row = this.getPosition().getRow()+1, column = (char)(this.getPosition().getColumn()+1); row <= 8 && column <= 'h'; row++, column++) {
             step = new Position(column, row);
             if(this.desk.isDeserter(step))
                 continue;
             if(this.desk.at(step).getFigure() == null) {
+                if (ok == false)
+                    ok = true;
                 possibility = new Possibility(step, kill);
                 possibilities.add(possibility);
                 if (kill.size() > 0)
@@ -128,8 +152,12 @@ public class Rook extends Figure{
             else
                 if (this.getColor() == this.desk.at(step).getFigure().getColor())
                     break;
-                else
+                else {
+                    if (ok == false)
+                        break;
                     kill.add(new Position(step));
+                    ok = false;
+                }
         }
 
         if(areYouThereAssassin){ // nekdo bude ostranen
