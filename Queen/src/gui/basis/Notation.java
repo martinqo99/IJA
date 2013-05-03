@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.File;
 import java.util.Arrays;
+import java.util.Locale;
 import java.util.Vector;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -94,9 +95,7 @@ public class Notation {
 		DOMSource source = new DOMSource(doc);
 		StreamResult result = new StreamResult(new File(fileName));
                 transformer.transform(source, result);
-            } catch (ParserConfigurationException pce) {
-                throw new IOException();
-            } catch (TransformerException tce) {
+            } catch (ParserConfigurationException | TransformerException pce) {
                 throw new IOException();
             }
         }
@@ -133,21 +132,28 @@ public class Notation {
                 DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
                 Document doc = dBuilder.parse(xmlFile);
                 Element root = doc.getDocumentElement();
+                
+                // Invalid XML file
                 if (!root.getNodeName().matches("game"))
                     throw new IOException();
+                
                 StringBuilder builder = new StringBuilder();
                 NodeList move = doc.getElementsByTagName("move");
                 NodeList countermove = doc.getElementsByTagName("countermove");
+                
                 for (int i = 0; i < move.getLength(); i++) {
-                    builder.append(Integer.toString(i)+". ");
+                    builder.append(Integer.toString(i + 1)+". ");
                     Element actMove = (Element)move.item(i);
                     Element actCountermove = (Element)countermove.item(i);
                     builder.append(actMove.getTextContent());
                     if (i < countermove.getLength())
                         builder.append(" "+actCountermove.getTextContent());
-                    builder.append("\n");
+                    builder.append("\n");                    
+                    
                 }
-                this.loadFromRaw(builder.toString());
+
+                this.loadFromRaw(builder.toString());              
+                
             } catch (Exception e) {
                 throw new IOException();
             }
