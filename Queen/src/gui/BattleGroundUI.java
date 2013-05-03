@@ -141,8 +141,21 @@ public class BattleGroundUI extends JPanel {
                 Logger.getLogger(BattleGroundUI.class.getName()).log(Level.SEVERE, null, ex);
             }
                 
-            notation.getRounds();
-
+            Vector rounds = notation.getRounds();
+            
+            for(int i = 0; i < rounds.size(); i++){
+                Move round = (Move)rounds.get(i);
+                
+                this.battleground.move(round.getFrom(), round.getTo());
+            }
+            
+            this.reload();
+            
+            if(this.battleground.isEndOfAllHope()){
+                JOptionPane.showMessageDialog(this, "Byla načtena již ukončená hra!", "Queen - Konec hry", JOptionPane.ERROR_MESSAGE);
+                this.disabled = DisabledFigures.DISABLE_ALL;
+                return;
+            }
         }
         
         
