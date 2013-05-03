@@ -175,7 +175,7 @@ public class Desk {
      * @param to cilova pozice
      * @return bylo pohnuto figurkou
      */
-    public Vector move(Position from, Position to){
+    public Vector move(Position from, Position to) throws RuntimeException{
 
         /* PRESUNOUT!
         // Nelze skakat mimo sachovnici
@@ -195,14 +195,31 @@ public class Desk {
 
         // Pokud neni cim skakat
         if(figure == null)
-            throw new RuntimeException();
+            throw new RuntimeException("Tah lze provést pouze s figurkou!");
 
         if(figure.getColor() != this.roundColor)
-            throw new RuntimeException();
+            throw new RuntimeException("Hráč není na tahu!");
+        
+        Vector assassins = this.getReadyAssassins();
+        if(assassins.size() > 0){
+            boolean isAssassin = false;
+            
+            for(int i = 0; i < assassins.size(); i++){
+                Position assassin = (Position)assassins.get(i);
+                
+                if(assassin.equals(to)){
+                    isAssassin = true;
+                    break;
+                }
+            }
+            
+            if(!isAssassin)
+                throw new RuntimeException("Hráč je povinen provést skok!");
+        }
 
         // Figurka se tam neumi dostat
         if(!figure.canMove(to))
-            throw new RuntimeException();
+            throw new RuntimeException("Nelze provést tah na toto pole!");
 
         Vector victims = figure.move(to);
 
@@ -246,6 +263,35 @@ public class Desk {
         }
 
         return true;
+    }
+    
+    /**
+     *
+     * @return
+     */
+    public Vector getReadyAssassins(){
+        Vector assassins = new Vector();
+        
+        for(int i = 0; i < this.battleField.length; i++){
+            if(this.battleField[i].getFigure() == null)
+                continue;
+
+            if(this.battleField[i].getFigure().getColor() != this.roundColor)
+                continue;
+            
+            Vector possibilities = this.battleField[i].getFigure().canMovePossibilities();
+            
+            if(possibilities.size() > 0){
+                for(int j = 0; j < possibilities.size(); j++){
+                    Possibility possibility = (Possibility)possibilities.get(j);
+                    
+                    if(possibility.killed() > 0)
+                        assassins.add(new Position(possibility.getPosition()));
+                }
+            }            
+        }
+        
+        return assassins;
     }
 
     /**

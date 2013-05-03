@@ -228,44 +228,52 @@ public class BattleGroundUI extends JPanel {
             else{
                 //if(this.battleground.move(this.battleGroundActiveField.getField().getPosition(), fieldUI.getField().getPosition())){
                 if(this.battleGroundActiveField.getField().getFigure().canMove(fieldUI.getField().getPosition())){
-                    Vector victims = this.battleground.move(this.battleGroundActiveField.getField().getPosition(), fieldUI.getField().getPosition());
                     
-                    Vector rounds = this.battleground.getRounds();
-                    int roundsCounter = 1;
-                    String roundsString = "";
+                    try{
+                        Vector victims = this.battleground.move(this.battleGroundActiveField.getField().getPosition(), fieldUI.getField().getPosition());
                     
-                    for(int i = 0; i < rounds.size(); i++){
-                        if(i % 2 == 0)
-                            roundsString += Integer.toString(roundsCounter) + ". ";
-                        
-                            roundsString += ((Move)rounds.get(i)).toString();
-                            
+                        Vector rounds = this.battleground.getRounds();
+                        int roundsCounter = 1;
+                        String roundsString = "";
+                    
+                        for(int i = 0; i < rounds.size(); i++){
                             if(i % 2 == 0)
-                                roundsString += " ";
-                            else{
-                                roundsString += "\n";
-                                roundsCounter++;
-                        }
-                    }
-                    
-                    //this.logs.add(fieldUI.getField().getPosition().toString());
-                    this.logUI.setText(roundsString);
-                    
-                    fieldUI.reload();
+                                roundsString += Integer.toString(roundsCounter) + ". ";
+                        
+                                roundsString += ((Move)rounds.get(i)).toString();
                             
-                    for(int i = 0; i < victims.size(); i++){
-                        Position position = (Position) victims.get(i);
+                                if(i % 2 == 0)
+                                    roundsString += " ";
+                                else{
+                                    roundsString += "\n";
+                                    roundsCounter++;
+                            }
+                        }
+                    
+                        //this.logs.add(fieldUI.getField().getPosition().toString());
+                        this.logUI.setText(roundsString);
+                    
+                        fieldUI.reload();
+                            
+                        for(int i = 0; i < victims.size(); i++){
+                            Position position = (Position) victims.get(i);
             
-                        this.battlegroundUI[this.battleground.pos(position)].reload();
+                            this.battlegroundUI[this.battleground.pos(position)].reload();
+                        }
+                    
+                        this.battleGroundActiveField.toogle();
+                        this.battleGroundActiveField = null; 
+                    
+                        if(this.battleground.isEndOfAllHope()){
+                            JOptionPane.showMessageDialog(this, ((fieldUI.getField().getFigure().getColor() == Color.WHITE)? "Bílý" : "Černý")+ " hráč vyhrál hru!", "Queen - Konec hry", JOptionPane.INFORMATION_MESSAGE);
+                            this.disabled = DisabledFigures.DISABLE_ALL;
+                        }
+                        
+                    }
+                    catch(RuntimeException err){
+                        JOptionPane.showMessageDialog(this, err.getMessage(), "Queen - Chybný tah", JOptionPane.ERROR_MESSAGE);
                     }
                     
-                    this.battleGroundActiveField.toogle();
-                    this.battleGroundActiveField = null; 
-                    
-                    if(this.battleground.isEndOfAllHope()){
-                        JOptionPane.showMessageDialog(this, ((fieldUI.getField().getFigure().getColor() == Color.WHITE)? "Bílý" : "Černý")+ " hráč vyhrál hru!", "Queen - Konec hry", JOptionPane.INFORMATION_MESSAGE);
-                        this.disabled = DisabledFigures.DISABLE_ALL;
-                    }
                 }
                 else{
                     JOptionPane.showMessageDialog(this, "Nelze provést tah na toto pole!", "Queen - Chybný tah", JOptionPane.ERROR_MESSAGE);
