@@ -12,6 +12,7 @@ import gui.basis.*;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Vector;
@@ -322,38 +323,44 @@ public class ReplayUI extends javax.swing.JFrame {
     }
 
     private void handleDialogOpen(ActionEvent e){
-        JFileChooser dialog = new JFileChooser();
-
-        dialog.setAcceptAllFileFilterUsed(false);
-        dialog.addChoosableFileFilter(new FileNameExtensionFilter("txt", "txt"));
-        dialog.addChoosableFileFilter(new FileNameExtensionFilter("xml", "xml"));
-
-        if(dialog.showOpenDialog(this) == JFileChooser.APPROVE_OPTION){
-            String filename = dialog.getSelectedFile().getName();
-            String directory = dialog.getCurrentDirectory().toString();
-            //String extension = dialog.getFileFilter().getDescription();
-            String fullPath = directory + "/" + filename;
+            JFileChooser dialog = new JFileChooser();
             
-            try {
-                Notation notation = new Notation();
+            try{
+                File f = new File(new File("./examples/").getCanonicalPath());
+                dialog.setCurrentDirectory(f);
+            } catch(IOException err){}
+
+            dialog.setAcceptAllFileFilterUsed(false);
+            dialog.addChoosableFileFilter(new FileNameExtensionFilter("txt", "txt"));
+            dialog.addChoosableFileFilter(new FileNameExtensionFilter("xml", "xml"));
+
+            if(dialog.showOpenDialog(this) == JFileChooser.APPROVE_OPTION){
+                String filename = dialog.getSelectedFile().getName();
+                String directory = dialog.getCurrentDirectory().toString();
+                //String extension = dialog.getFileFilter().getDescription();
+                String fullPath = directory + "/" + filename;
                 
-                notation.loadFromFile(fullPath);
+                try {
+                    Notation notation = new Notation();
+                    
+                    notation.loadFromFile(fullPath);
+                    
+                    this.rounds = notation.getRounds();
+                    this.roundNumber = 0;
+                    
+                    // Clear desk
+                    this.initContent();
+                    
+                    JOptionPane.showMessageDialog(this, "Hra byla úspěšně načtena", "Queen - Načtení hry", JOptionPane.INFORMATION_MESSAGE);
+                    
+                } catch (FileNotFoundException ex) {
+                    JOptionPane.showMessageDialog(this, "Hru se nepodařilo načíst!", "Queen - Chyba při načítání hry", JOptionPane.ERROR_MESSAGE);
+                } catch (IOException ex) {
+                    JOptionPane.showMessageDialog(this, "Hru se nepodařilo načíst!", "Queen - Chyba při načítání hry", JOptionPane.ERROR_MESSAGE);
+                }
                 
-                this.rounds = notation.getRounds();
-                this.roundNumber = 0;
-                
-                // Clear desk
-                this.initContent();
-                
-                JOptionPane.showMessageDialog(this, "Hra byla úspěšně načtena", "Queen - Načtení hry", JOptionPane.INFORMATION_MESSAGE);
-                
-            } catch (FileNotFoundException ex) {
-                JOptionPane.showMessageDialog(this, "Hru se nepodařilo načíst!", "Queen - Chyba při načítání hry", JOptionPane.ERROR_MESSAGE);
-            } catch (IOException ex) {
-                JOptionPane.showMessageDialog(this, "Hru se nepodařilo načíst!", "Queen - Chyba při načítání hry", JOptionPane.ERROR_MESSAGE);
             }
-            
-        }
+
     }
     
     private void handleDialogLoad(ActionEvent e){

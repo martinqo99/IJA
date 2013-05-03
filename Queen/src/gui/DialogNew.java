@@ -10,6 +10,8 @@ package gui;
 import gui.basis.GameType;
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
+import java.io.IOException;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
@@ -69,6 +71,11 @@ public class DialogNew extends javax.swing.JDialog {
             return;
         
         JFileChooser dialog = new JFileChooser();
+        
+        try{
+            File f = new File(new File("./examples/").getCanonicalPath());
+            dialog.setCurrentDirectory(f);
+        } catch(IOException err){}
 
         dialog.setAcceptAllFileFilterUsed(false);
         dialog.addChoosableFileFilter(new FileNameExtensionFilter("txt", "txt"));

@@ -12,6 +12,7 @@ import gui.basis.GameType;
 import gui.basis.Notation;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -188,6 +189,11 @@ public class QueenUI extends JFrame {
 
     private void handleDialogSave(ActionEvent e){
         JFileChooser dialog = new JFileChooser();
+        
+        try{
+            File f = new File(new File("./examples/").getCanonicalPath());
+            dialog.setCurrentDirectory(f);
+        } catch(IOException err){}
 
         dialog.setAcceptAllFileFilterUsed(false);
         dialog.addChoosableFileFilter(new FileNameExtensionFilter("txt", "txt"));
