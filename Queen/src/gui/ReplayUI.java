@@ -37,7 +37,8 @@ public class ReplayUI extends javax.swing.JFrame {
     private JButton mainMenuNext;
     private JButton mainMenuOpen;
     private JButton mainMenuLoad;
-    
+    private JTextField mainMenuLastFrame;
+    private JTextField mainMenuLastFrameTotal;
     private JButton mainMenuIncrease;
     private JTextField mainMenuInterval;
     private JButton mainMenuDecrease;
@@ -50,6 +51,7 @@ public class ReplayUI extends javax.swing.JFrame {
     private BattleGroundUI battleground;
     
     private int interval;
+    private int lastFrame;
     private Vector rounds;
     
     private int roundNumber;
@@ -58,6 +60,7 @@ public class ReplayUI extends javax.swing.JFrame {
 
     public ReplayUI() {
         this.interval = 1;
+        this.lastFrame = 0;
         this.rounds = new Vector();
         this.roundNumber = 0;
         this.roundTimer = null;
@@ -97,9 +100,16 @@ public class ReplayUI extends javax.swing.JFrame {
         this.mainMenuOpen = new JButton();
         this.mainMenuLoad = new JButton();
         
+        this.mainMenuLastFrame = new JTextField(Integer.toString(this.lastFrame), 1 );
+        this.mainMenuLastFrame.setHorizontalAlignment(JTextField.CENTER);
+        
+        this.mainMenuLastFrameTotal = new JTextField("/ " + Integer.toString(this.lastFrame), 1 );
+        this.mainMenuLastFrameTotal.setEditable(false);
+        this.mainMenuLastFrameTotal.setHorizontalAlignment(JTextField.CENTER);
+        
         this.mainMenuIncrease = new JButton();
         
-        this.mainMenuInterval = new JTextField(Integer.toString(this.interval), 1);
+        this.mainMenuInterval = new JTextField(Integer.toString(this.interval), 1 );
         this.mainMenuInterval.setEditable(false);
         
         this.mainMenuInterval.setHorizontalAlignment(JTextField.RIGHT);
@@ -128,10 +138,17 @@ public class ReplayUI extends javax.swing.JFrame {
         this.mainMenuNext.setToolTipText("Další tah");
         this.mainMenuOpen.setToolTipText("Načíst záznam ze souboru");
         this.mainMenuLoad.setToolTipText("Načíst záznam ze vstupu");
+        this.mainMenuLastFrame.setToolTipText("Poslední tah");
+        this.mainMenuLastFrameTotal.setToolTipText("Počet tahů");
         this.mainMenuIncrease.setToolTipText("Zvýšit prodlevu");
+        this.mainMenuInterval.setToolTipText("Prodleva");
         this.mainMenuDecrease.setToolTipText("Snížit prodlevu");
         this.mainMenuHelp.setToolTipText("O programu");
         this.mainMenuQuit.setToolTipText("Ukončit");
+
+        this.mainMenuBar.add(this.mainMenuLastFrame);
+        this.mainMenuBar.add(this.mainMenuLastFrameTotal);
+        this.mainMenuBar.add(new JSeparator());
         
         this.mainMenuBar.add(this.mainMenuPrev);
         this.mainMenuBar.add(this.mainMenuPlay);
@@ -141,10 +158,11 @@ public class ReplayUI extends javax.swing.JFrame {
         this.mainMenuBar.add(this.mainMenuOpen);
         this.mainMenuBar.add(this.mainMenuLoad);
         this.mainMenuBar.add(new JSeparator());
-        
-        this.mainMenuBar.add(this.mainMenuInterval);
-        this.mainMenuBar.add(this.mainMenuIncrease);
+
+
         this.mainMenuBar.add(this.mainMenuDecrease);
+        this.mainMenuBar.add(this.mainMenuInterval);
+        this.mainMenuBar.add(this.mainMenuIncrease);        
         
         this.mainMenuBar.add(new JSeparator());
         this.mainMenuBar.add(this.mainMenuHelp);
