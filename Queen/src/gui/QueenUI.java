@@ -33,13 +33,17 @@ public class QueenUI extends JFrame {
     private JMenuItem mainMenuGameSave;
     private JMenuItem mainMenuGameReplay;
     private JMenuItem mainMenuGameMoveHinting;
+    private JMenuItem mainMenuGameHardcoreMode;
+    
     private JMenuItem mainMenuGameQuit;
     private JMenu mainMenuHelp;
     private JMenuItem mainMenuHelpAbout;
 
     private Container content;
     private BattleGroundUI battleground;
+    
     private boolean MoveHinting;
+    private boolean HardcoreMode;
 
     /**
      * Creates new form QueenUI
@@ -68,6 +72,7 @@ public class QueenUI extends JFrame {
 
     private void initMenu(){
         this.MoveHinting = true;
+        this.HardcoreMode = false;
         
         //Create menu bar
         this.mainMenuBar = new JMenuBar();
@@ -84,6 +89,8 @@ public class QueenUI extends JFrame {
         this.mainMenuGameSave = new JMenuItem("Uložit");
         this.mainMenuGameReplay = new JMenuItem("Přehrát");
         this.mainMenuGameMoveHinting = new JMenuItem("Nápověda tahů");
+        this.mainMenuGameHardcoreMode = new JMenuItem("Hardcore mód");
+        
         this.mainMenuGameQuit = new JMenuItem("Ukončit");
         this.mainMenuHelpAbout = new JMenuItem("O programu");
 
@@ -91,6 +98,7 @@ public class QueenUI extends JFrame {
         this.mainMenuGameSave.setIcon(new ImageIcon(getClass().getResource("/gfx/icon_save.png")));
         this.mainMenuGameReplay.setIcon(new ImageIcon(getClass().getResource("/gfx/icon_replay.png")));
         this.mainMenuGameMoveHinting.setIcon(new ImageIcon(getClass().getResource("/gfx/icon_tick.png")));
+        this.mainMenuGameHardcoreMode.setIcon(new ImageIcon(getClass().getResource("/gfx/icon_cancel.png")));
         this.mainMenuGameQuit.setIcon(new ImageIcon(getClass().getResource("/gfx/icon_quit.png")));
         this.mainMenuHelpAbout.setIcon(new ImageIcon(getClass().getResource("/gfx/icon_help.png")));
 
@@ -126,6 +134,13 @@ public class QueenUI extends JFrame {
                 handleMoveHinting(e);
             }
         });
+        
+        this.mainMenuGameHardcoreMode.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                handleHardcoreMode(e);
+            }
+        });
 
         // Bind close event to Quit
         this.mainMenuGameQuit.addActionListener(new ActionListener() {
@@ -148,6 +163,7 @@ public class QueenUI extends JFrame {
         this.mainMenuGame.add(this.mainMenuGameReplay);
         this.mainMenuGame.add(new JSeparator());
         this.mainMenuGame.add(this.mainMenuGameMoveHinting);
+        this.mainMenuGame.add(this.mainMenuGameHardcoreMode);
         this.mainMenuGame.add(new JSeparator());
         this.mainMenuGame.add(this.mainMenuGameQuit);
         this.mainMenuHelp.add(this.mainMenuHelpAbout);
@@ -184,6 +200,8 @@ public class QueenUI extends JFrame {
             
             this.initContent();
             this.battleground.initGame(gameType, playerColor, remoteHost, fileName);
+            this.battleground.setMoveHinting(this.MoveHinting);
+            this.battleground.setHardCoreMode(this.HardcoreMode);
         }
     }
 
@@ -237,6 +255,12 @@ public class QueenUI extends JFrame {
         this.MoveHinting = !this.MoveHinting;
         this.mainMenuGameMoveHinting.setIcon(new ImageIcon(getClass().getResource((this.MoveHinting)? "/gfx/icon_tick.png" : "/gfx/icon_cancel.png")));
         this.battleground.setMoveHinting(this.MoveHinting);
+    }
+    
+    private void handleHardcoreMode(ActionEvent e){
+        this.HardcoreMode = !this.HardcoreMode;
+        this.mainMenuGameHardcoreMode.setIcon(new ImageIcon(getClass().getResource((this.HardcoreMode)? "/gfx/icon_tick.png" : "/gfx/icon_cancel.png")));
+        this.battleground.setHardCoreMode(this.HardcoreMode);
     }
 
     private void handleDialogAbout(ActionEvent e){
