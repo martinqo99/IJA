@@ -13,8 +13,12 @@ import gui.basis.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import queen.basis.*;
@@ -126,7 +130,23 @@ public class BattleGroundUI extends JPanel {
     
     public void initGame(GameType gameType, Color playerColor, String remoteHost, String fileName){
         this.gameType = gameType;
-        System.out.println("Game init");
+        
+        if(!fileName.isEmpty()){
+            Notation notation = new Notation();
+            try {
+                notation.loadFromFile(fileName);
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(BattleGroundUI.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(BattleGroundUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
+                
+            notation.getRounds();
+
+        }
+        
+        
+        
         
         if(this.gameType == GameType.REPLAY)
             this.initReplay();

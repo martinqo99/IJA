@@ -181,8 +181,12 @@ public class QueenUI extends JFrame {
         if(dialog.showSaveDialog(this) == JFileChooser.APPROVE_OPTION){
             String filename = dialog.getSelectedFile().getName();
             String directory = dialog.getCurrentDirectory().toString();
-            //String extension = dialog.getFileFilter().getDescription();
+            String extension = dialog.getFileFilter().getDescription();
             String fullPath = directory + "/" + filename;
+            
+                        
+            if(!fullPath.matches(".*\\.txt") || fullPath.matches(".*\\.xml"))
+                fullPath += "." + extension;
 
             try {
                 Notation.saveToFile(fullPath, this.battleground.getRounds());
