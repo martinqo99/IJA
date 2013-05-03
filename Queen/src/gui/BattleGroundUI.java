@@ -41,6 +41,7 @@ public class BattleGroundUI extends JPanel {
     private GameType gameType;    
     private Color playerColor;
     private DisabledFigures disabled;
+    private boolean moveHinting;
 
     private JTextArea logUI;
 
@@ -71,6 +72,7 @@ public class BattleGroundUI extends JPanel {
         this.gameType = GameType.PLAYER_VS_PLAYER; 
         this.playerColor = Color.WHITE;
         this.disabled = DisabledFigures.DISABLE_NONE;
+        this.moveHinting = true;
         
         this.logUI = new JTextArea();
         this.logUI.setBackground(new Color(239, 239, 239));
@@ -203,6 +205,15 @@ public class BattleGroundUI extends JPanel {
                 if(fieldUI.getField().getFigure().getColor() == this.battleground.getRoundColor()){
                     this.battleGroundActiveField = fieldUI;
                     fieldUI.toogle();
+                    
+                    // Mark possibilities
+                    Vector possibilities = fieldUI.getField().getFigure().canMovePossibilities();
+                    for(int i = 0; i < possibilities.size(); i++){
+                        Possibility possibility = (Possibility)possibilities.get(i);
+                        
+                        this.battlegroundUI[this.battleground.pos(possibility.getPosition())].mark();
+                    }
+                    
 
                 }
                 else{
@@ -218,6 +229,15 @@ public class BattleGroundUI extends JPanel {
             // Tahne na stejnou figuru
             if(fieldUI == this.battleGroundActiveField){
                 this.battleGroundActiveField.toogle();
+                
+                // Unmark possibilities
+                Vector possibilities = this.battleGroundActiveField.getField().getFigure().canMovePossibilities();
+                for(int i = 0; i < possibilities.size(); i++){
+                    Possibility possibility = (Possibility)possibilities.get(i);
+                        
+                    this.battlegroundUI[this.battleground.pos(possibility.getPosition())].reload();
+                }
+                
                 this.battleGroundActiveField = null;
             }
             // Pokud se pokusime tahnout na jinou figuru
@@ -228,6 +248,15 @@ public class BattleGroundUI extends JPanel {
             else{
                 //if(this.battleground.move(this.battleGroundActiveField.getField().getPosition(), fieldUI.getField().getPosition())){
                 if(this.battleGroundActiveField.getField().getFigure().canMove(fieldUI.getField().getPosition())){
+                    
+                    // Unmark possibilities
+                    Vector possibilities = this.battleGroundActiveField.getField().getFigure().canMovePossibilities();
+                    for(int i = 0; i < possibilities.size(); i++){
+                        Possibility possibility = (Possibility)possibilities.get(i);
+                        
+                        this.battlegroundUI[this.battleground.pos(possibility.getPosition())].reload();
+                    }
+                    
                     
                     try{
                         Vector victims = this.battleground.move(this.battleGroundActiveField.getField().getPosition(), fieldUI.getField().getPosition());
