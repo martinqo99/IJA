@@ -12,8 +12,8 @@ import java.awt.*;
 import java.util.Vector;
 
 /**
- *
- * @author xkolac12 <xkolac12 at stud.fit.vutbr.cz>
+ * @author      Frantisek Kolacek <xkolac12 @ stud.fit.vutbr.cz>
+ * @author      Petr Matyas <xmatya03 @ stud.fit.vutbr.cz>
  */
 public class Rook extends Figure{
 
@@ -27,6 +27,11 @@ public class Rook extends Figure{
         super(desk, position, color);
     }
 
+    /**
+     * Overeni, jestli se figurka muze na danou pozici presunout
+     * @param position pozice kam se chce presunout
+     * @return lze se presunout?
+     */
     @Override
     public boolean canMove(Position position){
         Vector possibilities = this.canMovePossibilities();
@@ -41,6 +46,10 @@ public class Rook extends Figure{
         return false;
     }
 
+    /**
+     * Overeni, kam vsude se muze figurka presunout
+     * @return vektor moznych pozic pro presun
+     */
     @Override
     public Vector canMovePossibilities(){
         Vector possibilities = new Vector();
@@ -123,7 +132,7 @@ public class Rook extends Figure{
                     kill.add(new Position(step));
         }
 
-        if(areYouThereAssassin){
+        if(areYouThereAssassin){ // nekdo bude ostranen
             Vector tmp = possibilities;
             possibilities = new Vector();
 

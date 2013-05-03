@@ -14,6 +14,7 @@ import java.util.Vector;
 
 /**
  * @author      Frantisek Kolacek <xkolac12 @ stud.fit.vutbr.cz>
+ * @author      Petr Matyas <xmatya03 @ stud.fit.vutbr.cz>
  * @version     0.91
  * @since       2013-04-30
  */
@@ -29,14 +30,19 @@ public class Stone extends Figure{
         super(desk, position, color);
     }
 
+    /**
+     * Overeni, jestli se na danou pozici lze presunout
+     * @param position pozice kam se figurka chce presunout
+     * @return lze presunout?
+     */
     @Override
     public boolean canMove(Position position){
 
         Vector possibilities = this.canMovePossibilities();
-        
+
         for(int i = 0; i < possibilities.size(); i++){
             Possibility possibility = (Possibility)possibilities.get(i);
-            
+
             if(possibility.getPosition().equals(position))
                 return true;
         }
@@ -44,6 +50,10 @@ public class Stone extends Figure{
         return false;
     }
 
+    /**
+     * Zjisteni, kam vsude se figurka muze presunout a koho pri tom odstrani
+     * @return vektor moznych pozic pro presun
+     */
     @Override
     public Vector canMovePossibilities(){
         Vector possibilities = new Vector();
@@ -74,7 +84,7 @@ public class Stone extends Figure{
                 }
             }
         }
-        
+
         // Vpravo
         step1 = new Position((char)(this.position.getColumn() + 1), this.position.getRow() + rowStep);
         if(!this.desk.isDeserter(step1)){
@@ -94,16 +104,16 @@ public class Stone extends Figure{
                 }
             }
         }
-        
-        if(areYouThereAssassin){
+
+        if(areYouThereAssassin){ // nekdo bude ostranen
             Vector tmp = possibilities;
             possibilities = new Vector();
-            
+
             for(int i = 0; i < tmp.size(); i++){
                 possibility = (Possibility)tmp.get(i);
-                
+
                 if(possibility.killed() > 0)
-                    possibilities.add(possibility);                
+                    possibilities.add(possibility);
             }
         }
 
