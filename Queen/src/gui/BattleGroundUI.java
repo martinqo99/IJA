@@ -472,6 +472,25 @@ public class BattleGroundUI extends JPanel {
 
                             this.battlegroundUI[this.battleground.pos(position)].reload();
                         }
+                        
+                        if(this.gameType == GameType.PLAYER_VS_NETWORK_LOCAL || this.gameType == GameType.PLAYER_VS_NETWORK_REMOTE){
+                            try{
+                            
+                                Move tmp = new Move(this.battleGroundActiveField.getField().getPosition(), fieldUI.getField().getPosition(), (victims.size() > 0)? true : false);
+                                this.handlerInput.print(tmp.toString());
+                            
+                                while(!this.handlerOutput.ready());
+                                
+                                tmp = new Move(this.handlerOutput.readLine());
+                                
+                                this.battleground.move(tmp.getFrom(), tmp.getTo());
+                                this.reload();
+                            }
+                            catch(IOException ex){
+                                this.disabled = DisabledFigures.DISABLE_ALL;
+                                JOptionPane.showMessageDialog(this, "Chyba síťové komunikace!", "Queen - Síťová hra", JOptionPane.ERROR_MESSAGE);
+                            }
+                        }
 
                         this.battleGroundActiveField.toogle();
                         this.battleGroundActiveField = null;
@@ -484,6 +503,8 @@ public class BattleGroundUI extends JPanel {
 
                         if(this.gameType == GameType.PLAYER_VS_PC)
                             this.AImove();
+
+
 
                     }
                     catch(RuntimeException err){

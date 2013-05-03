@@ -8,6 +8,8 @@
 package queen.basis;
 
 import java.awt.Color;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author      Frantisek Kolacek <xkolac12 @ stud.fit.vutbr.cz>
@@ -41,6 +43,22 @@ public class Move {
         this.from = new Position(move.getFrom());
         this.to = new Position(move.getTo());
         this.fight = move.isFight();
+    }
+    
+    public Move(String position){
+        Pattern regex = Pattern.compile("^([a-z][0-9])([x\\-])([a-z][0-9])$");
+        Matcher match = regex.matcher(position);
+
+        if(match.find()){
+            this.from = new Position(match.group(1));
+            this.to = new Position(match.group(3));
+            this.fight = ("x".equals(match.group(2)))? true : false;
+        }
+        else{
+            this.from = new Position("a1");
+            this.to = new Position("a1");
+            this.fight = false;
+        }
     }
 
     /**
