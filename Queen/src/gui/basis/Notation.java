@@ -47,7 +47,7 @@ public class Notation {
      * @param rounds
      * @throws FileNotFoundException
      */
-    public static void saveToFile(String fileName, Vector rounds) throws FileNotFoundException{
+    public static void saveToFile(String fileName, Vector rounds) throws FileNotFoundException, IOException{
         if (fileName.matches(".*\\.txt")) { // ukladame do textoveho souboru
             PrintWriter writer = new PrintWriter(fileName);
 
@@ -95,9 +95,9 @@ public class Notation {
 		StreamResult result = new StreamResult(new File(fileName));
                 transformer.transform(source, result);
             } catch (ParserConfigurationException pce) {
-                //pry tu mam odchytavat exeption :D
+                throw new IOException();
             } catch (TransformerException tce) {
-                // odchycena vyjimka
+                throw new IOException();
             }
         }
     }
@@ -149,7 +149,7 @@ public class Notation {
                 }
                 this.loadFromRaw(builder.toString());
             } catch (Exception e) {
-                // chytam
+                throw new IOException();
             }
         }
     }
