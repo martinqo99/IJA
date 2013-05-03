@@ -201,6 +201,11 @@ public class BattleGroundUI extends JPanel {
                     
                     this.battleGroundActiveField.toogle();
                     this.battleGroundActiveField = null; 
+                    
+                    if(this.battleground.isEndOfAllHope()){
+                        JOptionPane.showMessageDialog(this, ((fieldUI.getField().getFigure().getColor() == Color.WHITE)? "Bílý" : "Černý")+ " hráč vyhrál hru!", "Queen - Konec hry", JOptionPane.INFORMATION_MESSAGE);
+                        this.disabled = DisabledFigures.DISABLE_ALL;
+                    }
                 }
                 else{
                     JOptionPane.showMessageDialog(this, "Nelze provést tah na toto pole!", "Queen - Chybný tah", JOptionPane.ERROR_MESSAGE);

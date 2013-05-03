@@ -30,15 +30,12 @@ public class Desk {
      * @param dimension rozmery hraciho planu
      */
     public Desk(int dimension){
-        this.dimension = dimension;
-        
+        this.dimension = dimension;        
         this.roundColor = Color.WHITE;        
         this.rounds = new Vector();
 
         this.prepareBattleGround();
         this.prepareSoldiers();
-
-        //this.debug();
     }
 
     private void prepareBattleGround(){
@@ -49,17 +46,11 @@ public class Desk {
         for(char column = 'a'; column < (char)('a' + this.dimension); column++){
             for(int row = 1; row <= this.dimension; row++){
                 this.battleField[this.pos(column, row)] = new Field(new Position(column, row), color);
-
-                if(color == Color.BLACK)
-                    color = Color.WHITE;
-                else
-                    color = Color.BLACK;
+                
+                color = (color == Color.WHITE)? Color.BLACK : Color.WHITE;
             }
 
-            if(color == Color.BLACK)
-                color = Color.WHITE;
-            else
-                color = Color.BLACK;
+            color = (color == Color.WHITE)? Color.BLACK : Color.WHITE;
         }
     }
 
@@ -230,8 +221,20 @@ public class Desk {
         return victims;
     }
     
-    public boolean isEnd(){
-        return false;
+    public boolean isEndOfAllHope(){
+
+        for(int i = 0; i < this.battleField.length; i++){
+            if(this.battleField[i].getFigure() == null)
+                continue;
+            
+            if(this.battleField[i].getFigure().getColor() != this.roundColor)
+                continue;
+            
+            if(this.battleField[i].getFigure().canMovePossibilities().size() > 0)
+                return false;
+        }
+        
+        return true;
     }
     
     /**
