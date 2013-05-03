@@ -30,6 +30,7 @@ import org.xml.sax.SAXException;
 
 /**
  * @author      Frantisek Kolacek <xkolac12 @ stud.fit.vutbr.cz>
+ * @author      Petr Matyas <xmatya03 @ stud.fit.vutbr.cz>
  * @version     0.91
  * @since       2013-04-30
  */
@@ -38,16 +39,20 @@ public class Notation {
     private Vector raw;
     private Vector rounds;
 
+    /**
+     * Inicializace objektu notace
+     */
     public void initNotation(){
         this.raw = new Vector();
         this.rounds = new Vector();
     }
 
     /**
-     *
-     * @param fileName
-     * @param rounds
-     * @throws FileNotFoundException
+     * Metoda na ulozeni hry
+     * @param fileName nazev souboru
+     * @param rounds vektor odehranych kol
+     * @throws FileNotFoundException soubor nebyl nalezen
+     * @throws IOException chyba pri vytvareni xml
      */
     public static void saveToFile(String fileName, Vector rounds) throws FileNotFoundException, IOException{
         if (fileName.matches(".*\\.txt")) { // ukladame do textoveho souboru
@@ -77,16 +82,16 @@ public class Notation {
                 DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
                 DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
                 Document doc = docBuilder.newDocument();
-		Element game = doc.createElement("game");
+		Element game = doc.createElement("game"); // root tag
 		doc.appendChild(game);
                 for(int i = 0; i < rounds.size(); i++){
                     Element move;
                     if (i % 2 == 0) {
-                        move = doc.createElement("move");
+                        move = doc.createElement("move"); // tah bileho
                         move.appendChild(doc.createTextNode(((Move)rounds.get(i)).toString()));
                     }
                     else {
-                        move = doc.createElement("countermove");
+                        move = doc.createElement("countermove"); // tah cerneho
                         move.appendChild(doc.createTextNode(((Move)rounds.get(i)).toString()));
                     }
                     game.appendChild(move);
@@ -95,7 +100,7 @@ public class Notation {
 		Transformer transformer = transformerFactory.newTransformer();
 		DOMSource source = new DOMSource(doc);
 		StreamResult result = new StreamResult(new File(fileName));
-                transformer.transform(source, result);
+                transformer.transform(source, result); // tisk xml do souboru
             } catch (ParserConfigurationException | TransformerException pce) {
                 throw new IOException();
             }
@@ -103,13 +108,13 @@ public class Notation {
     }
 
     /**
-     *
-     * @param fileName
-     * @throws FileNotFoundException
-     * @throws IOException
+     * Metoda pro nahrani hry ze souboru
+     * @param fileName nazev souboru
+     * @throws FileNotFoundException soubor nebyl nalezen
+     * @throws IOException syntakticka chyba v souboru
      */
     public void loadFromFile(String fileName) throws FileNotFoundException, IOException{
-        if (fileName.matches(".*\\.txt")) {
+        if (fileName.matches(".*\\.txt")) { // nacitame z txt
             BufferedReader reader = new BufferedReader(new FileReader(fileName));
             StringBuilder builder = new StringBuilder();
             String line = reader.readLine();
@@ -126,38 +131,38 @@ public class Notation {
 
             this.loadFromRaw(builder.toString());
         }
-        else {
+        else { // nacitame z txt
             try {
                 File xmlFile = new File(fileName);
                 DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
                 DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
                 Document doc = dBuilder.parse(xmlFile);
                 Element root = doc.getDocumentElement();
-                
+
                 // Invalid XML file
                 if (!root.getNodeName().matches("game"))
                     throw new IOException();
-                
+
                 StringBuilder builder = new StringBuilder();
                 NodeList move = doc.getElementsByTagName("move");
                 NodeList countermove = doc.getElementsByTagName("countermove");
-                
+
                 for (int i = 0; i < move.getLength(); i++) {
                     builder.append(Integer.toString(i + 1)).append(". ");
-                    
+
                     Element actMove = (Element)move.item(i);
                     Element actCountermove = (Element)countermove.item(i);
                     builder.append(actMove.getTextContent());
-                    
+
                     if (i < countermove.getLength())
                         builder.append(" ").append(actCountermove.getTextContent());
-                    
-                    builder.append("\n");                    
-                    
+
+                    builder.append("\n");
+
                 }
 
-                this.loadFromRaw(builder.toString());              
-                
+                this.loadFromRaw(builder.toString());
+
             } catch (ParserConfigurationException | SAXException | IOException | DOMException e) {
                 throw new IOException();
             }
@@ -165,9 +170,9 @@ public class Notation {
     }
 
     /**
-     *
-     * @param raw
-     * @throws IOException
+     * Nacteni hry ze vstupu
+     * @param raw string s celou hrou
+     * @throws IOException syntakticka chyba
      */
     public void loadFromRaw(String raw) throws IOException{
         this.initNotation();
@@ -179,6 +184,10 @@ public class Notation {
         this.parse();
     }
 
+    /**
+     * Kontrola nactene hry
+     * @throws IOException syntakticka chyba
+     */
     private void parse() throws IOException{
         Pattern regexFull = Pattern.compile("^([0-9]+)\\. ([a-z][0-9])([x\\-])([a-z][0-9]) ([a-z][0-9])([x\\-])([a-z][0-9])$");
         Pattern regexHalf = Pattern.compile("^([0-9]+)\\. ([a-z][0-9])([x\\-])([a-z][0-9])[ ]?$");
@@ -218,8 +227,8 @@ public class Notation {
     }
 
     /**
-     *
-     * @return
+     * Getter pro odehrana kola
+     * @return Vector vektor odehranych kol
      */
     public Vector getRounds(){
         return this.rounds;
