@@ -14,30 +14,34 @@ import java.util.Vector;
 
 /**
  * @author      Frantisek Kolacek <xkolac12 @ stud.fit.vutbr.cz>
+ * @author      Petr Matyas <xmatya03 @ stud.fit.vutbr.cz>
  * @version     0.91
  * @since       2013-04-30
  */
 public class Desk {
 
-    private int dimension;    
+    private int dimension;
     private Field battleField[];
-    
+
     private Color roundColor;
-    private Vector rounds;    
+    private Vector rounds;
 
     /**
      * Konstruktor pro objekt Desk
      * @param dimension rozmery hraciho planu
      */
     public Desk(int dimension){
-        this.dimension = dimension;        
-        this.roundColor = Color.WHITE;        
+        this.dimension = dimension;
+        this.roundColor = Color.WHITE;
         this.rounds = new Vector();
 
         this.prepareBattleGround();
         this.prepareSoldiers();
     }
 
+    /**
+     * Metoda pro pripravu hraciho planu
+     */
     private void prepareBattleGround(){
         this.battleField = new Field[this.dimension * this.dimension];
 
@@ -46,7 +50,7 @@ public class Desk {
         for(char column = 'a'; column < (char)('a' + this.dimension); column++){
             for(int row = 1; row <= this.dimension; row++){
                 this.battleField[this.pos(column, row)] = new Field(new Position(column, row), color);
-                
+
                 color = (color == Color.WHITE)? Color.BLACK : Color.WHITE;
             }
 
@@ -54,6 +58,9 @@ public class Desk {
         }
     }
 
+    /**
+     * Metoda pro pripravu pescu
+     */
     private void prepareSoldiers(){
         this.at('a', 7).setFigure(new Stone(this, new Position('a', 7), Color.BLACK));
         this.at('b', 6).setFigure(new Stone(this, new Position('b', 6), Color.BLACK));
@@ -169,7 +176,7 @@ public class Desk {
      * @return bylo pohnuto figurkou
      */
     public Vector move(Position from, Position to){
-        
+
         /* PRESUNOUT!
         // Nelze skakat mimo sachovnici
         if(this.isDeserter(from) || this.isDeserter(to))
@@ -189,7 +196,7 @@ public class Desk {
         // Pokud neni cim skakat
         if(figure == null)
             throw new RuntimeException();
-        
+
         if(figure.getColor() != this.roundColor)
             throw new RuntimeException();
 
@@ -198,15 +205,15 @@ public class Desk {
             throw new RuntimeException();
 
         Vector victims = figure.move(to);
-        
+
         for(int i = 0; i < victims.size(); i++){
             Position position = (Position) victims.get(i);
-            
+
             this.at(position).removeFigure();
         }
-        
+
         this.rounds.add(new Move(from, to, (victims.size() == 0)? false : true));
-        
+
         if(figure.getColor() == Color.WHITE && to.getRow() == this.dimension && !"Rook".equals(figure.getClass().getSimpleName()))
             figure = new Rook(this, to, Color.WHITE);
 
@@ -215,39 +222,43 @@ public class Desk {
 
         this.at(from).removeFigure();
         this.at(to).setFigure(figure);
-        
+
         this.roundColor = (this.roundColor == Color.WHITE)? Color.BLACK : Color.WHITE;
 
         return victims;
     }
-    
+
+    /**
+     * Testovani konce hry
+     * @return je konec hry?
+     */
     public boolean isEndOfAllHope(){
 
         for(int i = 0; i < this.battleField.length; i++){
             if(this.battleField[i].getFigure() == null)
                 continue;
-            
+
             if(this.battleField[i].getFigure().getColor() != this.roundColor)
                 continue;
-            
+
             if(this.battleField[i].getFigure().canMovePossibilities().size() > 0)
                 return false;
         }
-        
+
         return true;
     }
-    
+
     /**
-     *
-     * @return
+     * Getter barvy hrace, ktery prave hraje
+     * @return barva aktivniho hrace
      */
     public Color getRoundColor(){
         return this.roundColor;
     }
-    
+
     /**
-     *
-     * @return
+     * Getter odehranych kol
+     * @return vektor odehranych kol
      */
     public Vector getRounds(){
         return this.rounds;

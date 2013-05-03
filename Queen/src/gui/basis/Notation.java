@@ -228,7 +228,7 @@ public class Notation {
 
     /**
      * Getter pro odehrana kola
-     * @return Vector vektor odehranych kol
+     * @return vektor odehranych kol
      */
     public Vector getRounds(){
         return this.rounds;

@@ -12,6 +12,7 @@ import java.util.Vector;
 
 /**
  * @author      Frantisek Kolacek <xkolac12 @ stud.fit.vutbr.cz>
+ * @author      Petr Matyas <xmatya03 @ stud.fit.vutbr.cz>
  * @version     0.91
  * @since       2013-04-30
  */
@@ -20,40 +21,69 @@ public class Possibility {
     private Position position;
     private Vector victims;
 
+    /**
+     * Konstruktor mozne pozice pro pohyb a odstranenych figurek
+     * @param position pozice kam se figurka presouva
+     */
     public Possibility(Position position) {
         this.position = new Position(position);
         this.victims = new Vector();
     }
 
+    /**
+     * Konstruktor mozne pozice pro pohyb a odstranenych figurek
+     * @param possibility mozny pohyb
+     */
     public Possibility(Possibility possibility){
         this.position = new Position(possibility.getPosition());
         this.victims = new Vector(possibility.getVictims());
     }
 
+    /**
+     * Konstruktor mozne pozice pro pohyb a odstranenych figurek
+     * @param position pozice kam se figurka presouva
+     * @param victim vektor odstranenych figurek
+     */
     public Possibility(Position position, Vector victim){
         this.position = new Position(position);
         this.victims = new Vector(victim);
     }
 
+    /**
+     * Getter pozice kam se figurka presouva
+     * @return pozice kam se figurka presouva
+     */
     public Position getPosition(){
         return this.position;
     }
 
+    /**
+     * Pridani dalsi odstranene figurky
+     * @param victim pozice odstranene figurky
+     */
     public void killVictim(Position victim){
         this.victims.add(new Position(victim));
     }
 
+    /**
+     * Getter odstranenych figurek
+     * @return vektor ostranenych figurek
+     */
     public Vector getVictims(){
         return this.victims;
     }
 
+    /**
+     * Getter poctu odstranenych figurek
+     * @return pocet odstranenych figurek
+     */
     public int killed(){
         return this.victims.size();
     }
 
     /**
      * Porovnani dvou objektu Position
-     * @param position
+     * @param object objekt pro porovnani
      * @return true pokud jsou shodne, jinak false
      */
     @Override
