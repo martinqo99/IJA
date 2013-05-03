@@ -267,6 +267,24 @@ public class Desk {
     
     /**
      *
+     * @param roundColor
+     * @return
+     */
+    public Vector getReadyAssassins(Color roundColor){
+        
+        Color tmp = this.roundColor;
+        
+        this.roundColor = roundColor;
+        
+        Vector result = this.getReadyAssassins();
+        
+        this.roundColor = tmp;
+        
+        return result;
+    }
+    
+    /**
+     *
      * @return
      */
     public Vector getReadyAssassins(){
