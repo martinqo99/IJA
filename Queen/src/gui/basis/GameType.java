@@ -14,6 +14,7 @@ package gui.basis;
  * @since       2013-04-30
  */
 public enum GameType {
+    REPLAY,
     PLAYER_VS_PLAYER,
     PLAYER_VS_PC,
     PLAYER_VS_NETWORK;

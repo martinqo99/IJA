@@ -241,7 +241,7 @@ public class ReplayUI extends javax.swing.JFrame {
         this.content.add(this.mainMenuBar, BorderLayout.NORTH);
 
         this.battleground = new BattleGroundUI();
-        this.battleground.setDisabled(DisabledFigures.DISABLE_ALL);
+        this.battleground.initReplay();
 
         this.content.add(this.battleground, BorderLayout.SOUTH);
         

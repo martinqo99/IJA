@@ -8,6 +8,7 @@
 
 package gui;
 
+import gui.basis.GameType;
 import gui.basis.Notation;
 import java.awt.*;
 import java.awt.event.*;
@@ -28,7 +29,6 @@ public class QueenUI extends JFrame {
     private JMenuBar mainMenuBar;
     private JMenu mainMenuGame;
     private JMenuItem mainMenuGameNew;
-    //private JMenuItem mainMenuGameLoad;
     private JMenuItem mainMenuGameSave;
     private JMenuItem mainMenuGameReplay;
     private JMenuItem mainMenuGameQuit;
@@ -76,21 +76,18 @@ public class QueenUI extends JFrame {
 
         //Create menu items
         this.mainMenuGameNew = new JMenuItem("Nová");
-        //this.mainMenuGameLoad = new JMenuItem("Načíst");
         this.mainMenuGameSave = new JMenuItem("Uložit");
         this.mainMenuGameReplay = new JMenuItem("Přehrát");
         this.mainMenuGameQuit = new JMenuItem("Ukončit");
         this.mainMenuHelpAbout = new JMenuItem("O programu");
 
         this.mainMenuGameNew.setIcon(new ImageIcon(getClass().getResource("/gfx/icon_new.png")));
-        //this.mainMenuGameLoad.setIcon(new ImageIcon(getClass().getResource("/gfx/icon_load.png")));
         this.mainMenuGameSave.setIcon(new ImageIcon(getClass().getResource("/gfx/icon_save.png")));
         this.mainMenuGameReplay.setIcon(new ImageIcon(getClass().getResource("/gfx/icon_replay.png")));
         this.mainMenuGameQuit.setIcon(new ImageIcon(getClass().getResource("/gfx/icon_quit.png")));
         this.mainMenuHelpAbout.setIcon(new ImageIcon(getClass().getResource("/gfx/icon_help.png")));
 
         this.mainMenuGameNew.setAccelerator(KeyStroke.getKeyStroke('N', KeyEvent.CTRL_DOWN_MASK));
-        //this.mainMenuGameLoad.setAccelerator(KeyStroke.getKeyStroke('O', KeyEvent.CTRL_DOWN_MASK));
         this.mainMenuGameSave.setAccelerator(KeyStroke.getKeyStroke('S', KeyEvent.CTRL_DOWN_MASK));
         this.mainMenuGameReplay.setAccelerator(KeyStroke.getKeyStroke('R', KeyEvent.CTRL_DOWN_MASK));
         this.mainMenuGameQuit.setAccelerator(KeyStroke.getKeyStroke('Q', KeyEvent.CTRL_DOWN_MASK));
@@ -101,15 +98,6 @@ public class QueenUI extends JFrame {
                 handleDialogNew(e);
             }
         });
-
-        /*
-        this.mainMenuGameLoad.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                handleDialogLoad(e);
-            }
-        });
-        */
 
         this.mainMenuGameSave.addActionListener(new ActionListener() {
             @Override
@@ -124,7 +112,6 @@ public class QueenUI extends JFrame {
                 handleDialogReplay(e);
             }
         });
-
 
         // Bind close event to Quit
         this.mainMenuGameQuit.addActionListener(new ActionListener() {
@@ -157,10 +144,14 @@ public class QueenUI extends JFrame {
 
     private void initContent(){
         this.content = this.getContentPane();
+        this.content.removeAll();
 
         this.battleground = new BattleGroundUI();
 
         this.content.add(this.battleground);
+        
+        this.setContentPane(this.content);
+        this.pack();
     }
 
     private void handleDialogNew(ActionEvent e){
@@ -170,18 +161,15 @@ public class QueenUI extends JFrame {
         dialog.setVisible(true);
 
         if(dialog.isAccepted()){
-
+            GameType gameType = dialog.getGameType();
+            Color playerColor = dialog.getPlayerColor();
+            String remoteHost = dialog.getRemoteHost();
+            String fileName = dialog.getStoredGameFileName(); 
+            
+            this.initContent();
+            this.battleground.initGame(gameType, playerColor, remoteHost, fileName);
         }
     }
-
-    /*
-    private void handleDialogLoad(ActionEvent e){
-        DialogLoad dialog = new DialogLoad(this, true);
-        dialog.setLocationRelativeTo(this);
-
-        dialog.setVisible(true);
-    }
-    */
 
     private void handleDialogSave(ActionEvent e){
         JFileChooser dialog = new JFileChooser();

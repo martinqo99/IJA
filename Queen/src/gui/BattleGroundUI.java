@@ -34,6 +34,8 @@ public class BattleGroundUI extends JPanel {
     private Desk battleground;
     private FieldButtonUI battlegroundUI[];
     
+    private GameType gameType;    
+    private Color playerColor;
     private DisabledFigures disabled;
 
     private JTextArea logUI;
@@ -45,9 +47,8 @@ public class BattleGroundUI extends JPanel {
        super();  
        
        this.initWindow();
-
        this.initBattleGround();
-       
+
        this.add(this.content, BorderLayout.EAST);
        this.add(this.logUI, BorderLayout.WEST);
        
@@ -63,6 +64,8 @@ public class BattleGroundUI extends JPanel {
         this.battleground = new Desk(this.dimension);
         this.battlegroundUI = new FieldButtonUI[this.dimension * this.dimension];
         
+        this.gameType = GameType.PLAYER_VS_PLAYER; 
+        this.playerColor = Color.WHITE;
         this.disabled = DisabledFigures.DISABLE_NONE;
         
         this.logUI = new JTextArea();
@@ -119,6 +122,30 @@ public class BattleGroundUI extends JPanel {
             tempLabel.setForeground(new Color(152, 152, 152));
             this.content.add(tempLabel);
         }
+    }
+    
+    public void initGame(GameType gameType, Color playerColor, String remoteHost, String fileName){
+        this.gameType = gameType;
+        System.out.println("Game init");
+        
+        if(this.gameType == GameType.REPLAY)
+            this.initReplay();
+        else if(this.gameType == GameType.PLAYER_VS_PLAYER){
+            this.disabled = DisabledFigures.DISABLE_NONE;
+        }
+        else if(this.gameType == GameType.PLAYER_VS_PC){
+            this.playerColor = playerColor;
+            
+            this.disabled = (this.playerColor == Color.WHITE)? DisabledFigures.DISABLE_BLACK : DisabledFigures.DISABLE_WHITE;
+        }
+        else{
+            throw new RuntimeException("Not implemented yet");
+        }
+    }
+    
+    public void initReplay(){
+        this.gameType = GameType.REPLAY;
+        this.disabled = DisabledFigures.DISABLE_ALL;
     }
     
     /* Vsechna ta klikaci magie */
@@ -214,13 +241,31 @@ public class BattleGroundUI extends JPanel {
         }       
     }
     
+    public void createGame(GameType type, Color player, String remoteHost, String fileName){
+        this.gameType = type;
+        
+        if(this.gameType == GameType.PLAYER_VS_PLAYER){
+            
+        }
+        else if(this.gameType == GameType.PLAYER_VS_PC){
+        
+        }
+        else{
+            throw new RuntimeException("Not implemented yet");
+        }        
+    }
+    
     public Desk getBattleground(){
         return this.battleground;
     }
     
-    public void setDisabled(DisabledFigures disabled){
-        this.disabled = disabled;
+    public GameType getGameType(){
+        return this.gameType;
     }
+    
+    //public void setDisabled(DisabledFigures disabled){
+    //    this.disabled = disabled;
+    //}
     
     public Vector getRounds(){
         return this.battleground.getRounds();

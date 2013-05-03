@@ -172,6 +172,7 @@ public class DialogNew extends javax.swing.JDialog {
         jLabel2.setText("Vzdálený host");
 
         inputPlayerColor.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Bílá", "Černá" }));
+        inputPlayerColor.setEnabled(false);
 
         inputRemoteHost.setText("localhost");
         inputRemoteHost.setToolTipText("Zadejte adresu vzdáleného počítače");
@@ -266,7 +267,7 @@ public class DialogNew extends javax.swing.JDialog {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(inputFileName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(buttFileName, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(26, Short.MAX_VALUE))
+                .addContainerGap(27, Short.MAX_VALUE))
         );
 
         jButton1.setText("Vytvořit hru");
@@ -310,7 +311,7 @@ public class DialogNew extends javax.swing.JDialog {
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
                     .addComponent(jButton2))
@@ -341,14 +342,17 @@ public class DialogNew extends javax.swing.JDialog {
 
     private void radioPlayerVsPlayerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioPlayerVsPlayerActionPerformed
         this.inputRemoteHost.setEnabled(false);
+        this.inputPlayerColor.setEnabled(false);
     }//GEN-LAST:event_radioPlayerVsPlayerActionPerformed
 
     private void radioPlayerVsNetworkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioPlayerVsNetworkActionPerformed
         this.inputRemoteHost.setEnabled(true);
+        this.inputPlayerColor.setEnabled(true);
     }//GEN-LAST:event_radioPlayerVsNetworkActionPerformed
 
     private void radioPlayerVsPCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioPlayerVsPCActionPerformed
         this.inputRemoteHost.setEnabled(false);
+        this.inputPlayerColor.setEnabled(true);
     }//GEN-LAST:event_radioPlayerVsPCActionPerformed
 
     private void inputFileNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inputFileNameActionPerformed
