@@ -31,12 +31,14 @@ public class QueenUI extends JFrame {
     private JMenuItem mainMenuGameNew;
     private JMenuItem mainMenuGameSave;
     private JMenuItem mainMenuGameReplay;
+    private JMenuItem mainMenuGameMoveHinting;
     private JMenuItem mainMenuGameQuit;
     private JMenu mainMenuHelp;
     private JMenuItem mainMenuHelpAbout;
 
     private Container content;
     private BattleGroundUI battleground;
+    private boolean MoveHinting;
 
     /**
      * Creates new form QueenUI
@@ -64,6 +66,8 @@ public class QueenUI extends JFrame {
     }
 
     private void initMenu(){
+        this.MoveHinting = true;
+        
         //Create menu bar
         this.mainMenuBar = new JMenuBar();
 
@@ -78,12 +82,14 @@ public class QueenUI extends JFrame {
         this.mainMenuGameNew = new JMenuItem("Nová");
         this.mainMenuGameSave = new JMenuItem("Uložit");
         this.mainMenuGameReplay = new JMenuItem("Přehrát");
+        this.mainMenuGameMoveHinting = new JMenuItem("Nápověda tahů");
         this.mainMenuGameQuit = new JMenuItem("Ukončit");
         this.mainMenuHelpAbout = new JMenuItem("O programu");
 
         this.mainMenuGameNew.setIcon(new ImageIcon(getClass().getResource("/gfx/icon_new.png")));
         this.mainMenuGameSave.setIcon(new ImageIcon(getClass().getResource("/gfx/icon_save.png")));
         this.mainMenuGameReplay.setIcon(new ImageIcon(getClass().getResource("/gfx/icon_replay.png")));
+        this.mainMenuGameMoveHinting.setIcon(new ImageIcon(getClass().getResource("/gfx/icon_tick.png")));
         this.mainMenuGameQuit.setIcon(new ImageIcon(getClass().getResource("/gfx/icon_quit.png")));
         this.mainMenuHelpAbout.setIcon(new ImageIcon(getClass().getResource("/gfx/icon_help.png")));
 
@@ -112,6 +118,13 @@ public class QueenUI extends JFrame {
                 handleDialogReplay(e);
             }
         });
+        
+        this.mainMenuGameMoveHinting.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                handleMoveHinting(e);
+            }
+        });
 
         // Bind close event to Quit
         this.mainMenuGameQuit.addActionListener(new ActionListener() {
@@ -132,6 +145,8 @@ public class QueenUI extends JFrame {
         //this.mainMenuGame.add(this.mainMenuGameLoad);
         this.mainMenuGame.add(this.mainMenuGameSave);
         this.mainMenuGame.add(this.mainMenuGameReplay);
+        this.mainMenuGame.add(new JSeparator());
+        this.mainMenuGame.add(this.mainMenuGameMoveHinting);
         this.mainMenuGame.add(new JSeparator());
         this.mainMenuGame.add(this.mainMenuGameQuit);
         this.mainMenuHelp.add(this.mainMenuHelpAbout);
@@ -210,6 +225,12 @@ public class QueenUI extends JFrame {
         };
 
         thread.start();
+    }
+    
+    private void handleMoveHinting(ActionEvent e){
+        this.MoveHinting = !this.MoveHinting;
+        this.mainMenuGameMoveHinting.setIcon(new ImageIcon(getClass().getResource((this.MoveHinting)? "/gfx/icon_tick.png" : "/gfx/icon_cancel.png")));
+        this.battleground.setMoveHinting(this.MoveHinting);
     }
 
     private void handleDialogAbout(ActionEvent e){

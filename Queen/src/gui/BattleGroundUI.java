@@ -228,11 +228,13 @@ public class BattleGroundUI extends JPanel {
                     fieldUI.toogle();
                     
                     // Mark possibilities
+                    if(this.moveHinting){
                     Vector possibilities = fieldUI.getField().getFigure().canMovePossibilities();
                     for(int i = 0; i < possibilities.size(); i++){
                         Possibility possibility = (Possibility)possibilities.get(i);
                         
                         this.battlegroundUI[this.battleground.pos(possibility.getPosition())].mark();
+                    }
                     }
                     
 
@@ -252,11 +254,13 @@ public class BattleGroundUI extends JPanel {
                 this.battleGroundActiveField.toogle();
                 
                 // Unmark possibilities
+                if(this.moveHinting){
                 Vector possibilities = this.battleGroundActiveField.getField().getFigure().canMovePossibilities();
                 for(int i = 0; i < possibilities.size(); i++){
                     Possibility possibility = (Possibility)possibilities.get(i);
                         
                     this.battlegroundUI[this.battleground.pos(possibility.getPosition())].reload();
+                }
                 }
                 
                 this.battleGroundActiveField = null;
@@ -271,11 +275,13 @@ public class BattleGroundUI extends JPanel {
                 if(this.battleGroundActiveField.getField().getFigure().canMove(fieldUI.getField().getPosition())){
                     
                     // Unmark possibilities
+                    if(this.moveHinting){
                     Vector possibilities = this.battleGroundActiveField.getField().getFigure().canMovePossibilities();
                     for(int i = 0; i < possibilities.size(); i++){
                         Possibility possibility = (Possibility)possibilities.get(i);
                         
                         this.battlegroundUI[this.battleground.pos(possibility.getPosition())].reload();
+                    }
                     }
                     
                     
@@ -344,6 +350,10 @@ public class BattleGroundUI extends JPanel {
         else{
             throw new RuntimeException("Not implemented yet");
         }        
+    }
+    
+    public void setMoveHinting(boolean moveHinting){
+        this.moveHinting = moveHinting;
     }
     
     public Desk getBattleground(){
