@@ -45,6 +45,8 @@ public class BattleGroundUI extends JPanel {
     private DisabledFigures disabled;
     private boolean moveHinting;
     private boolean hardCoreMode;
+    
+    private int localPort;
 
     private JTextArea logUI;
 
@@ -77,6 +79,8 @@ public class BattleGroundUI extends JPanel {
         this.disabled = DisabledFigures.DISABLE_NONE;
         this.moveHinting = true;
         this.hardCoreMode = false;
+        
+        this.localPort = 5678;
 
         this.logUI = new JTextArea();
         this.logUI.setBackground(new Color(239, 239, 239));
@@ -141,7 +145,7 @@ public class BattleGroundUI extends JPanel {
      * @param remoteHost
      * @param fileName
      */
-    public void initGame(GameType gameType, Color playerColor, String remoteHost, String fileName){
+    public void initGame(GameType gameType, Color playerColor, String remoteHost, int remotePort, int localPort,  String fileName){
         this.gameType = gameType;
 
         // Nacteni hry
@@ -187,6 +191,11 @@ public class BattleGroundUI extends JPanel {
             if(this.playerColor != this.battleground.getRoundColor()){
                 this.AImove();
             }
+        }
+        else if(this.gameType == GameType.PLAYER_VS_NETWORK_LOCAL){
+            this.localPort = localPort;
+            
+            System.out.println("Server listen on: " + Integer.toString(this.localPort));
         }
         else{
             throw new RuntimeException("Not implemented yet");

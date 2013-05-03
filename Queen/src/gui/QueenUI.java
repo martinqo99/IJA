@@ -196,11 +196,12 @@ public class QueenUI extends JFrame {
             GameType gameType = dialog.getGameType();
             Color playerColor = dialog.getPlayerColor();
             String remoteHost = dialog.getRemoteHost();
-            String remotePort = dialog.getRemotePort();
+            int remotePort = dialog.getRemotePort();
+            int localPort = dialog.getLocalPort();
             String fileName = dialog.getStoredGameFileName(); 
             
             this.initContent();
-            this.battleground.initGame(gameType, playerColor, remoteHost, fileName);
+            this.battleground.initGame(gameType, playerColor, remoteHost, remotePort, localPort, fileName);
             this.battleground.setMoveHinting(this.MoveHinting);
             this.battleground.setHardCoreMode(this.HardcoreMode);
         }

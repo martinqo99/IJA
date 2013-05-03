@@ -42,8 +42,10 @@ public class DialogNew extends javax.swing.JDialog {
             return GameType.PLAYER_VS_PLAYER;
         else if(this.radioPlayerVsPC.isSelected())
             return GameType.PLAYER_VS_PC;
+        else if(this.radioPlayerVsNetworkLocal.isSelected())
+            return GameType.PLAYER_VS_NETWORK_LOCAL;
         else
-            return GameType.PLAYER_VS_NETWORK;
+            return GameType.PLAYER_VS_NETWORK_REMOTE;
     }
     
     public Color getPlayerColor(){
@@ -57,8 +59,32 @@ public class DialogNew extends javax.swing.JDialog {
         return this.inputRemoteHost.getText();
     }
     
-    public String getRemotePort(){
-        return this.inputRemoteport.getText();
+    public int getRemotePort(){
+        int port;
+        
+        try{
+            port = Integer.parseInt(this.inputRemoteport.getText());
+        }
+        catch(NumberFormatException err){
+            port = 5678;
+        }
+        
+        
+        return port;
+    }
+    
+    public int getLocalPort(){
+        int port;
+        
+        try{
+            port = Integer.parseInt(this.inputLocalPort.getText());
+        }
+        catch(NumberFormatException err){
+            port = 5678;
+        }
+        
+        
+        return port;
     }
     
     public boolean isStoredGame(){
@@ -389,20 +415,26 @@ public class DialogNew extends javax.swing.JDialog {
     }//GEN-LAST:event_inputRemoteHostActionPerformed
 
     private void radioPlayerVsPlayerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioPlayerVsPlayerActionPerformed
+        this.checkFileName.setEnabled(true);        
         this.inputRemoteHost.setEnabled(false);
         this.inputRemoteport.setEnabled(false);
+        this.inputLocalPort.setEnabled(false);
         this.inputPlayerColor.setEnabled(false);
     }//GEN-LAST:event_radioPlayerVsPlayerActionPerformed
 
     private void radioPlayerVsNetworkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioPlayerVsNetworkActionPerformed
+        this.checkFileName.setEnabled(true);
         this.inputRemoteHost.setEnabled(true);
         this.inputRemoteport.setEnabled(true);
+        this.inputLocalPort.setEnabled(false);
         this.inputPlayerColor.setEnabled(true);
     }//GEN-LAST:event_radioPlayerVsNetworkActionPerformed
 
     private void radioPlayerVsPCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioPlayerVsPCActionPerformed
+        this.checkFileName.setEnabled(true);
         this.inputRemoteHost.setEnabled(false);
         this.inputRemoteport.setEnabled(false);
+        this.inputLocalPort.setEnabled(false);
         this.inputPlayerColor.setEnabled(true);
     }//GEN-LAST:event_radioPlayerVsPCActionPerformed
 
@@ -419,8 +451,18 @@ public class DialogNew extends javax.swing.JDialog {
     }//GEN-LAST:event_buttFileNameActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        if(this.getGameType() == GameType.PLAYER_VS_NETWORK && this.getRemoteHost().isEmpty()){
+        if(this.getGameType() == GameType.PLAYER_VS_NETWORK_REMOTE && this.getRemoteHost().isEmpty()){
             JOptionPane.showMessageDialog(this, "Nebyla zadána adresa vzdáleného hosta!", "Queen - Chyba při vytváření hry", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
+        if(this.getGameType() == GameType.PLAYER_VS_NETWORK_REMOTE && this.inputRemoteport.getText().isEmpty()){
+            JOptionPane.showMessageDialog(this, "Nebyla zadána adresa port hosta!", "Queen - Chyba při vytváření hry", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
+        if(this.getGameType() == GameType.PLAYER_VS_NETWORK_LOCAL && this.inputLocalPort.getText().isEmpty()){
+            JOptionPane.showMessageDialog(this, "Nebyl zadán lokální port!", "Queen - Chyba při vytváření hry", JOptionPane.ERROR_MESSAGE);
             return;
         }
         
@@ -434,7 +476,12 @@ public class DialogNew extends javax.swing.JDialog {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void radioPlayerVsNetworkLocalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioPlayerVsNetworkLocalActionPerformed
-        // TODO add your handling code here:
+        this.checkFileName.setEnabled(false);
+        this.inputFileName.setText("");
+        this.inputRemoteHost.setEnabled(false);
+        this.inputRemoteport.setEnabled(false);
+        this.inputLocalPort.setEnabled(true);
+        this.inputPlayerColor.setEnabled(false);
     }//GEN-LAST:event_radioPlayerVsNetworkLocalActionPerformed
 
     /**
