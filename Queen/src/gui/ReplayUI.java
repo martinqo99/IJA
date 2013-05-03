@@ -119,7 +119,19 @@ public class ReplayUI extends javax.swing.JFrame {
         this.mainMenuDecrease.setIcon(new ImageIcon(getClass().getResource("/gfx/replay_decrease.png")));
         this.mainMenuHelp.setIcon(new ImageIcon(getClass().getResource("/gfx/replay_help.png")));
         this.mainMenuQuit.setIcon(new ImageIcon(getClass().getResource("/gfx/replay_quit.png")));
-
+        
+        this.mainMenuPrev.setToolTipText("Předchozí tah");
+        this.mainMenuPlay.setToolTipText("Přehrát záznam");
+        this.mainMenuPause.setToolTipText("Pozastavit záznam");
+        this.mainMenuStop.setToolTipText("Zastavit záznam");
+        this.mainMenuNext.setToolTipText("Další tah");
+        this.mainMenuOpen.setToolTipText("Načíst záznam ze souboru");
+        this.mainMenuLoad.setToolTipText("Načíst záznam ze vstupu");
+        this.mainMenuIncrease.setToolTipText("Zvýšit prodlevu");
+        this.mainMenuDecrease.setToolTipText("Snížit prodlevu");
+        this.mainMenuHelp.setToolTipText("O programu");
+        this.mainMenuQuit.setToolTipText("Ukončit");
+        
         this.mainMenuBar.add(this.mainMenuPrev);
         this.mainMenuBar.add(this.mainMenuPlay);
         this.mainMenuBar.add(this.mainMenuPause);
