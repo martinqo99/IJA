@@ -203,6 +203,27 @@ public class BattleGroundUI extends JPanel {
         if(this.battleGroundActiveField == null){
             if(fieldUI.getField().getFigure() != null){
                 if(fieldUI.getField().getFigure().getColor() == this.battleground.getRoundColor()){
+
+                    Vector assassins = this.battleground.getReadyAssassins();
+                    
+                    if(assassins.size() > 0){
+                        boolean isAssassin = false;
+            
+                        for(int i = 0; i < assassins.size(); i++){
+                            Position assassin = (Position)assassins.get(i);
+                
+                            if(assassin.equals(fieldUI.getField().getFigure().getPosition())){
+                                isAssassin = true;
+                                break;
+                            }
+                        }
+                        
+                        if(!isAssassin){
+                            JOptionPane.showMessageDialog(this, "Hráč je povinen provést skok!", "Queen - Chybný tah", JOptionPane.ERROR_MESSAGE);
+                            return;
+                        }
+                    }
+                    
                     this.battleGroundActiveField = fieldUI;
                     fieldUI.toogle();
                     

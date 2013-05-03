@@ -70,7 +70,7 @@ public class Stone extends Figure{
         if(!this.desk.isDeserter(step1)){
             // Volna pozice
             if(this.desk.at(step1).getFigure() == null) {
-                possibility = new Possibility(step1);
+                possibility = new Possibility(this.position, step1);
                 possibilities.add(possibility);
             }
             else if(this.color != this.desk.at(step1).getFigure().getColor()){
@@ -78,7 +78,7 @@ public class Stone extends Figure{
 
                 if(!this.desk.isDeserter(step2) && this.desk.at(step2).getFigure() == null) {
                     areYouThereAssassin = true;
-                    possibility = new Possibility(step2);
+                    possibility = new Possibility(this.position, step2);
                     possibility.killVictim(step1);
                     possibilities.add(possibility);
                 }
@@ -90,7 +90,7 @@ public class Stone extends Figure{
         if(!this.desk.isDeserter(step1)){
             // Volna pozice
             if(this.desk.at(step1).getFigure() == null) {
-                possibility = new Possibility(step1);
+                possibility = new Possibility(this.position, step1);
                 possibilities.add(possibility);
             }
             else if(this.color != this.desk.at(step1).getFigure().getColor()){
@@ -98,7 +98,7 @@ public class Stone extends Figure{
 
                 if(!this.desk.isDeserter(step2) && this.desk.at(step2).getFigure() == null) {
                     areYouThereAssassin = true;
-                    possibility = new Possibility(step2);
+                    possibility = new Possibility(this.position, step2);
                     possibility.killVictim(step1);
                     possibilities.add(possibility);
                 }

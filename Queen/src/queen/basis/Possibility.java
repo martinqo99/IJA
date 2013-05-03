@@ -18,6 +18,7 @@ import java.util.Vector;
  */
 public class Possibility {
 
+    private Position killer;
     private Position position;
     private Vector victims;
 
@@ -25,7 +26,8 @@ public class Possibility {
      * Konstruktor mozne pozice pro pohyb a odstranenych figurek
      * @param position pozice kam se figurka presouva
      */
-    public Possibility(Position position) {
+    public Possibility(Position killer, Position position) {
+        this.killer = new Position(killer);
         this.position = new Position(position);
         this.victims = new Vector();
     }
@@ -35,6 +37,7 @@ public class Possibility {
      * @param possibility mozny pohyb
      */
     public Possibility(Possibility possibility){
+        this.killer = new Position(possibility.getKiller());
         this.position = new Position(possibility.getPosition());
         this.victims = new Vector(possibility.getVictims());
     }
@@ -44,9 +47,18 @@ public class Possibility {
      * @param position pozice kam se figurka presouva
      * @param victim vektor odstranenych figurek
      */
-    public Possibility(Position position, Vector victim){
+    public Possibility(Position killer, Position position, Vector victim){
+        this.killer = new Position(killer);
         this.position = new Position(position);
         this.victims = new Vector(victim);
+    }
+    
+    /**
+     * Getter pozice kam zabijaka
+     * @return pozice zabijaka
+     */
+    public Position getKiller(){
+        return this.killer;
     }
 
     /**

@@ -69,7 +69,7 @@ public class Rook extends Figure{
             if(this.desk.at(step).getFigure() == null) {
                 if (ok == false)
                     ok = true;
-                possibility = new Possibility(step, kill);
+                possibility = new Possibility(this.position, step, kill);
                 possibilities.add(possibility);
                 if (kill.size() > 0)
                     areYouThereAssassin = true;
@@ -94,7 +94,7 @@ public class Rook extends Figure{
             if(this.desk.at(step).getFigure() == null) {
                 if (ok == false)
                     ok = true;
-                possibility = new Possibility(step, kill);
+                possibility = new Possibility(this.position, step, kill);
                 possibilities.add(possibility);
                 if (kill.size() > 0)
                     areYouThereAssassin = true;
@@ -119,7 +119,7 @@ public class Rook extends Figure{
             if(this.desk.at(step).getFigure() == null) {
                 if (ok == false)
                     ok = true;
-                possibility = new Possibility(step, kill);
+                possibility = new Possibility(this.position, step, kill);
                 possibilities.add(possibility);
                 if (kill.size() > 0)
                     areYouThereAssassin = true;
@@ -144,7 +144,7 @@ public class Rook extends Figure{
             if(this.desk.at(step).getFigure() == null) {
                 if (ok == false)
                     ok = true;
-                possibility = new Possibility(step, kill);
+                possibility = new Possibility(this.position, step, kill);
                 possibilities.add(possibility);
                 if (kill.size() > 0)
                     areYouThereAssassin = true;

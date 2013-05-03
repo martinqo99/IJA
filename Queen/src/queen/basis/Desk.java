@@ -207,7 +207,7 @@ public class Desk {
             for(int i = 0; i < assassins.size(); i++){
                 Position assassin = (Position)assassins.get(i);
                 
-                if(assassin.equals(to)){
+                if(assassin.equals(from)){
                     isAssassin = true;
                     break;
                 }
@@ -286,7 +286,7 @@ public class Desk {
                     Possibility possibility = (Possibility)possibilities.get(j);
                     
                     if(possibility.killed() > 0)
-                        assassins.add(new Position(possibility.getPosition()));
+                        assassins.add(new Position(possibility.getKiller()));
                 }
             }            
         }
