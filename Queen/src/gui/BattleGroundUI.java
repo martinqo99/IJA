@@ -426,7 +426,7 @@ public class BattleGroundUI extends JPanel {
     }
 
     private Possibility minimax(Vector possible){
-        Vector assassins = this.battleground.getReadyAssassins(this.playerColor == Color.BLACK ? Color.WHITE : Color.BLACK);
+        Vector assassins = this.battleground.getReadyAssassins(this.battleground.getRoundColor() == Color.BLACK ? Color.WHITE : Color.BLACK);
         Possibility best = null;
         int best_move_old = 0, best_move_new = 0;
         boolean first = true;
@@ -443,7 +443,7 @@ public class BattleGroundUI extends JPanel {
                 }
             }
             best_move_new += possibility.killed(); // pricteme kolik jich zabijeme
-            
+
             if (first) { // urcite to jde lip, ne nebudu to prepisovat
                 best_move_old = best_move_new;
                 best = new Possibility(possibility);
