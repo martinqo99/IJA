@@ -101,11 +101,14 @@ public class ReplayUI extends javax.swing.JFrame {
         this.mainMenuLoad = new JButton();
         
         this.mainMenuLastFrame = new JTextField(Integer.toString(this.lastFrame), 1 );
-        this.mainMenuLastFrame.setHorizontalAlignment(JTextField.CENTER);
+        this.mainMenuLastFrame.setHorizontalAlignment(JTextField.RIGHT);
+        //this.mainMenuLastFrame.setBorder(null);
+        this.mainMenuLastFrame.setBackground(this.mainMenuNext.getBackground());
         
-        this.mainMenuLastFrameTotal = new JTextField("/ " + Integer.toString(this.lastFrame), 1 );
+        this.mainMenuLastFrameTotal = new JTextField(" / " + Integer.toString(this.lastFrame), 1 );
         this.mainMenuLastFrameTotal.setEditable(false);
-        this.mainMenuLastFrameTotal.setHorizontalAlignment(JTextField.CENTER);
+        this.mainMenuLastFrameTotal.setHorizontalAlignment(JTextField.LEFT);
+        this.mainMenuLastFrameTotal.setBorder(null);
         
         this.mainMenuIncrease = new JButton();
         
@@ -146,9 +149,7 @@ public class ReplayUI extends javax.swing.JFrame {
         this.mainMenuHelp.setToolTipText("O programu");
         this.mainMenuQuit.setToolTipText("Ukončit");
 
-        this.mainMenuBar.add(this.mainMenuLastFrame);
-        this.mainMenuBar.add(this.mainMenuLastFrameTotal);
-        this.mainMenuBar.add(new JSeparator());
+
         
         this.mainMenuBar.add(this.mainMenuPrev);
         this.mainMenuBar.add(this.mainMenuPlay);
@@ -157,6 +158,10 @@ public class ReplayUI extends javax.swing.JFrame {
         this.mainMenuBar.add(this.mainMenuNext);
         this.mainMenuBar.add(this.mainMenuOpen);
         this.mainMenuBar.add(this.mainMenuLoad);
+        this.mainMenuBar.add(new JSeparator());
+        
+                this.mainMenuBar.add(this.mainMenuLastFrame);
+        this.mainMenuBar.add(this.mainMenuLastFrameTotal);
         this.mainMenuBar.add(new JSeparator());
 
 
