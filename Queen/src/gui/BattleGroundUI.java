@@ -39,7 +39,7 @@ import queen.basis.*;
  * @since       2013-04-30
  */
 public class BattleGroundUI extends JPanel {
-    
+
     private JFrame parent;
 
     private Container content;
@@ -73,7 +73,7 @@ public class BattleGroundUI extends JPanel {
      */
     public BattleGroundUI(JFrame parent) {
        super();
-       
+
        this.parent = parent;
 
        this.initWindow();
@@ -220,6 +220,7 @@ public class BattleGroundUI extends JPanel {
         }
         // Lokalni port binding
         else if(this.gameType == GameType.PLAYER_VS_NETWORK_LOCAL){
+
             this.disabled = DisabledFigures.DISABLE_ALL;
             
             try{
@@ -242,60 +243,62 @@ public class BattleGroundUI extends JPanel {
             }
             
             try { 
+
                 String line = null;
                 String roundsBuffer = "";
                 boolean recordRounds = false;
-                
+
                 do{
                     while(!this.handlerReader.ready());
                     
                     line = this.handlerReader.readLine();
                     
+
                     if("END".equals(line))
                         break;
-                    
+
                     if(recordRounds){
                         roundsBuffer += line + "\n";
                     }
-                    
+
                     if("BEGIN".equals(line))
                         continue;
-                    
+
                     if("BLACK".equals(line))
                         this.playerColor = Color.WHITE;
 
-                    
+
                     if("WHITE".equals(line))
                         this.playerColor = Color.BLACK;
 
-                    
+
                     if("ROUNDS".equals(line))
-                        recordRounds = true;                   
-                    
-                    
+                        recordRounds = true;
+
+
                 }while(true);
-                
+
                 this.disabled = (this.playerColor == Color.WHITE)? DisabledFigures.DISABLE_BLACK : DisabledFigures.DISABLE_WHITE;
-                
+
                 if(!roundsBuffer.isEmpty()){
                     Notation notation = new Notation();
                     notation.loadFromRaw(roundsBuffer);
-                
+
                     Vector rounds = notation.getRounds();
-                
+
                     for(int i = 0; i < rounds.size(); i++){
                         Move tmp = (Move)rounds.get(i);
-                    
+
                         this.battleground.move(tmp.getFrom(), tmp.getTo());
                     }
-                
+
                     this.reload();
                 }
-                
+
                 if(this.playerColor == this.battleground.getRoundColor()){
                     JOptionPane.showMessageDialog(this, "Jste na tahu.", "Queen - Síťová hra", JOptionPane.INFORMATION_MESSAGE);
                 }
-                
+
             } catch (IOException ex) {
                 this.disabled = DisabledFigures.DISABLE_ALL;
                 JOptionPane.showMessageDialog(this, "Chyba síťové komunikace!", "Queen - Síťová hra", JOptionPane.ERROR_MESSAGE);
@@ -308,13 +311,19 @@ public class BattleGroundUI extends JPanel {
 
             try{
 
+
+                this.disabled = (this.playerColor == Color.WHITE)? DisabledFigures.DISABLE_BLACK : DisabledFigures.DISABLE_WHITE;
+
                 System.out.println("Connect to: " + remoteHost + ":" + Integer.toString(remotePort));
-                
+
+                if(this.handler != null)
+                    this.handler.close();
+
                 this.handler = new Socket(remoteHost, remotePort);
-              
+
                 this.handlerWriter = new PrintWriter(this.handler.getOutputStream(), true);
-                this.handlerReader = new BufferedReader(new InputStreamReader(this.handler.getInputStream()));                
-                
+                this.handlerReader = new BufferedReader(new InputStreamReader(this.handler.getInputStream()));
+
                 Vector rounds = this.battleground.getRounds();
                 int roundsCounter = 1;
                 String roundsString = "";
@@ -340,7 +349,7 @@ public class BattleGroundUI extends JPanel {
                 this.handlerWriter.print("END\n");
                 this.handlerWriter.flush();
                 
-                
+
                 if(this.playerColor == this.battleground.getRoundColor()){
                     JOptionPane.showMessageDialog(this, "Jste na tahu.", "Queen - Síťová hra", JOptionPane.INFORMATION_MESSAGE);
                 }
@@ -494,7 +503,7 @@ public class BattleGroundUI extends JPanel {
 
                             this.battlegroundUI[this.battleground.pos(position)].reload();
                         }
-                        
+
                         this.battleGroundActiveField.toogle();
                         this.battleGroundActiveField = null;
 
@@ -588,37 +597,57 @@ public class BattleGroundUI extends JPanel {
     }
 
     private Possibility minimax(Vector possible){
-        Vector movePoss; // blbost, hledam jen vrahy, prepisu si to jindy
-        Vector assassins = this.battleground.getReadyAssassins(this.battleground.getRoundColor() == Color.BLACK ? Color.WHITE : Color.BLACK);
-        Possibility best = null;
-        int best_move_old = 0, best_move_new = 0;
-        boolean first = true;
+        Vector best = new Vector();
+        int best_move_old = -1000, best_move_new = 0;
 
         for (int i = 0; i < possible.size(); i++){
             Possibility possibility = (Possibility)possible.get(i);
+            Desk tmp = new Desk(this.dimension);
+            for (int step = 0; step < this.battleground.getRounds().size(); step++){
+                tmp.move(((Move)this.battleground.getRounds().get(step)).getFrom(), ((Move)this.battleground.getRounds().get(step)).getTo());
+            }
+            tmp.move(possibility.getKiller(), possibility.getPosition());
+            Vector assassins = tmp.getReadyAssassins();
 
             for (int j = 0; j < assassins.size(); j++){
-                Vector victims = ((Possibility)assassins.get(j)).getVictims();
-
-                for (int k = 0; k < victims.size(); k++){
-                    if (possibility.getPosition().equals((Position)victims.get(k)))//((Position)victims.get(k)).equals(possibility.getPosition())
-                        best_move_new--; // odecteme 1 za kazdou figurku, ktera me potom bude ohrozovat
+                Vector pos_moves = tmp.at((Position)assassins.get(j)).getFigure().canMovePossibilities();
+                for (int k = 0; k < pos_moves.size(); k++) {
+                    Vector victims = ((Possibility)pos_moves.get(k)).getVictims();
+                    for (int l = 0; l < victims.size(); l++){
+                        if (((Position)possibility.getPosition()).equals((Position)victims.get(l)))
+                            best_move_new--; // odecteme 1 za kazdou figurku, ktera me potom bude ohrozovat
+                    }
                 }
             }
             best_move_new += possibility.killed(); // pricteme kolik jich zabijeme
+            if (possibility.getKiller().getColumn() == 'a' || possibility.getKiller().getColumn() == 'h' ||
+                    possibility.getKiller().getRow() == 1 || possibility.getKiller().getRow() == this.dimension)
+                best_move_new--;
+            if (possibility.getPosition().getColumn() == 'a' || possibility.getPosition().getColumn() == 'h' ||
+                    possibility.getPosition().getRow() == 1 || possibility.getPosition().getRow() == this.dimension)
+                best_move_new++;
 
-            if (first) { // urcite to jde lip, ne nebudu to prepisovat
-                best_move_old = best_move_new;
-                best = new Possibility(possibility);
-                first = false;
+            if (best_move_new == best_move_old) { // stejne ohodnoceny pohyb, pridame
+                best.add(new Possibility(possibility));
             }
-            else if (best_move_new > best_move_old) { // nasli jsme lepsi pohyb
+            else if (best_move_new > best_move_old) { // nasli jsme lepe ohodnoceny pohyb
                 best_move_old = best_move_new;
-                best = new Possibility(possibility);
+                best = new Vector();
+                best.add(new Possibility(possibility));
             }
             best_move_new = 0;
         }
-        return best;
+        Possibility best_move;
+        if (best.size() == 1)
+            best_move = (Possibility)best.get(0);
+        else {
+            Random rand = new Random();
+            int randomNum = rand.nextInt(best.size() + 1);
+            if(randomNum >= best.size())
+                randomNum = best.size() - 1;
+            best_move = (Possibility)best.get(randomNum);
+        }
+        return best_move;
     }
 
     /**
