@@ -371,7 +371,7 @@ public class Desk {
                         if(tmp.battleField[j].getFigure() == null)
                             continue;
 
-                        if(tmp.battleField[j].getFigure().getColor() != this.getRoundColor())
+                        if(tmp.battleField[j].getFigure().getColor() != tmp.roundColor)
                             continue;
 
                         Vector act_poss = tmp.battleField[j].getFigure().canMovePossibilities();
