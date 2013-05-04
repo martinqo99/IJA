@@ -54,7 +54,8 @@ public class BattleGroundUI extends JPanel {
     private Color playerColor;
     private DisabledFigures disabled;
     private boolean moveHinting;
-    private boolean hardCoreMode;
+
+    private GameDifficulty gameDifficulty;
 
     private JTextArea logUI;
     
@@ -98,7 +99,7 @@ public class BattleGroundUI extends JPanel {
         this.playerColor = Color.WHITE;
         this.disabled = DisabledFigures.DISABLE_NONE;
         this.moveHinting = true;
-        this.hardCoreMode = false;
+        this.gameDifficulty = GameDifficulty.GAME_NORMAL;
 
         this.logUI = new JTextArea();
         this.logUI.setBackground(new Color(239, 239, 239));
@@ -571,7 +572,7 @@ public class BattleGroundUI extends JPanel {
         // AI ma kam tahnout
         if(possible.size() > 0){
             Possibility possibility;
-            if (!this.hardCoreMode) {
+            if (this.gameDifficulty == GameDifficulty.GAME_NORMAL) {
                 Random rand = new Random();
 
                 int randomNum = rand.nextInt(possible.size() + 1);
@@ -663,8 +664,8 @@ public class BattleGroundUI extends JPanel {
         this.moveHinting = moveHinting;
     }
 
-    public void setHardCoreMode(boolean hardCoreMode){
-        this.hardCoreMode = hardCoreMode;
+    public void setGameDifficulty(GameDifficulty gameDifficulty){
+        this.gameDifficulty = gameDifficulty;
     }
 
     /**

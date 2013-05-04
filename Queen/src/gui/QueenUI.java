@@ -34,6 +34,7 @@ public class QueenUI extends JFrame {
     private JMenuItem mainMenuGameReplay;
     private JMenuItem mainMenuGameMoveHinting;
     private JMenuItem mainMenuGameHardcoreMode;
+    private JMenuItem mainMenuGameChuckNorrisMode;
     
     private JMenuItem mainMenuGameQuit;
     private JMenu mainMenuHelp;
@@ -43,7 +44,7 @@ public class QueenUI extends JFrame {
     private BattleGroundUI battleground;
     
     private boolean MoveHinting;
-    private boolean HardcoreMode;
+    private GameDifficulty gameDifficulty;
 
     /**
      * Creates new form QueenUI
@@ -72,7 +73,7 @@ public class QueenUI extends JFrame {
 
     private void initMenu(){
         this.MoveHinting = true;
-        this.HardcoreMode = false;
+        this.gameDifficulty = GameDifficulty.GAME_NORMAL;
         
         //Create menu bar
         this.mainMenuBar = new JMenuBar();
@@ -90,6 +91,7 @@ public class QueenUI extends JFrame {
         this.mainMenuGameReplay = new JMenuItem("Přehrát");
         this.mainMenuGameMoveHinting = new JMenuItem("Nápověda tahů");
         this.mainMenuGameHardcoreMode = new JMenuItem("Hardcore mód");
+        this.mainMenuGameChuckNorrisMode = new JMenuItem("Chuck Norris mód");
         
         this.mainMenuGameQuit = new JMenuItem("Ukončit");
         this.mainMenuHelpAbout = new JMenuItem("O programu");
@@ -99,6 +101,7 @@ public class QueenUI extends JFrame {
         this.mainMenuGameReplay.setIcon(new ImageIcon(getClass().getResource("/gfx/icon_replay.png")));
         this.mainMenuGameMoveHinting.setIcon(new ImageIcon(getClass().getResource("/gfx/icon_tick.png")));
         this.mainMenuGameHardcoreMode.setIcon(new ImageIcon(getClass().getResource("/gfx/icon_cancel.png")));
+        this.mainMenuGameChuckNorrisMode.setIcon(new ImageIcon(getClass().getResource("/gfx/icon_cancel.png")));
         this.mainMenuGameQuit.setIcon(new ImageIcon(getClass().getResource("/gfx/icon_quit.png")));
         this.mainMenuHelpAbout.setIcon(new ImageIcon(getClass().getResource("/gfx/icon_help.png")));
 
@@ -141,6 +144,13 @@ public class QueenUI extends JFrame {
                 handleHardcoreMode(e);
             }
         });
+        
+        this.mainMenuGameChuckNorrisMode.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                handleChuckNorrisMode(e);
+            }
+        });
 
         // Bind close event to Quit
         this.mainMenuGameQuit.addActionListener(new ActionListener() {
@@ -164,6 +174,7 @@ public class QueenUI extends JFrame {
         this.mainMenuGame.add(new JSeparator());
         this.mainMenuGame.add(this.mainMenuGameMoveHinting);
         this.mainMenuGame.add(this.mainMenuGameHardcoreMode);
+        this.mainMenuGame.add(this.mainMenuGameChuckNorrisMode);
         this.mainMenuGame.add(new JSeparator());
         this.mainMenuGame.add(this.mainMenuGameQuit);
         this.mainMenuHelp.add(this.mainMenuHelpAbout);
@@ -203,7 +214,7 @@ public class QueenUI extends JFrame {
             this.initContent();
             this.battleground.initGame(gameType, playerColor, remoteHost, remotePort, localPort, fileName);
             this.battleground.setMoveHinting(this.MoveHinting);
-            this.battleground.setHardCoreMode(this.HardcoreMode);
+            this.battleground.setGameDifficulty(this.gameDifficulty);
         }
     }
 
@@ -260,9 +271,33 @@ public class QueenUI extends JFrame {
     }
     
     private void handleHardcoreMode(ActionEvent e){
-        this.HardcoreMode = !this.HardcoreMode;
-        this.mainMenuGameHardcoreMode.setIcon(new ImageIcon(getClass().getResource((this.HardcoreMode)? "/gfx/icon_tick.png" : "/gfx/icon_cancel.png")));
-        this.battleground.setHardCoreMode(this.HardcoreMode);
+        if(this.gameDifficulty == GameDifficulty.GAME_HARDCORE){
+            this.gameDifficulty = GameDifficulty.GAME_NORMAL;
+            this.mainMenuGameHardcoreMode.setIcon(new ImageIcon(getClass().getResource("/gfx/icon_cancel.png")));
+            this.mainMenuGameChuckNorrisMode.setIcon(new ImageIcon(getClass().getResource("/gfx/icon_cancel.png")));
+        }
+        else{
+            this.gameDifficulty = GameDifficulty.GAME_HARDCORE;
+            this.mainMenuGameHardcoreMode.setIcon(new ImageIcon(getClass().getResource("/gfx/icon_tick.png")));
+            this.mainMenuGameChuckNorrisMode.setIcon(new ImageIcon(getClass().getResource("/gfx/icon_cancel.png")));
+        }
+
+        this.battleground.setGameDifficulty(this.gameDifficulty);
+    }
+    
+    private void handleChuckNorrisMode(ActionEvent e){
+        if(this.gameDifficulty == GameDifficulty.GAME_CHUCK_NORRIS){
+            this.gameDifficulty = GameDifficulty.GAME_NORMAL;
+            this.mainMenuGameHardcoreMode.setIcon(new ImageIcon(getClass().getResource("/gfx/icon_cancel.png")));
+            this.mainMenuGameChuckNorrisMode.setIcon(new ImageIcon(getClass().getResource("/gfx/icon_cancel.png")));
+        }
+        else{
+            this.gameDifficulty = GameDifficulty.GAME_CHUCK_NORRIS;
+            this.mainMenuGameHardcoreMode.setIcon(new ImageIcon(getClass().getResource("/gfx/icon_cancel.png")));
+            this.mainMenuGameChuckNorrisMode.setIcon(new ImageIcon(getClass().getResource("/gfx/icon_tick.png")));
+        }
+
+        this.battleground.setGameDifficulty(this.gameDifficulty);
     }
 
     private void handleDialogAbout(ActionEvent e){
