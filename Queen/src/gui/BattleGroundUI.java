@@ -82,12 +82,13 @@ public class BattleGroundUI extends JPanel {
        this.initBattleGround();
 
        this.add(this.content, BorderLayout.EAST);
-       
+
        JScrollPane scroll = new JScrollPane(this.logUI);
        scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+
        scroll.setAutoscrolls(true);
        scroll.setPreferredSize(new Dimension(150, 400));
-       
+
        this.add(scroll, BorderLayout.WEST);
 
        this.setVisible(true);
@@ -121,14 +122,14 @@ public class BattleGroundUI extends JPanel {
         this.port = 5678;
         this.host = "localhost";
 
-        
+
         this.handlerTimer = new Timer((100), new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 checkNetwork();
             }
-        });  
-        
+        });
+
 
 
     }
@@ -190,7 +191,7 @@ public class BattleGroundUI extends JPanel {
      */
     public void initGame(GameType gameType, Color playerColor, String remoteHost, int remotePort, int localPort,  String fileName){
         this.gameType = gameType;
-        
+
         this.handlerTimer.stop();
 
         // Nacteni hry
@@ -315,7 +316,7 @@ public class BattleGroundUI extends JPanel {
                 }
 
                 this.handlerTimer.start();
-                
+
                 if(this.playerColor == this.battleground.getRoundColor()){
                     JOptionPane.showMessageDialog(this, "Jste na tahu.", "Queen - Síťová hra", JOptionPane.INFORMATION_MESSAGE);
                 }
@@ -525,7 +526,7 @@ public class BattleGroundUI extends JPanel {
 
                             this.battlegroundUI[this.battleground.pos(position)].reload();
                         }
-                        
+
                         if(this.gameType == GameType.PLAYER_VS_NETWORK_LOCAL || this.gameType == GameType.PLAYER_VS_NETWORK_REMOTE){
                             Move tmp = new Move(this.battleGroundActiveField.getField().getPosition(), fieldUI.getField().getPosition(), (victims.size() > 0) ? true : false);
                             this.handlerWriter.print(tmp.toString() + "\n");
@@ -611,7 +612,7 @@ public class BattleGroundUI extends JPanel {
                 possibility = (Possibility)possible.get(randomNum);
             }
             else {
-                Vector tmp_result = this.battleground.minimax(possible, this.gameDifficulty, 1);
+                Vector tmp_result = this.battleground.minimax(possible, this.gameDifficulty, 4);
                 possibility = (Possibility)tmp_result.get(0);
                 //prvni prvek vraceneho vektoru je possibility, druhy je ohodnoceni stavu, ktere tady nepotrebujeme
             }
@@ -631,7 +632,7 @@ public class BattleGroundUI extends JPanel {
             this.disabled = DisabledFigures.DISABLE_ALL;
         }
     }
-    
+
     private void checkNetwork(){
         if(this.handler != null && this.handler.isConnected()){
             if(this.handlerReader != null){
@@ -639,11 +640,11 @@ public class BattleGroundUI extends JPanel {
                     if(this.handlerReader.ready()){
                         String line = this.handlerReader.readLine();
                         Move tmp = new Move(line);
-                        
+
                         this.battleground.move(tmp.getFrom(), tmp.getTo());
                         this.reload();
-                        
-                        
+
+
                         if(this.battleground.isEndOfAllHope()){
                             JOptionPane.showMessageDialog(this, "Prohrál jste tuto hru!", "Queen - Konec hry", JOptionPane.INFORMATION_MESSAGE);
                             this.disabled = DisabledFigures.DISABLE_ALL;
@@ -651,8 +652,8 @@ public class BattleGroundUI extends JPanel {
                             this.handlerTimer.stop();
                             return;
                         }
-                        
-                        
+
+
                         //System.out.println("data ready");
                     }
                 }
