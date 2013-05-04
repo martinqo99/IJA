@@ -590,7 +590,7 @@ public class BattleGroundUI extends JPanel {
 
     private Possibility minimax(Vector possible){
         Vector best = new Vector();
-        int best_move_old = 0, best_move_new = 0;
+        int best_move_old = -1000, best_move_new = 0;
 
         for (int i = 0; i < possible.size(); i++){
             Possibility possibility = (Possibility)possible.get(i);
@@ -602,30 +602,43 @@ public class BattleGroundUI extends JPanel {
             Vector assassins = tmp.getReadyAssassins();
 
             for (int j = 0; j < assassins.size(); j++){
-                Vector victims = ((Possibility)assassins.get(j)).getVictims();
-
-                for (int k = 0; k < victims.size(); k++){
-                    if (((Position)possibility.getPosition()).equals((Position)victims.get(k)))
-                        best_move_new--; // odecteme 1 za kazdou figurku, ktera me potom bude ohrozovat
+                Vector pos_moves = tmp.at((Position)assassins.get(j)).getFigure().canMovePossibilities();
+                for (int k = 0; k < pos_moves.size(); k++) {
+                    Vector victims = ((Possibility)pos_moves.get(k)).getVictims();
+                    for (int l = 0; l < victims.size(); l++){
+                        if (((Position)possibility.getPosition()).equals((Position)victims.get(l)))
+                            best_move_new--; // odecteme 1 za kazdou figurku, ktera me potom bude ohrozovat
+                    }
                 }
             }
             best_move_new += possibility.killed(); // pricteme kolik jich zabijeme
+            if (possibility.getKiller().getColumn() == 'a' || possibility.getKiller().getColumn() == 'h' ||
+                    possibility.getKiller().getRow() == 1 || possibility.getKiller().getRow() == this.dimension)
+                best_move_new--;
+            if (possibility.getPosition().getColumn() == 'a' || possibility.getPosition().getColumn() == 'h' ||
+                    possibility.getPosition().getRow() == 1 || possibility.getPosition().getRow() == this.dimension)
+                best_move_new++;
 
-            if (best_move_new == best_move_old) { // nasli jsme lepsi pohyb
+            if (best_move_new == best_move_old) { // stejne ohodnoceny pohyb, pridame
                 best.add(new Possibility(possibility));
             }
-            else if (best_move_new > best_move_old) {
+            else if (best_move_new > best_move_old) { // nasli jsme lepe ohodnoceny pohyb
                 best_move_old = best_move_new;
                 best = new Vector();
                 best.add(new Possibility(possibility));
             }
             best_move_new = 0;
         }
-        Random rand = new Random();
-        int randomNum = rand.nextInt(best.size() + 1);
-        if(randomNum >= best.size())
-            randomNum = best.size() - 1;
-        Possibility best_move = (Possibility)best.get(randomNum);
+        Possibility best_move;
+        if (best.size() == 1)
+            best_move = (Possibility)best.get(0);
+        else {
+            Random rand = new Random();
+            int randomNum = rand.nextInt(best.size() + 1);
+            if(randomNum >= best.size())
+                randomNum = best.size() - 1;
+            best_move = (Possibility)best.get(randomNum);
+        }
         return best_move;
     }
 
