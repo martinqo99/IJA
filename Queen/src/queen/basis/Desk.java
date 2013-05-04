@@ -358,7 +358,7 @@ public class Desk {
                 Vector tmp_poss = new Vector();
                 if (tmp_assa.size() > 0)
                     for(int j = 0; j < tmp_assa.size(); j++){
-                        Position act_assa = (Position)tmp_assa.get(i);
+                        Position act_assa = (Position)tmp_assa.get(j);
 
                         Vector act_poss = tmp.at(act_assa).getFigure().canMovePossibilities();
 
