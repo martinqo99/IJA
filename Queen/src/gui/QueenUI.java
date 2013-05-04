@@ -178,7 +178,7 @@ public class QueenUI extends JFrame {
         this.content = this.getContentPane();
         this.content.removeAll();
 
-        this.battleground = new BattleGroundUI();
+        this.battleground = new BattleGroundUI(this);
 
         this.content.add(this.battleground);
         

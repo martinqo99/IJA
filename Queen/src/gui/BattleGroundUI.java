@@ -36,6 +36,8 @@ import queen.basis.*;
  * @since       2013-04-30
  */
 public class BattleGroundUI extends JPanel {
+    
+    private JFrame parent;
 
     private Container content;
 
@@ -62,8 +64,10 @@ public class BattleGroundUI extends JPanel {
     /**
      * Creates new form BattleGroundUI
      */
-    public BattleGroundUI() {
+    public BattleGroundUI(JFrame parent) {
        super();
+       
+       this.parent = parent;
 
        this.initWindow();
        this.initBattleGround();
