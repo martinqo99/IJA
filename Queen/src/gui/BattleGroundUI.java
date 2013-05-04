@@ -82,7 +82,11 @@ public class BattleGroundUI extends JPanel {
        this.initBattleGround();
 
        this.add(this.content, BorderLayout.EAST);
-       this.add(this.logUI, BorderLayout.WEST);
+       
+       JScrollPane scroll = new JScrollPane(this.logUI);
+       scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+       
+       this.add(scroll, BorderLayout.WEST);
 
        this.setVisible(true);
     }
