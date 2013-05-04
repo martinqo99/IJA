@@ -8,8 +8,10 @@
 
 package queen.basis;
 
+import gui.GameDifficulty;
 import queen.figures.*;
 import java.awt.*;
+import java.util.Random;
 import java.util.Vector;
 
 /**
@@ -199,20 +201,20 @@ public class Desk {
 
         if(figure.getColor() != this.roundColor)
             throw new RuntimeException("Hráč není na tahu!");
-        
+
         Vector assassins = this.getReadyAssassins();
         if(assassins.size() > 0){
             boolean isAssassin = false;
-            
+
             for(int i = 0; i < assassins.size(); i++){
                 Position assassin = (Position)assassins.get(i);
-                
+
                 if(assassin.equals(from)){
                     isAssassin = true;
                     break;
                 }
             }
-            
+
             if(!isAssassin)
                 throw new RuntimeException("Hráč je povinen provést skok!");
         }
@@ -264,51 +266,51 @@ public class Desk {
 
         return true;
     }
-    
+
     /**
      *
      * @param roundColor
      * @return
      */
     public Vector getReadyAssassins(Color roundColor){
-        
+
         Color tmp = this.roundColor;
-        
+
         this.roundColor = roundColor;
-        
+
         Vector result = this.getReadyAssassins();
-        
+
         this.roundColor = tmp;
-        
+
         return result;
     }
-    
+
     /**
      *
      * @return
      */
     public Vector getReadyAssassins(){
         Vector assassins = new Vector();
-        
+
         for(int i = 0; i < this.battleField.length; i++){
             if(this.battleField[i].getFigure() == null)
                 continue;
 
             if(this.battleField[i].getFigure().getColor() != this.roundColor)
                 continue;
-            
+
             Vector possibilities = this.battleField[i].getFigure().canMovePossibilities();
-            
+
             if(possibilities.size() > 0){
                 for(int j = 0; j < possibilities.size(); j++){
                     Possibility possibility = (Possibility)possibilities.get(j);
-                    
+
                     if(possibility.killed() > 0)
                         assassins.add(new Position(possibility.getKiller()));
                 }
-            }            
+            }
         }
-        
+
         return assassins;
     }
 
@@ -326,6 +328,115 @@ public class Desk {
      */
     public Vector getRounds(){
         return this.rounds;
+    }
+
+    public Vector minimax(Vector possible, GameDifficulty gameDifficulty, int depth){
+        Vector best = new Vector();
+        int best_move_old = -1000, best_move_new = 0;
+
+        for (int i = 0; i < possible.size(); i++){
+            Possibility possibility = (Possibility)possible.get(i);
+            Desk tmp = new Desk(this.dimension);
+            for (int step = 0; step < this.rounds.size(); step++){
+                tmp.move(((Move)this.rounds.get(step)).getFrom(), ((Move)this.rounds.get(step)).getTo());
+            }
+            tmp.move(possibility.getKiller(), possibility.getPosition());
+            Vector assassins = tmp.getReadyAssassins();
+
+            for (int j = 0; j < assassins.size(); j++){
+                Vector pos_moves = tmp.at((Position)assassins.get(j)).getFigure().canMovePossibilities();
+                for (int k = 0; k < pos_moves.size(); k++) {
+                    Vector victims = ((Possibility)pos_moves.get(k)).getVictims();
+                    for (int l = 0; l < victims.size(); l++){
+                        if (((Position)possibility.getPosition()).equals((Position)victims.get(l)))
+                            best_move_new--; // odecteme 1 za kazdou figurku, ktera me potom bude ohrozovat
+                    }
+                }
+            }
+            if (gameDifficulty == GameDifficulty.GAME_CHUCK_NORRIS && depth > 0 && !tmp.isEndOfAllHope()) { // opravdu tezsi AI
+                Vector tmp_assa = tmp.getReadyAssassins();
+                Vector tmp_poss = new Vector();
+                if (tmp_assa.size() > 0)
+                    for(int j = 0; j < tmp_assa.size(); j++){
+                        Position act_assa = (Position)tmp_assa.get(i);
+
+                        Vector act_poss = tmp.battleField[j].getFigure().canMovePossibilities();
+
+                        if(act_poss.size() > 0)
+                            for(int k = 0; k < act_poss.size(); k++)
+                                tmp_poss.add(act_poss.get(k));
+                    }
+                else
+                    for(int j = 0; j < tmp.battleField.length; j++){
+                        if(tmp.battleField[j].getFigure() == null)
+                            continue;
+
+                        if(tmp.battleField[j].getFigure().getColor() != tmp.roundColor)
+                            continue;
+
+                        Vector act_poss = tmp.battleField[j].getFigure().canMovePossibilities();
+
+                        if(act_poss.size() > 0){
+                            for(int k = 0; k < act_poss.size(); k++){
+                                tmp_poss.add(act_poss.get(k));
+                            }
+                        }
+                    }
+                Vector tmp_result = tmp.minimax(tmp_poss, gameDifficulty, --depth); // rekurze
+                Possibility next_move = (Possibility)tmp_result.get(0);
+                best_move_new += (int)tmp_result.get(1);
+                if (next_move.getKiller().getColumn() == 'a' || next_move.getKiller().getColumn() == 'h' ||
+                        next_move.getKiller().getRow() == 1 || next_move.getKiller().getRow() == this.dimension)
+                    best_move_new++;
+                if (next_move.getPosition().getColumn() == 'a' || next_move.getPosition().getColumn() == 'h' ||
+                        next_move.getPosition().getRow() == 1 || next_move.getPosition().getRow() == this.dimension)
+                    best_move_new--;
+                tmp.move(next_move.getKiller(), next_move.getPosition());
+                assassins = tmp.getReadyAssassins();
+
+                for (int j = 0; j < assassins.size(); j++){
+                    Vector pos_moves = tmp.at((Position)assassins.get(j)).getFigure().canMovePossibilities();
+                    for (int k = 0; k < pos_moves.size(); k++) {
+                        Vector victims = ((Possibility)pos_moves.get(k)).getVictims();
+                        for (int l = 0; l < victims.size(); l++){
+                            if (((Position)possibility.getPosition()).equals((Position)victims.get(l)))
+                                best_move_new++; // odecteme 1 za kazdou figurku, ktera me potom bude ohrozovat
+                        }
+                    }
+                }
+            }
+            best_move_new += possibility.killed(); // pricteme kolik jich zabijeme
+            if (possibility.getKiller().getColumn() == 'a' || possibility.getKiller().getColumn() == 'h' ||
+                    possibility.getKiller().getRow() == 1 || possibility.getKiller().getRow() == this.dimension)
+                best_move_new--;
+            if (possibility.getPosition().getColumn() == 'a' || possibility.getPosition().getColumn() == 'h' ||
+                    possibility.getPosition().getRow() == 1 || possibility.getPosition().getRow() == this.dimension)
+                best_move_new++;
+
+            if (best_move_new == best_move_old) { // stejne ohodnoceny pohyb, pridame
+                best.add(new Possibility(possibility));
+            }
+            else if (best_move_new > best_move_old) { // nasli jsme lepe ohodnoceny pohyb
+                best_move_old = best_move_new;
+                best = new Vector();
+                best.add(new Possibility(possibility));
+            }
+            best_move_new = 0;
+        }
+        Possibility best_move;
+        if (best.size() == 1)
+            best_move = (Possibility)best.get(0);
+        else {
+            Random rand = new Random();
+            int randomNum = rand.nextInt(best.size() + 1);
+            if(randomNum >= best.size())
+                randomNum = best.size() - 1;
+            best_move = (Possibility)best.get(randomNum);
+        }
+        Vector to_return = new Vector();
+        to_return.add(best_move);
+        to_return.add(best_move_old);
+        return to_return;
     }
 
 
