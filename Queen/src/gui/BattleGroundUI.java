@@ -504,6 +504,11 @@ public class BattleGroundUI extends JPanel {
 
                             this.battlegroundUI[this.battleground.pos(position)].reload();
                         }
+                        
+                        if(this.gameType == GameType.PLAYER_VS_NETWORK_LOCAL || this.gameType == GameType.PLAYER_VS_NETWORK_REMOTE){
+                            Move tmp = new Move(this.battleGroundActiveField.getField().getPosition(), fieldUI.getField().getPosition(), (victims.size() > 0) ? true : false);
+                            this.handlerWriter.print(tmp.toString() + "\n");
+                        }
 
                         this.battleGroundActiveField.toogle();
                         this.battleGroundActiveField = null;
