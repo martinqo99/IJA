@@ -360,7 +360,7 @@ public class Desk {
                     for(int j = 0; j < tmp_assa.size(); j++){
                         Position act_assa = (Position)tmp_assa.get(i);
 
-                        Vector act_poss = tmp.battleField[j].getFigure().canMovePossibilities();
+                        Vector act_poss = tmp.at(act_assa).getFigure().canMovePossibilities();
 
                         if(act_poss.size() > 0)
                             for(int k = 0; k < act_poss.size(); k++)
@@ -385,33 +385,43 @@ public class Desk {
                 Vector tmp_result = tmp.minimax(tmp_poss, gameDifficulty, --depth); // rekurze
                 Possibility next_move = (Possibility)tmp_result.get(0);
                 best_move_new += (int)tmp_result.get(1);
+
                 if (next_move.getKiller().getColumn() == 'a' || next_move.getKiller().getColumn() == 'h' ||
                         next_move.getKiller().getRow() == 1 || next_move.getKiller().getRow() == this.dimension)
                     best_move_new++;
                 if (next_move.getPosition().getColumn() == 'a' || next_move.getPosition().getColumn() == 'h' ||
                         next_move.getPosition().getRow() == 1 || next_move.getPosition().getRow() == this.dimension)
                     best_move_new--;
-                tmp.move(next_move.getKiller(), next_move.getPosition());
-                assassins = tmp.getReadyAssassins();
+                if (tmp.at(next_move.getKiller()).getFigure().getClass().getSimpleName() == "Stone" && (
+                        (tmp.at(next_move.getKiller()).getFigure().getColor() == Color.WHITE && next_move.getPosition().getRow() == this.dimension) ||
+                        (tmp.at(next_move.getKiller()).getFigure().getColor() == Color.BLACK && next_move.getPosition().getRow() == 1)))
+                    best_move_new--;
 
+                tmp.move(next_move.getKiller(), next_move.getPosition());
+
+                assassins = tmp.getReadyAssassins();
                 for (int j = 0; j < assassins.size(); j++){
                     Vector pos_moves = tmp.at((Position)assassins.get(j)).getFigure().canMovePossibilities();
                     for (int k = 0; k < pos_moves.size(); k++) {
                         Vector victims = ((Possibility)pos_moves.get(k)).getVictims();
                         for (int l = 0; l < victims.size(); l++){
-                            if (((Position)possibility.getPosition()).equals((Position)victims.get(l)))
-                                best_move_new++; // odecteme 1 za kazdou figurku, ktera me potom bude ohrozovat
+                            if (((Position)next_move.getPosition()).equals((Position)victims.get(l))) {
+                                best_move_new++; // pricteme 1 za kazdou figurku, kterou budeme ohrozovat
+                                if (tmp.at(next_move.getPosition()).getFigure().getClass().getSimpleName() == "Rook")
+                                    best_move_new++;
+                            }
                         }
                     }
                 }
-            }
+            } // konec chucka norrise
             best_move_new += possibility.killed(); // pricteme kolik jich zabijeme
             if (possibility.getKiller().getColumn() == 'a' || possibility.getKiller().getColumn() == 'h' ||
                     possibility.getKiller().getRow() == 1 || possibility.getKiller().getRow() == this.dimension)
                 best_move_new--;
             if (possibility.getPosition().getColumn() == 'a' || possibility.getPosition().getColumn() == 'h' ||
-                    possibility.getPosition().getRow() == 1 || possibility.getPosition().getRow() == this.dimension)
+                    possibility.getPosition().getRow() == 1 || possibility.getPosition().getRow() == this.dimension) {
                 best_move_new++;
+            }
 
             if (best_move_new == best_move_old) { // stejne ohodnoceny pohyb, pridame
                 best.add(new Possibility(possibility));
