@@ -65,6 +65,7 @@ public class BattleGroundUI extends JPanel {
 
     private PrintWriter handlerWriter;
     private BufferedReader handlerReader;
+    private Timer handlerTimer;
 
     private String host;
     private int port;
@@ -113,6 +114,15 @@ public class BattleGroundUI extends JPanel {
         this.handlerWriter = null;
         this.port = 5678;
         this.host = "localhost";
+
+        
+        this.handlerTimer = new Timer((100), new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                checkNetwork();
+            }
+        });  
+        
 
 
     }
@@ -174,6 +184,8 @@ public class BattleGroundUI extends JPanel {
      */
     public void initGame(GameType gameType, Color playerColor, String remoteHost, int remotePort, int localPort,  String fileName){
         this.gameType = gameType;
+        
+        this.handlerTimer.stop();
 
         // Nacteni hry
         if(!fileName.isEmpty()){
@@ -296,6 +308,8 @@ public class BattleGroundUI extends JPanel {
                     this.reload();
                 }
 
+                this.handlerTimer.start();
+                
                 if(this.playerColor == this.battleground.getRoundColor()){
                     JOptionPane.showMessageDialog(this, "Jste na tahu.", "Queen - Síťová hra", JOptionPane.INFORMATION_MESSAGE);
                 }
@@ -350,6 +364,7 @@ public class BattleGroundUI extends JPanel {
                 this.handlerWriter.print("END\n");
                 this.handlerWriter.flush();
 
+                this.handlerTimer.start();
 
                 if(this.playerColor == this.battleground.getRoundColor()){
                     JOptionPane.showMessageDialog(this, "Jste na tahu.", "Queen - Síťová hra", JOptionPane.INFORMATION_MESSAGE);
@@ -508,6 +523,7 @@ public class BattleGroundUI extends JPanel {
                         if(this.gameType == GameType.PLAYER_VS_NETWORK_LOCAL || this.gameType == GameType.PLAYER_VS_NETWORK_REMOTE){
                             Move tmp = new Move(this.battleGroundActiveField.getField().getPosition(), fieldUI.getField().getPosition(), (victims.size() > 0) ? true : false);
                             this.handlerWriter.print(tmp.toString() + "\n");
+                            this.handlerWriter.flush();
                         }
 
                         this.battleGroundActiveField.toogle();
@@ -526,6 +542,7 @@ public class BattleGroundUI extends JPanel {
 
                     }
                     catch(RuntimeException err){
+                        err.printStackTrace();
                         JOptionPane.showMessageDialog(this, err.getMessage(), "Queen - Chybný tah", JOptionPane.ERROR_MESSAGE);
                     }
 
@@ -606,6 +623,39 @@ public class BattleGroundUI extends JPanel {
         else{
             JOptionPane.showMessageDialog(this, "Hráč vyhrál hru!", "Queen - Konec hry", JOptionPane.INFORMATION_MESSAGE);
             this.disabled = DisabledFigures.DISABLE_ALL;
+        }
+    }
+    
+    private void checkNetwork(){
+        if(this.handler != null && this.handler.isConnected()){
+            if(this.handlerReader != null){
+                try{
+                    if(this.handlerReader.ready()){
+                        String line = this.handlerReader.readLine();
+                        Move tmp = new Move(line);
+                        
+                        this.battleground.move(tmp.getFrom(), tmp.getTo());
+                        this.reload();
+                        
+                        
+                        if(this.battleground.isEndOfAllHope()){
+                            JOptionPane.showMessageDialog(this, "Prohrál jste tuto hru!", "Queen - Konec hry", JOptionPane.INFORMATION_MESSAGE);
+                            this.disabled = DisabledFigures.DISABLE_ALL;
+                            this.handler.close();
+                            this.handlerTimer.stop();
+                            return;
+                        }
+                        
+                        
+                        //System.out.println("data ready");
+                    }
+                }
+                catch(IOException err){
+                    JOptionPane.showMessageDialog(this, "Chyba síťové komunikace!", "Queen - Síťová hra", JOptionPane.ERROR_MESSAGE);
+                    this.disabled = DisabledFigures.DISABLE_ALL;
+                    this.handlerTimer.stop();
+                }
+            }
         }
     }
 
