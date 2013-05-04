@@ -85,6 +85,8 @@ public class BattleGroundUI extends JPanel {
        
        JScrollPane scroll = new JScrollPane(this.logUI);
        scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+       scroll.setAutoscrolls(true);
+       scroll.setPreferredSize(new Dimension(150, 400));
        
        this.add(scroll, BorderLayout.WEST);
 
@@ -110,7 +112,7 @@ public class BattleGroundUI extends JPanel {
         this.logUI.setBackground(new Color(239, 239, 239));
         this.logUI.setEditable(false);
         this.logUI.setBorder(new EmptyBorder(5, 5, 5, 5));
-        this.logUI.setPreferredSize(new Dimension(150, 400));
+        //this.logUI.setPreferredSize(new Dimension(150, 800));
 
         this.serverHandler = null;
         this.handler = null;
