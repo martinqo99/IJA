@@ -588,6 +588,11 @@ public class BattleGroundUI extends JPanel {
             this.battleground.move(possibility.getKiller(), possibility.getPosition());
 
             this.reload();
+            
+            if(this.battleground.isEndOfAllHope()){
+                JOptionPane.showMessageDialog(this, "Počítač vyhrál hru!", "Queen - Konec hry", JOptionPane.INFORMATION_MESSAGE);
+                this.disabled = DisabledFigures.DISABLE_ALL;
+            }
         }
         // Nema, AI prohrala
         else{
