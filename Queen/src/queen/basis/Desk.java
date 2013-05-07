@@ -384,7 +384,7 @@ public class Desk {
                     }
                 Vector tmp_result = tmp.minimax(tmp_poss, gameDifficulty, --depth); // rekurze
                 Possibility next_move = (Possibility)tmp_result.get(0);
-                best_move_new -= (int)tmp_result.get(1);
+                best_move_new -= (int)tmp_result.get(1)*(depth/4);
 
                 if (next_move.getKiller().getColumn() == 'a' || next_move.getKiller().getColumn() == 'h' ||
                         next_move.getKiller().getRow() == 1 || next_move.getKiller().getRow() == this.dimension)
