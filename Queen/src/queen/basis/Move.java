@@ -1,10 +1,14 @@
 /*
  * Projekt: Queen
  * Predmet: IJA - Seminar Java
+ * Soubor: Move.java
  * Autori:
  *          xkolac12 < xkolac12 @ stud.fit.vutbr.cz >
  *          xmatya03 < xmatya03 @ stud.fit.vutbr.cz >
+ * 
+ * Trida Move reprezentuje tah na sachovnici
  */
+
 package queen.basis;
 
 import java.awt.Color;
@@ -45,6 +49,10 @@ public class Move {
         this.fight = move.isFight();
     }
     
+    /**
+     * Konstruktor pohybu figurky
+     * @param position pozice figurky
+     */
     public Move(String position){
         Pattern regex = Pattern.compile("^([a-z][0-9])([x\\-])([a-z][0-9])$");
         Matcher match = regex.matcher(position);

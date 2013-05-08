@@ -1,9 +1,12 @@
 /*
  * Projekt: Queen
  * Predmet: IJA - Seminar Java
+ * Soubor: Stone.java
  * Autori:
  *          xkolac12 < xkolac12 @ stud.fit.vutbr.cz >
  *          xmatya03 < xmatya03 @ stud.fit.vutbr.cz >
+ * 
+ * Trida Stone reprezentuje figurku kamen
  */
 
 package queen.figures;

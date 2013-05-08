@@ -1,9 +1,12 @@
 /*
  * Projekt: Queen
  * Predmet: IJA - Seminar Java
+ * Soubor: DisabledFigures.java
  * Autori:
  *          xkolac12 < xkolac12 @ stud.fit.vutbr.cz >
  *          xmatya03 < xmatya03 @ stud.fit.vutbr.cz >
+ * 
+ * Enum reprezetentujici nastaveni figur, ktere nemaji prijimat eventy
  */
 
 package gui.basis;

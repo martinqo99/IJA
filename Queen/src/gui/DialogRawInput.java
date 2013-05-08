@@ -1,38 +1,52 @@
 /*
  * Projekt: Queen
  * Predmet: IJA - Seminar Java
+ * Soubor: DailogRawInput.java
  * Autori:
  *          xkolac12 < xkolac12 @ stud.fit.vutbr.cz >
  *          xmatya03 < xmatya03 @ stud.fit.vutbr.cz >
+ * 
+ * Trida DailogRawInput predstavuje dialog pro vlozeni postfix notace
  */
 
 package gui;
 
+import javax.swing.*;
+import java.awt.*;
 import javax.swing.JOptionPane;
 
 /**
  * @author      Frantisek Kolacek <xkolac12 @ stud.fit.vutbr.cz>
+ * @author      Petr Matyas <xmatya03 @ stud.fit.vutbr.cz>
  * @version     0.91
  * @since       2013-04-30
  */
-public class DialogRawInput extends javax.swing.JDialog {
+public class DialogRawInput extends JDialog {
 
     private boolean accepted;
     
     /**
-     * Creates new form DialogRawInput
+     * Vytvori objekt typu DialogRawInput
      */
-    public DialogRawInput(java.awt.Frame parent, boolean modal) {
+    public DialogRawInput(Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         
         this.accepted = false;
     }
     
+    /**
+     * Vraci vstupni text
+     * @return vstupni text
+     */
     public String getInputText(){
         return this.inputText.getText();
     }
     
+    /**
+     * Vraci, zda-li byl dialog potvrzen
+     * @return true, pokud byl dialog potvrzen, jinak false
+     */
     public boolean isAccepted(){
         return this.accepted;
     }
@@ -117,47 +131,6 @@ public class DialogRawInput extends javax.swing.JDialog {
         this.dispose();
     }//GEN-LAST:event_buttSubmitActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(DialogRawInput.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(DialogRawInput.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(DialogRawInput.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(DialogRawInput.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the dialog */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                DialogRawInput dialog = new DialogRawInput(new javax.swing.JFrame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
-            }
-        });
-    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buttCancel;
     private javax.swing.JButton buttSubmit;

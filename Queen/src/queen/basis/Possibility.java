@@ -1,9 +1,12 @@
 /*
  * Projekt: Queen
  * Predmet: IJA - Seminar Java
+ * Soubor: Possibility.java
  * Autori:
  *          xkolac12 < xkolac12 @ stud.fit.vutbr.cz >
  *          xmatya03 < xmatya03 @ stud.fit.vutbr.cz >
+ * 
+ * Trida Possibility reprezentuje mozne tahy na sachovnici
  */
 
 package queen.basis;

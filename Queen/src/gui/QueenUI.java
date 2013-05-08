@@ -1,13 +1,17 @@
 /*
  * Projekt: Queen
  * Predmet: IJA - Seminar Java
+ * Soubor: QueenUI.java
  * Autori:
  *          xkolac12 < xkolac12 @ stud.fit.vutbr.cz >
  *          xmatya03 < xmatya03 @ stud.fit.vutbr.cz >
+ * 
+ * Trida QueenUI predstavuje hlavni okno aplikace
  */
 
 package gui;
 
+import gui.basis.GameDifficulty;
 import gui.basis.GameType;
 import gui.basis.Notation;
 import java.awt.*;
@@ -22,6 +26,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  * @author      Frantisek Kolacek <xkolac12 @ stud.fit.vutbr.cz>
+ * @author      Petr Matyas <xmatya03 @ stud.fit.vutbr.cz>
  * @version     0.91
  * @since       2013-04-30
  */
@@ -45,7 +50,7 @@ public class QueenUI extends JFrame {
     private GameDifficulty gameDifficulty;
 
     /**
-     * Creates new form QueenUI
+     * Vytvori objekt typu QueenUI
      */
     public QueenUI() {
         initWindow();
@@ -55,6 +60,9 @@ public class QueenUI extends JFrame {
         this.pack();
     }
 
+    /**
+     * Inicializuje hlavni okno
+     */   
     private void initWindow(){
         this.setTitle("Queen - IJA projekt");
         this.setIconImage(new ImageIcon(getClass().getResource("/gfx/icon.png")).getImage());
@@ -69,6 +77,9 @@ public class QueenUI extends JFrame {
         this.setVisible(true);
     }
 
+    /**
+     * Inicializuje menu hlavniho okna
+     */   
     private void initMenu(){
         this.MoveHinting = true;
         this.gameDifficulty = GameDifficulty.GAME_NORMAL;
@@ -163,11 +174,14 @@ public class QueenUI extends JFrame {
         this.setJMenuBar(this.mainMenuBar);
     }
 
+    /**
+     * Inicializuje obsah hlavniho okna
+     */   
     private void initContent(){
         this.content = this.getContentPane();
         this.content.removeAll();
 
-        this.battleground = new BattleGroundUI(this);
+        this.battleground = new BattleGroundUI();
 
         this.content.add(this.battleground);
         
@@ -175,6 +189,9 @@ public class QueenUI extends JFrame {
         this.pack();
     }
 
+    /**
+     * Obsluhuje vytvoreni okna pro novou hru
+     */   
     private void handleDialogNew(ActionEvent e){
         DialogNew dialog = new DialogNew(this, true);
         dialog.setLocationRelativeTo(this);
@@ -199,6 +216,9 @@ public class QueenUI extends JFrame {
         }
     }
 
+    /**
+     * Obsluhuje vytvoreni okna pro ulozeni hry
+     */ 
     private void handleDialogSave(ActionEvent e){
         JFileChooser dialog = new JFileChooser();
         
@@ -233,6 +253,9 @@ public class QueenUI extends JFrame {
         }
     }
 
+    /**
+     * Obsluhuje vytvoreni okna pro prehrani hry
+     */ 
     private void handleDialogReplay(ActionEvent e){
         Thread thread = new Thread(){
             @Override
@@ -245,12 +268,18 @@ public class QueenUI extends JFrame {
         thread.start();
     }
     
+    /**
+     * Obsluhuje nastaveni napovedy tahu
+     */ 
     private void handleMoveHinting(ActionEvent e){
         this.MoveHinting = !this.MoveHinting;
         this.mainMenuGameMoveHinting.setIcon(new ImageIcon(getClass().getResource((this.MoveHinting)? "/gfx/icon_tick.png" : "/gfx/icon_cancel.png")));
         this.battleground.setMoveHinting(this.MoveHinting);
     }
 
+    /**
+     * Obsluhuje vytvoreni okna pro napovedu
+     */ 
     private void handleDialogAbout(ActionEvent e){
         DialogAbout dialog = new DialogAbout(this, true);
         dialog.setLocationRelativeTo(this);
@@ -283,8 +312,10 @@ public class QueenUI extends JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+
     /**
-     * @param args the command line arguments
+     * Hlavni metoda main projektu
+     * @param args
      */
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */

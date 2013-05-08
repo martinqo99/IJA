@@ -1,14 +1,17 @@
 /*
  * Projekt: Queen
  * Predmet: IJA - Seminar Java
+ * Soubor: Desk.java
  * Autori:
  *          xkolac12 < xkolac12 @ stud.fit.vutbr.cz >
  *          xmatya03 < xmatya03 @ stud.fit.vutbr.cz >
+ * 
+ * Trida Desk reprezentuje sachovnici
  */
 
 package queen.basis;
 
-import gui.GameDifficulty;
+import gui.basis.GameDifficulty;
 import queen.figures.*;
 import java.awt.*;
 import java.util.Random;
@@ -286,8 +289,8 @@ public class Desk {
     }
 
     /**
-     *
-     * @return
+     * Vraci vsechny figurky, ktere musi skakat
+     * @return Vector figurek, ktere musi skocit
      */
     public Vector getReadyAssassins(){
         Vector assassins = new Vector();
@@ -453,7 +456,7 @@ public class Desk {
     /* DEBUG */
 
     /**
-     *
+     * Vlastni funkce pro vypis aktualniho stavu sachovnice
      */
     public void debug(){
         System.out.print("#|");

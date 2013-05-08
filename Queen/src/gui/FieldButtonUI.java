@@ -1,9 +1,12 @@
 /*
  * Projekt: Queen
  * Predmet: IJA - Seminar Java
+ * Soubor: FieldButtonUI.java
  * Autori:
  *          xkolac12 < xkolac12 @ stud.fit.vutbr.cz >
  *          xmatya03 < xmatya03 @ stud.fit.vutbr.cz >
+ * 
+ * Trida FieldButtonUI predstavuje pole na sachovnici
  */
 
 package gui;
@@ -26,17 +29,17 @@ public final class FieldButtonUI extends JButton {
     private boolean activated;
     
     /**
-     *
-     * @param field
+     * Konstruktor z objektu typu field
+     * @param field objekt typu field
      */
     public FieldButtonUI(Field field){
         this(field, "");
     }
     
     /**
-     *
-     * @param field
-     * @param title
+     * Pretizeny konstruktor
+     * @param field objekt typu field
+     * @param title popis tlacitka
      */
     public FieldButtonUI(Field field, String title){
         super(title);
@@ -73,6 +76,9 @@ public final class FieldButtonUI extends JButton {
         return imageName;
     }
     
+    /**
+     * Docasne oznaci tlacitko
+     */
     public void mark(){
         this.activated = true;
         this.reload();
@@ -80,7 +86,7 @@ public final class FieldButtonUI extends JButton {
     }
     
     /**
-     *
+     * Zmeni stav z oznaceneho a naopak
      */
     public void toogle(){
         this.activated = !this.activated;        
@@ -88,7 +94,7 @@ public final class FieldButtonUI extends JButton {
     }
     
     /**
-     *
+     * Znovu nacte odpovidajici obrazek tlacitku
      */
     public void reload(){
         try{
@@ -104,11 +110,6 @@ public final class FieldButtonUI extends JButton {
     }
     
     @Override
-    protected void paintComponent(Graphics g){
-        super.paintComponent(g);        
-    }
-    
-    @Override
     public Dimension getPreferredSize(){
         //Dimension size = super.getPreferredSize();
         Dimension size = new Dimension(50, 50);
@@ -116,16 +117,16 @@ public final class FieldButtonUI extends JButton {
     }    
     
     /**
-     *
-     * @param field
+     * Nastavi pole
+     * @param field objekt typu Field
      */
     public void setField(Field field){
         this.field = field;
     }
     
     /**
-     *
-     * @return
+     * Vrati pole
+     * @return objekt typu Field
      */
     public Field getField(){
         return this.field;

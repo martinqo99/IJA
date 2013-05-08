@@ -1,42 +1,57 @@
 /*
  * Projekt: Queen
  * Predmet: IJA - Seminar Java
+ * Soubor: DialogNew.java
  * Autori:
  *          xkolac12 < xkolac12 @ stud.fit.vutbr.cz >
  *          xmatya03 < xmatya03 @ stud.fit.vutbr.cz >
+ * 
+ * Trida DialogNew predstavuje dialog pro zalozeni nove hry
  */
 
 package gui;
-import gui.basis.GameType;
+
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import gui.basis.GameDifficulty;
+import gui.basis.GameType;
+
 /**
  * @author      Frantisek Kolacek <xkolac12 @ stud.fit.vutbr.cz>
+ * @author      Petr Matyas <xmatya03 @ stud.fit.vutbr.cz>
  * @version     0.91
  * @since       2013-04-30
  */
-public class DialogNew extends javax.swing.JDialog {
+public class DialogNew extends JDialog {
 
     private boolean accepted;
     
     /**
-     * Creates new form DialogNew
+     * Vytvori dialog pro novou hru
      */
-    public DialogNew(java.awt.Frame parent, boolean modal) {
+    public DialogNew(Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         
         this.accepted = false;
     }
     
+    /**
+     * Vraci, zda byl formular potvrzen
+     * @return true, pokud byl formular odeslan, jinak false
+     */
     public boolean isAccepted(){
         return this.accepted;
     }
     
+    /**
+     * Vraci typ hry
+     * @return typ hry
+     */
     public GameType getGameType(){
         if(this.radioPlayerVsPlayer.isSelected())
             return GameType.PLAYER_VS_PLAYER;
@@ -48,6 +63,10 @@ public class DialogNew extends javax.swing.JDialog {
             return GameType.PLAYER_VS_NETWORK_REMOTE;
     }
     
+    /**
+     * Vraci obtiznost hry
+     * @return obtiznost hry
+     */
     public GameDifficulty getGameDifficulty(){
         switch (this.inputPlayerDiff.getSelectedItem().toString()) {
             case "Normální":
@@ -59,6 +78,10 @@ public class DialogNew extends javax.swing.JDialog {
         }
     }
     
+    /**
+     * Vraci barvu hrace
+     * @return barva hrace
+     */
     public Color getPlayerColor(){
         if("Bílá".equals(this.inputPlayerColor.getSelectedItem().toString()))
             return Color.WHITE;
@@ -66,10 +89,18 @@ public class DialogNew extends javax.swing.JDialog {
             return Color.BLACK;
     }
     
+    /**
+     * Vraci adresu vzdaleneho hrace
+     * @return adresa vzdaleneho hrace
+     */
     public String getRemoteHost(){
         return this.inputRemoteHost.getText();
     }
     
+    /**
+     * Vraci port vzdaleneho hrace
+     * @return port vzdaleneho hrace
+     */
     public int getRemotePort(){
         int port;
         
@@ -84,6 +115,10 @@ public class DialogNew extends javax.swing.JDialog {
         return port;
     }
     
+    /**
+     * Vraci port lokalni hry
+     * @return port lokalni hry
+     */
     public int getLocalPort(){
         int port;
         
@@ -98,10 +133,18 @@ public class DialogNew extends javax.swing.JDialog {
         return port;
     }
     
+    /**
+     * Vraci, zda-li se ma nacist ulozena hra
+     * @return true, pokud se ma nacist ulozena hra, jinak false
+     */
     public boolean isStoredGame(){
         return this.checkFileName.isSelected();
     }
     
+    /**
+     * Vraci nazev souboru s ulozenou hrou
+     * @return nazev souboru s ulozenou hrou
+     */
     public String getStoredGameFileName(){
         return this.inputFileName.getText();
     }    
@@ -512,47 +555,6 @@ public class DialogNew extends javax.swing.JDialog {
         this.inputPlayerDiff.setEnabled(false);
     }//GEN-LAST:event_radioPlayerVsNetworkLocalActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(DialogNew.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(DialogNew.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(DialogNew.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(DialogNew.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the dialog */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                DialogNew dialog = new DialogNew(new javax.swing.JFrame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
-            }
-        });
-    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buttFileName;
     private javax.swing.ButtonGroup buttonGroup1;

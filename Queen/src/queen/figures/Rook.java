@@ -1,10 +1,14 @@
 /*
  * Projekt: Queen
  * Predmet: IJA - Seminar Java
+ * Soubor: Rook.java
  * Autori:
  *          xkolac12 < xkolac12 @ stud.fit.vutbr.cz >
  *          xmatya03 < xmatya03 @ stud.fit.vutbr.cz >
+ * 
+ * Trida Rook reprezentuje figurku Dama
  */
+
 package queen.figures;
 
 import queen.basis.*;
@@ -14,6 +18,8 @@ import java.util.Vector;
 /**
  * @author      Frantisek Kolacek <xkolac12 @ stud.fit.vutbr.cz>
  * @author      Petr Matyas <xmatya03 @ stud.fit.vutbr.cz>
+ * @version     0.91
+ * @since       2013-04-30
  */
 public class Rook extends Figure{
 

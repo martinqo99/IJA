@@ -1,9 +1,12 @@
 /*
  * Projekt: Queen
  * Predmet: IJA - Seminar Java
+ * Soubor: ReplayUI.java
  * Autori:
  *          xkolac12 < xkolac12 @ stud.fit.vutbr.cz >
  *          xmatya03 < xmatya03 @ stud.fit.vutbr.cz >
+ * 
+ * Trida ReplayUI predstavuje okno pro prehravani zaznamu
  */
 
 package gui;
@@ -24,10 +27,11 @@ import queen.basis.Move;
 
 /**
  * @author      Frantisek Kolacek <xkolac12 @ stud.fit.vutbr.cz>
+ * @author      Petr Matyas <xmatya03 @ stud.fit.vutbr.cz>
  * @version     0.91
  * @since       2013-04-30
  */
-public class ReplayUI extends javax.swing.JFrame {
+public class ReplayUI extends JFrame {
 
     private JToolBar mainMenuBar;
     private JButton mainMenuPrev;
@@ -57,6 +61,9 @@ public class ReplayUI extends javax.swing.JFrame {
     private Timer roundTimer;
     private boolean roundTimerLock;
 
+    /**
+     * Vytvori objekt typu ReplayUI
+     */
     public ReplayUI() {
         this.interval = 1;
         this.lastFrame = 0;
@@ -72,6 +79,9 @@ public class ReplayUI extends javax.swing.JFrame {
         this.pack();
     }
 
+    /**
+     * Inicializuje okno replay
+     */    
     private void initWindow(){
         this.setTitle("Queen - Přehrávač partií");
         this.setIconImage(new ImageIcon(getClass().getResource("/gfx/icon.png")).getImage());
@@ -86,6 +96,9 @@ public class ReplayUI extends javax.swing.JFrame {
         this.setVisible(true);
     }
 
+    /**
+     * Inicializuje menu replay
+     */
     private void initMenu(){
         this.mainMenuBar = new JToolBar();
         this.mainMenuBar.setFloatable(false);
@@ -245,13 +258,16 @@ public class ReplayUI extends javax.swing.JFrame {
         });
     }
 
+    /**
+     * Inicializuje obsah okna replay
+     */
     private void initContent(){
         this.content = this.getContentPane();
         this.content.removeAll();
 
         this.content.add(this.mainMenuBar, BorderLayout.NORTH);
 
-        this.battleground = new BattleGroundUI(this);
+        this.battleground = new BattleGroundUI();
         this.battleground.initReplay();
 
         this.content.add(this.battleground, BorderLayout.SOUTH);
@@ -482,40 +498,6 @@ public class ReplayUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ReplayUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ReplayUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ReplayUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ReplayUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new ReplayUI().setVisible(true);
-            }
-        });
-    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
 }

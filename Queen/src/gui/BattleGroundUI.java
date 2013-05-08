@@ -1,13 +1,17 @@
 /*
  * Projekt: Queen
  * Predmet: IJA - Seminar Java
+ * Soubor: BattleGroundUI.java
  * Autori:
  *          xkolac12 < xkolac12 @ stud.fit.vutbr.cz >
  *          xmatya03 < xmatya03 @ stud.fit.vutbr.cz >
+ * 
+ * Trida BattleGroundUI predstavuje sachovnici
  */
 
 package gui;
 
+import gui.basis.GameDifficulty;
 import gui.basis.*;
 
 import java.awt.*;
@@ -35,12 +39,11 @@ import queen.basis.*;
 
 /**
  * @author      Frantisek Kolacek <xkolac12 @ stud.fit.vutbr.cz>
+ * @author      Petr Matyas <xmatya03 @ stud.fit.vutbr.cz>
  * @version     0.91
  * @since       2013-04-30
  */
 public class BattleGroundUI extends JPanel {
-
-    private JFrame parent;
 
     private Container content;
 
@@ -71,12 +74,10 @@ public class BattleGroundUI extends JPanel {
     private int port;
 
     /**
-     * Creates new form BattleGroundUI
+     * Vytvori instanci tridy BattleGroundUI
      */
-    public BattleGroundUI(JFrame parent) {
+    public BattleGroundUI() {
        super();
-
-       this.parent = parent;
 
        this.initWindow();
        this.initBattleGround();
@@ -182,14 +183,17 @@ public class BattleGroundUI extends JPanel {
         }
     }
 
+
     /**
-     *
-     * @param gameType
-     * @param playerColor
-     * @param remoteHost
-     * @param fileName
+     * Vytvori novou hru
+     * @param gameType typ hry
+     * @param playerColor barva hrace
+     * @param remoteHost adresa vzdaleneho hrace
+     * @param remotePort port vzdaleneho hrace
+     * @param localPort mistni port pro naslouchani
+     * @param fileName jmeno souboru s ulozenou hrou
      */
-    public void initGame(GameType gameType, Color playerColor, String remoteHost, int remotePort, int localPort,  String fileName){
+    public void initGame(GameType gameType, Color playerColor, String remoteHost, int remotePort, int localPort, String fileName){
         this.gameType = gameType;
 
         this.handlerTimer.stop();
@@ -386,14 +390,16 @@ public class BattleGroundUI extends JPanel {
     }
 
     /**
-     *
+     * Nastavi hru jen pro prohlizeni
      */
     public void initReplay(){
         this.gameType = GameType.REPLAY;
         this.disabled = DisabledFigures.DISABLE_ALL;
     }
 
-    /* Vsechna ta klikaci magie */
+    /**
+     * Hlavni event pro zpracovani uzivatelskych tahu
+     */
     private void handleClickBattleGround(ActionEvent e){
         FieldButtonUI fieldUI = (FieldButtonUI)e.getSource();
 
@@ -561,6 +567,9 @@ public class BattleGroundUI extends JPanel {
         }
     }
 
+    /**
+     * Generuje tah pocitace
+     */
     private void AImove(){
         Vector possible = new Vector();
 
@@ -633,6 +642,9 @@ public class BattleGroundUI extends JPanel {
         }
     }
 
+    /**
+     * Kontroluje zda jsou pripravena nova data na socketu
+     */
     private void checkNetwork(){
         if(this.handler != null && this.handler.isConnected()){
             if(this.handlerReader != null){
@@ -666,44 +678,49 @@ public class BattleGroundUI extends JPanel {
         }
     }
 
+
     /**
-     *
-     * @param moveHinting
+     * Nastaveni napovedy tahu
+     * @param moveHinting true, pokud hraci napovidat, jinak false
      */
     public void setMoveHinting(boolean moveHinting){
         this.moveHinting = moveHinting;
     }
 
+    /**
+     * Nastaveni obtiznosti hry
+     * @param gameDifficulty obtiznost hry
+     */
     public void setGameDifficulty(GameDifficulty gameDifficulty){
         this.gameDifficulty = gameDifficulty;
     }
 
     /**
-     *
-     * @return
+     * Vraci objekt typu Desk pro pristup k jadru palikace
+     * @return objekt typu Desk
      */
     public Desk getBattleground(){
         return this.battleground;
     }
 
     /**
-     *
-     * @return
+     * Vraci typ hry
+     * @return typ hry
      */
     public GameType getGameType(){
         return this.gameType;
     }
 
     /**
-     *
-     * @return
+     * Vraci zaznam tahu hry
+     * @return zaznam tahu hry
      */
     public Vector getRounds(){
         return this.battleground.getRounds();
     }
 
     /**
-     *
+     * Znovu nacte hraci plochu dle aktualniho stavu
      */
     public void reload(){
         Vector rounds = this.battleground.getRounds();

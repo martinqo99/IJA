@@ -1,21 +1,31 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Projekt: Queen
+ * Predmet: IJA - Seminar Java
+ * Soubor: DialogAbout.java
+ * Autori:
+ *          xkolac12 < xkolac12 @ stud.fit.vutbr.cz >
+ *          xmatya03 < xmatya03 @ stud.fit.vutbr.cz >
+ * 
+ * Trida DialogAbout predstavuje dialog napovedy
  */
+
 package gui;
+
 import javax.swing.*;
 import java.awt.*;
 
 /**
- *
- * @author petr
+ * @author      Frantisek Kolacek <xkolac12 @ stud.fit.vutbr.cz>
+ * @author      Petr Matyas <xmatya03 @ stud.fit.vutbr.cz>
+ * @version     0.91
+ * @since       2013-04-30
  */
 public class DialogAbout extends JDialog {
 
     /**
-     * Creates new form DialogAbout
+     * Vytvori objekt typu DialogAbout
      */
-    public DialogAbout(java.awt.Frame parent, boolean modal) {
+    public DialogAbout(Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
     }
@@ -136,47 +146,6 @@ public class DialogAbout extends JDialog {
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(DialogAbout.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(DialogAbout.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(DialogAbout.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(DialogAbout.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the dialog */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                DialogAbout dialog = new DialogAbout(new javax.swing.JFrame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
-            }
-        });
-    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
